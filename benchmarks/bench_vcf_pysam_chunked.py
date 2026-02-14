@@ -37,6 +37,23 @@ def benchmark():
     schema = pa.schema(fields)
 
     batches = []
+    chroms = []
+    ids = []
+    refs = []
+    alts = []
+    filters = []
+    info_lists = {}
+    if include_info:
+        info_lists = {field: [] for field in info_fields}
+
+    chroms_append = chroms.append
+    ids_append = ids.append
+    refs_append = refs.append
+    alts_append = alts.append
+    filters_append = filters.append
+    info_targets = []
+    if include_info:
+        info_targets = [(field, info_lists[field].append) for field in info_fields]
 
     with pysam.VariantFile(VCF_PATH) as vcf:
         it = iter(vcf)
@@ -47,42 +64,40 @@ def benchmark():
             np_pos = np.empty(CHUNK_SIZE, dtype=np.int64)
             np_qual = np.empty(CHUNK_SIZE, dtype=np.float64)
 
-            # Python lists for string columns
-            chroms = []
-            ids = []
-            refs = []
-            alts = []
-            filters = []
-            info_lists = {}
-            for field in info_fields:
-                info_lists[field] = []
+            chroms.clear()
+            ids.clear()
+            refs.clear()
+            alts.clear()
+            filters.clear()
+            if include_info:
+                for field in info_fields:
+                    info_lists[field].clear()
 
             count = 0
             for rec in it:
                 i = count
-                chroms.append(rec.chrom)
+                chroms_append(rec.chrom)
                 np_pos[i] = rec.pos
-                ids.append(rec.id)
-                refs.append(rec.ref)
-                alts.append(
-                    ",".join(str(a) for a in rec.alts) if rec.alts else None
-                )
-                np_qual[i] = rec.qual if rec.qual is not None else float("nan")
-                filters.append(
-                    ",".join(rec.filter.keys()) if rec.filter else None
-                )
+                ids_append(rec.id)
+                refs_append(rec.ref)
+                rec_alts = rec.alts
+                if rec_alts:
+                    alts_append(",".join(str(a) for a in rec_alts))
+                else:
+                    alts_append(None)
+                rec_qual = rec.qual
+                np_qual[i] = rec_qual if rec_qual is not None else np.nan
+                rec_filter = rec.filter
+                filters_append(",".join(rec_filter.keys()) if rec_filter else None)
 
                 if include_info:
-                    for field in info_fields:
-                        try:
-                            val = rec.info[field]
-                            if isinstance(val, tuple):
-                                val = ",".join(str(v) for v in val)
-                            info_lists[field].append(
-                                str(val) if val is not None else None
-                            )
-                        except KeyError:
-                            info_lists[field].append(None)
+                    rec_info = rec.info
+                    for field, append_info in info_targets:
+                        val = rec_info.get(field)
+                        if isinstance(val, tuple):
+                            append_info(",".join(str(v) for v in val))
+                        else:
+                            append_info(str(val) if val is not None else None)
 
                 count += 1
                 if count >= CHUNK_SIZE:
@@ -108,7 +123,7 @@ def benchmark():
             batch = pa.RecordBatch.from_arrays(arrays, schema=schema)
             batches.append(batch)
 
-    table = pa.concat_tables([pa.Table.from_batches([b]) for b in batches])
+    table = pa.Table.from_batches(batches, schema=schema)
     df = pl.from_arrow(table)
     return (df.select(pl.len()).item(), df.columns)
 

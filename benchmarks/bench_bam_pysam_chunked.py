@@ -39,53 +39,71 @@ def benchmark():
     schema = pa.schema(fields)
 
     batches = []
+    query_names = []
+    ref_names = []
+    cigars = []
+    next_ref_names = []
+    sequences = []
+    qualities = []
+    tag_lists = {}
+    if include_tags:
+        tag_lists = {tag: [] for tag in BAM_TAGS}
+
+    query_names_append = query_names.append
+    ref_names_append = ref_names.append
+    cigars_append = cigars.append
+    next_ref_names_append = next_ref_names.append
+    sequences_append = sequences.append
+    qualities_append = qualities.append
+    tag_targets = []
+    if include_tags:
+        tag_targets = [(tag, tag_lists[tag].append) for tag in BAM_TAGS]
 
     with pysam.AlignmentFile(BAM_PATH, "rb") as bam:
         it = bam.fetch(until_eof=True)
         exhausted = False
 
         while not exhausted:
-            # --- pre-allocate numpy arrays for numeric columns ---
             np_flag = np.empty(CHUNK_SIZE, dtype=np.int32)
             np_ref_start = np.empty(CHUNK_SIZE, dtype=np.int64)
             np_mapq = np.empty(CHUNK_SIZE, dtype=np.int32)
             np_next_ref_start = np.empty(CHUNK_SIZE, dtype=np.int64)
             np_tlen = np.empty(CHUNK_SIZE, dtype=np.int64)
 
-            # --- python lists for variable-length columns ---
-            query_names = []
-            ref_names = []
-            cigars = []
-            next_ref_names = []
-            sequences = []
-            qualities = []
-            tag_lists = {}
+            query_names.clear()
+            ref_names.clear()
+            cigars.clear()
+            next_ref_names.clear()
+            sequences.clear()
+            qualities.clear()
             if include_tags:
                 for tag in BAM_TAGS:
-                    tag_lists[tag] = []
+                    tag_lists[tag].clear()
 
             count = 0
             for read in it:
                 i = count
-                query_names.append(read.query_name)
+                query_names_append(read.query_name)
                 np_flag[i] = read.flag
-                ref_names.append(read.reference_name)
+                ref_names_append(read.reference_name)
                 np_ref_start[i] = read.reference_start
                 np_mapq[i] = read.mapping_quality
-                cigars.append(read.cigarstring)
-                next_ref_names.append(read.next_reference_name)
+                cigars_append(read.cigarstring)
+                next_ref_names_append(read.next_reference_name)
                 np_next_ref_start[i] = read.next_reference_start
                 np_tlen[i] = read.template_length
-                sequences.append(read.query_sequence)
+                sequences_append(read.query_sequence)
                 quals = read.query_qualities
-                qualities.append(quals.tolist() if quals is not None else None)
+                if quals is None:
+                    qualities_append(None)
+                else:
+                    qualities_append(quals.tolist())
 
                 if include_tags:
-                    for tag in BAM_TAGS:
-                        try:
-                            tag_lists[tag].append(str(read.get_tag(tag)))
-                        except KeyError:
-                            tag_lists[tag].append(None)
+                    read_tags = dict(read.tags)
+                    for tag, append_tag in tag_targets:
+                        value = read_tags.get(tag)
+                        append_tag(str(value) if value is not None else None)
 
                 count += 1
                 if count >= CHUNK_SIZE:
@@ -118,7 +136,7 @@ def benchmark():
             batch = pa.RecordBatch.from_arrays(arrays, schema=schema)
             batches.append(batch)
 
-    table = pa.concat_tables([pa.Table.from_batches([b]) for b in batches])
+    table = pa.Table.from_batches(batches, schema=schema)
     df = pl.from_arrow(table)
     return (df.select(pl.len()).item(), df.columns)
 
