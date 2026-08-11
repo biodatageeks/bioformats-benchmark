@@ -18,11 +18,15 @@ else:
     schema_names = pb.scan_bam(BAM_PATH).collect_schema().names()
 
 
+# Use the streaming engine: LazyFrame.count() on the default in-memory engine
+# materializes every column of the whole file before aggregating (~GBs); the
+# streaming engine pushes the count down and frees batches as they flow, so peak
+# memory reflects the reader, not the materialized dataset.
 def benchmark():
     if BENCH_VARIANT == "with_tags":
-        return pb.scan_bam(BAM_PATH, tag_fields=BAM_TAGS).count().collect().item(0, 0)
+        return pb.scan_bam(BAM_PATH, tag_fields=BAM_TAGS).count().collect(engine="streaming").item(0, 0)
     else:
-        return pb.scan_bam(BAM_PATH).count().collect().item(0, 0)
+        return pb.scan_bam(BAM_PATH).count().collect(engine="streaming").item(0, 0)
 
 
 run_benchmark(benchmark, f"polars_bio_bam_{BENCH_VARIANT}_t{THREAD_NUM}", columns=schema_names)

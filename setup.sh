@@ -4,19 +4,21 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-POLARS_BIO_WHEEL="/Users/mwiewior/research/git/polars-bio/target/wheels/polars_bio-0.22.0-cp39-abi3-macosx_11_0_arm64.whl"
-
-# === Main venv (pre-release polars-bio + all deps) ===
+# === Main venv (current polars-bio + pinned deps, 2026-07 benchmark run) ===
 
 echo "=== Creating main venv (.venv) with Python 3.12 ==="
 uv venv --python 3.12 .venv
 
-echo "=== Installing pre-release polars-bio from local wheel ==="
-uv pip install --python .venv/bin/python "$POLARS_BIO_WHEEL"
-
-echo "=== Installing remaining dependencies ==="
+echo "=== Installing benchmark dependencies (pinned to the 2026-07 run) ==="
+# NOTE: the allocator-regression fix (mimalloc default, biodatageeks/polars-bio#402)
+# landed after 0.32.0. To reproduce the 2026-07 BAM/VCF numbers, build polars-bio
+# from source with that fix (or use the next release once published) rather than the
+# PyPI 0.32.0 wheel below.
 uv pip install --python .venv/bin/python \
-    pysam oxbow biobear polars pyarrow psutil matplotlib notebook
+    polars-bio==0.32.0 \
+    pysam==0.24.0 oxbow==0.8.1 biobear==0.23.7 \
+    polars==1.42.1 pyarrow==24.0.0 \
+    psutil matplotlib notebook
 
 echo "=== Main venv packages ==="
 uv pip list --python .venv/bin/python
