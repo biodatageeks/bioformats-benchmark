@@ -1,0 +1,118 @@
+# BCF dosage benchmark: polars-bio vs snputils
+
+Run date: 2026-08-11
+
+This benchmark compares the exact genotype-dosage workload from the snputils
+BCF benchmark with a lazy/streaming polars-bio implementation. Both readers
+consume the same BCF, select only `FORMAT/GT`, convert every call to biallelic
+ALT dosage, and retain the complete materialized output.
+
+The snputils call is unchanged from the pinned upstream
+[`benchmark/read_bcf.py`](https://github.com/AI-sandbox/snputils/blob/bdb1a56b52a6b16210d60e347d33d023dc98352f/benchmark/read_bcf.py):
+`snputils.read_bcf(path, fields=["GT"], genotype_mode="dosage",
+chromosome_ploidy="autosomal").genotypes`.
+
+## Result
+
+| Reader | Output representation | Median time | Mean ± SD | Median peak RSS | Mean ± SD |
+|---|---|---:|---:|---:|---:|
+| polars-bio | 993,881-row `List(Int8)` column, list width 2,548 | 227.395 s | 227.605 ± 1.214 s | 2,785.5 MB | 2,790.5 ± 9.5 MB |
+| snputils | 993,881 × 2,548 NumPy `int8` matrix | 8.317 s | 8.329 ± 0.029 s | 10,068.2 MB | 10,067.5 ± 1.6 MB |
+
+For this full-dosage materialization workload, snputils is **27.341× faster**.
+polars-bio uses **72.3% less peak RSS**, or **3.615× lower peak RSS**. This is
+a workload-specific tradeoff: it does not imply the same relationship for
+metadata-only scans, projections without genotypes, filtered queries, or other
+BCF schemas.
+
+The likely reason is architectural. snputils uses a specialized bulk BCF path
+and vectorized NumPy dosage decode after eagerly decompressing the file. That
+is extremely fast but keeps the decompressed input and output buffers resident.
+polars-bio incrementally decodes BCF through DataFusion, projection-pushes GT,
+maps nested genotype strings to dosage in Polars, and streams into the final
+list column. The generic string-to-dosage route costs substantially more CPU,
+while incremental execution limits peak memory.
+
+## Correctness and comparability
+
+The timed outputs use different physical schemas but identical logical cells:
+
+- polars-bio: one `List(Int8)` dosage value per variant, with 2,548 elements;
+- snputils: one NumPy `int8` matrix with shape `(993881, 2548)`.
+
+Before timing, the full equivalence gate compared:
+
+- all 993,881 rows by chromosome, 1-based position, ID, REF, and ALT;
+- all 2,548 sample IDs in exact order;
+- all 2,532,408,788 dosage cells in bounded row chunks.
+
+The comparison passed. Evidence hashes from the verified output are:
+
+| Evidence | SHA-256 |
+|---|---|
+| Row-major dosage bytes | `a0a2fb3b997e7ac5b7abebee5d85d437098c25fd4cc0178eb88830547f0062cb` |
+| Position array bytes | `db55a6b0aac688960a47c2c4b180b4d03c897134f4807fe8984750509979e50d` |
+
+The polars-bio mapping is strict (`0|0 → 0`, `0|1`/`1|0 → 1`, `1|1 → 2`,
+missing → `-1`), so an unexpected genotype encoding fails rather than silently
+changing the workload.
+
+## Raw runs
+
+Each measurement ran in a fresh child process. The full equivalence scan ran
+first, so these are warm-cache measurements. Execution order alternated by
+round: polars-bio/snputils, snputils/polars-bio, polars-bio/snputils.
+
+| Round | Order | Reader | Time | Peak RSS |
+|---:|---:|---|---:|---:|
+| 1 | 1 | polars-bio | 227.395 s | 2,785.5 MB |
+| 1 | 2 | snputils | 8.362 s | 10,068.2 MB |
+| 2 | 1 | snputils | 8.317 s | 10,065.7 MB |
+| 2 | 2 | polars-bio | 228.911 s | 2,784.5 MB |
+| 3 | 1 | polars-bio | 226.510 s | 2,801.5 MB |
+| 3 | 2 | snputils | 8.308 s | 10,068.6 MB |
+
+Wall time includes file reading, decoding, dosage conversion, and complete
+materialization; module imports and one-time reader configuration are outside
+the timer for both readers. Peak RSS is process `ru_maxrss`, measured after the
+result is retained. DataFusion, Polars, Rayon, OpenMP, BLAS, and related thread
+controls were all set to one thread.
+
+## Inputs and exact revisions
+
+| Item | Value |
+|---|---|
+| BCF | `ALL.chr22.phased.bcf`, 135,128,073 bytes (128.87 MiB) |
+| BCF SHA-256 | `b61c6aaa746416306a01b3aa92db23b5e1f4faf7296a114ed32d8e64a400a250` |
+| Source VCF SHA-256 | `b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c` |
+| datafusion-bio-formats PR head | [`30c6188`](https://github.com/biodatageeks/datafusion-bio-formats/commit/30c618855be0692f8403166f6f3733764ed3da1f) |
+| polars-bio feature branch commit | [`08172c2`](https://github.com/biodatageeks/polars-bio/commit/08172c2e6b3ef7cc855069c07297102e6040c481) |
+| snputils commit | [`bdb1a56`](https://github.com/AI-sandbox/snputils/commit/bdb1a56b52a6b16210d60e347d33d023dc98352f) |
+| polars-bio | 0.33.1 |
+| snputils | 1.1.1.dev17+gbdb1a56b5 |
+| Python / NumPy | 3.12.9 / 2.5.2 |
+| Polars / PyArrow | 1.42.1 / 24.0.0 |
+| Threads | 1 |
+| Host | MacBook Pro, Apple M3 Max (16 CPU cores), 64 GiB RAM, macOS 15.6 arm64 |
+
+## Reproduce
+
+```bash
+git clone https://github.com/biodatageeks/polars-bio.git
+git -C polars-bio checkout 08172c2e6b3ef7cc855069c07297102e6040c481
+
+git clone https://github.com/biodatageeks/bioformats-benchmark.git
+cd bioformats-benchmark
+git checkout feat/bcf-format
+
+POLARS_BIO_SOURCE="$(cd ../polars-bio && pwd)" bash setup.sh
+
+POLARS_BIO_REF=08172c2e6b3ef7cc855069c07297102e6040c481 \
+DATAFUSION_BIO_FORMATS_REF=30c618855be0692f8403166f6f3733764ed3da1f \
+.venv/bin/python run_bcf_benchmarks.py --runs 3 --threads 1
+```
+
+The orchestrator refuses unexpected fixture dimensions, runs the full
+equivalence gate by default, alternates reader order, records exact package and
+hardware metadata, and writes the machine-readable payload to
+`results/bcf_benchmark_results.json`.

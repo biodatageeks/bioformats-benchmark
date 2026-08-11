@@ -1,6 +1,6 @@
 # bioformats-benchmark
 
-Benchmark comparing BAM, VCF, and FASTQ file reading performance across Python bioinformatics libraries, measuring execution time and peak memory usage.
+Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Python bioinformatics libraries, measuring execution time and peak memory usage.
 
 ## Libraries Tested
 
@@ -11,7 +11,8 @@ Benchmark comparing BAM, VCF, and FASTQ file reading performance across Python b
 | **oxbow** | lazy | BAM, VCF, FASTQ |
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
-| **polars-bio** | lazy | BAM, VCF, FASTQ |
+| **polars-bio** | lazy/streaming | BAM, VCF, BCF, FASTQ |
+| **snputils** | eager | BCF |
 
 ## Test Variants
 
@@ -21,6 +22,7 @@ Benchmark comparing BAM, VCF, and FASTQ file reading performance across Python b
 | BAM | `without_tags` | Core SAM fields only |
 | VCF | `with_info` | All INFO fields parsed |
 | VCF | `without_info` | Fixed fields + FORMAT only (INFO excluded) |
+| BCF | `dosage` | All phased GT calls converted to an `Int8` ALT-dosage matrix |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
 
 ## Data Requirements
@@ -29,7 +31,14 @@ Benchmark comparing BAM, VCF, and FASTQ file reading performance across Python b
 |--------|------|--------|
 | BAM | `NA12878.proper.wes.md.chr1.bam` (~2 GB) | Extract from full WES BAM with `samtools view -b ... chr1` |
 | VCF | `homo_sapiens-chr1.vcf.gz` | Ensembl (downloaded by `setup.sh`) |
+| BCF | `ALL.chr22.phased.bcf` (~129 MiB) | IGSR/1000 Genomes GRCh38 phased chromosome 22 callset, converted by `setup.sh` |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
+
+The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
+dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
+verifies the source VCF SHA-256
+(`b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c`),
+and each run records the generated BCF SHA-256 in its result metadata.
 
 ## Quick Start
 
@@ -48,25 +57,58 @@ python run_benchmarks.py --format bam
 python run_benchmarks.py --format vcf
 python run_benchmarks.py --format fastq
 
-# 5. Run a single benchmark standalone
+# 5. Verify and benchmark BCF in isolated child processes (3 runs each)
+python run_bcf_benchmarks.py
+
+# 6. Run a single benchmark standalone
 DATA_PATH=/path/to/file.bam BENCH_VARIANT=with_tags python -m benchmarks.bench_bam_pysam
 
-# 6. Generate report
+# 7. Generate report
 python generate_report.py
 ```
 
+To benchmark an unreleased polars-bio checkout, point setup at the checkout so
+`maturin develop --release` installs it into the benchmark environment:
+
+```bash
+POLARS_BIO_SOURCE=/path/to/polars-bio bash setup.sh
+source .venv/bin/activate
+POLARS_BIO_REF=<polars-bio-commit> \
+DATAFUSION_BIO_FORMATS_REF=<formats-pr-commit> \
+python run_bcf_benchmarks.py
+```
+
+### BCF fairness and correctness
+
+Both BCF runners read the same file, project only `FORMAT/GT`, use one thread by
+default, and materialize the same ALT-dosage values. `snputils` returns its
+native 2-D NumPy `int8` matrix. `polars-bio` keeps the source lazy, projection
+pushes `GT`, converts the nested phased strings to `Int8` dosage, and collects
+with Polars' streaming engine; its equivalent output is a list column with one
+list per variant.
+
+Before timing, `benchmarks.verify_bcf_equivalence` compares all variant keys,
+the complete sample order, and all 2.53 billion dosage values in bounded row
+chunks. Timing and peak RSS then run in fresh child processes. Reader order is
+reversed on alternating rounds to reduce cache/order bias.
+
+See [BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head correctness proof,
+raw measurements, timing and memory comparison, and reproduction metadata.
+
 ## Configuration
 
-- **Data file paths**: Defaults in `benchmarks/common.py` and `run_benchmarks.py`, overridable via `DATA_PATH` env var
-- **Benchmark variant**: Controlled by `BENCH_VARIANT` env var (`with_tags`, `without_tags`, `with_info`, `without_info`, `all_columns`)
+- **Data file paths**: Defaults in `benchmarks/common.py`; BCF is overridable with `BCF_PATH`
+- **Benchmark variant**: Controlled by `BENCH_VARIANT` (`dosage` for BCF)
 - **Number of runs**: Set in `run_benchmarks.py` (`NUM_RUNS` constant, default: 2)
-- **Thread control**: All benchmarks run single-threaded via env vars set in `benchmarks/common.py`
+- **BCF runs/threads**: `run_bcf_benchmarks.py --runs 3 --threads 1`
 
 ## Output
 
 Results are written to:
 - `results/benchmark_results.json` — raw benchmark data (grouped by format and variant)
+- `results/bcf_benchmark_results.json` — BCF raw runs, environment metadata, and summary statistics
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
+- `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 
 ## Project Structure
 
@@ -85,6 +127,10 @@ benchmarks/
   bench_vcf_biobear_eager.py
   bench_vcf_polars_bio_eager.py
   bench_vcf_polars_bio_lazy.py
+  bcf_common.py                  # Shared, semantically matched dosage workload
+  bench_bcf_polars_bio.py        # Lazy/streaming BCF -> dosage lists
+  bench_bcf_snputils.py           # BCF -> dosage ndarray
+  verify_bcf_equivalence.py       # Full row/sample/genotype comparison
   bench_fastq_pysam.py          # FASTQ benchmarks (6 files)
   bench_fastq_oxbow_eager.py
   bench_fastq_oxbow_lazy.py
@@ -92,6 +138,7 @@ benchmarks/
   bench_fastq_polars_bio_eager.py
   bench_fastq_polars_bio_lazy.py
 run_benchmarks.py               # Multi-format orchestrator
+run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
 run_thread_benchmarks.py        # polars-bio thread scaling (BAM)
 generate_report.py              # Report generator
 setup.sh                        # Environment + data setup
