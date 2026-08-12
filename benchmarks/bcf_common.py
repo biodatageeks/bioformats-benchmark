@@ -9,6 +9,7 @@ EXPECTED_ROWS = int(os.environ.get("BCF_EXPECTED_ROWS", "993881"))
 EXPECTED_SAMPLES = int(os.environ.get("BCF_EXPECTED_SAMPLES", "2548"))
 CORE_COLUMNS = ["chrom", "start", "id", "ref", "alt"]
 
+
 def validate_variant() -> None:
     if BCF_VARIANT != "dosage":
         raise ValueError(
