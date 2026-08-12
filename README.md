@@ -7,12 +7,14 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | Library | Mode | Formats |
 |---------|------|---------|
 | **pysam** | eager | BAM, VCF, FASTQ |
+| **PyVCF3** | eager | VCF |
+| **cyvcf2** | eager | VCF, BCF |
 | **oxbow** | eager | BAM, VCF, FASTQ |
-| **oxbow** | lazy | BAM, VCF, FASTQ |
+| **oxbow** | lazy/streaming | BAM, VCF, BCF, FASTQ |
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | lazy/streaming | BAM, VCF, BCF, FASTQ |
-| **snputils** | eager | BCF |
+| **snputils** | eager | VCF, BCF |
 
 ## Test Variants
 
@@ -23,6 +25,7 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | VCF | `with_info` | All INFO fields parsed |
 | VCF | `without_info` | Fixed fields + FORMAT only (INFO excluded) |
 | BCF | `dosage` | All phased GT calls converted to an `Int8` ALT-dosage matrix |
+| VCF/BCF | `genotype-matrix` | Identical 25,000 x 2,548 row-major `Int8` ALT-dosage matrix |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
 
 ## Data Requirements
@@ -39,6 +42,11 @@ dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
 verifies the source VCF SHA-256
 (`b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c`),
 and each run records the generated BCF SHA-256 in its result metadata.
+
+The cross-reader VCF/BCF matrix uses rows in
+`chr22:10516173-16717478` from that same callset: exactly 25,000 variants,
+2,548 samples, and 63,700,000 dosage cells. `setup.sh` derives both indexed
+formats from the full BCF so every reader sees the same ordered records.
 
 ## Quick Start
 
@@ -66,7 +74,10 @@ done
 # 6. Run a single benchmark standalone
 DATA_PATH=/path/to/file.bam BENCH_VARIANT=with_tags python -m benchmarks.bench_bam_pysam
 
-# 7. Generate report
+# 7. Compare pysam, PyVCF3, cyvcf2, Oxbow, polars-bio, and snputils at t=1
+python run_genotype_matrix_benchmarks.py --runs 3
+
+# 8. Generate report
 python generate_report.py
 ```
 
@@ -98,6 +109,18 @@ the complete sample order, and all 2.53 billion dosage values in bounded row
 chunks. Timing and peak RSS then run in fresh child processes. Reader order is
 reversed on alternating rounds to reduce cache/order bias.
 
+### Cross-reader VCF/BCF fairness
+
+`run_genotype_matrix_benchmarks.py` uses fresh child processes and caps all
+known native thread pools at one thread. Parsing, GT decoding, biallelic
+ALT-dosage conversion, and final row-major NumPy `int8` materialization are
+timed. Imports are excluded. Every completed run must match the same position,
+sample-order, and all-cell SHA-256 values across both file formats before a
+result is accepted. Peak RSS includes the retained comparable matrix. Oxbow
+uses bounded Arrow record batches; polars-bio uses lazy scans and streaming
+collection. PyVCF3's BCF cell is recorded as unsupported because the library
+only reads text VCF.
+
 See [BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head correctness proof,
 raw measurements, timing and memory comparison, and reproduction metadata.
 
@@ -115,6 +138,7 @@ raw measurements, timing and memory comparison, and reproduction metadata.
 Results are written to:
 - `results/benchmark_results.json` — raw benchmark data (grouped by format and variant)
 - `results/bcf_benchmark_t{1,2,4,8}.json` — BCF raw runs, environment metadata, and summary statistics for the scaling sweep
+- `results/genotype_reader_benchmark.json` — t=1 VCF/BCF reader matrix with raw timing/RSS, medians, and equivalence hashes
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 
@@ -139,6 +163,7 @@ benchmarks/
   bench_bcf_polars_bio.py        # Lazy/streaming BCF -> dosage lists
   bench_bcf_snputils.py           # BCF -> dosage ndarray
   verify_bcf_equivalence.py       # Full row/sample/genotype comparison
+  genotype_matrix.py              # One fresh-process VCF/BCF reader workload
   bench_fastq_pysam.py          # FASTQ benchmarks (6 files)
   bench_fastq_oxbow_eager.py
   bench_fastq_oxbow_lazy.py
@@ -147,6 +172,7 @@ benchmarks/
   bench_fastq_polars_bio_lazy.py
 run_benchmarks.py               # Multi-format orchestrator
 run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
+run_genotype_matrix_benchmarks.py # pysam/PyVCF3/cyvcf2/Oxbow/polars/snputils
 run_thread_benchmarks.py        # polars-bio thread scaling (BAM)
 generate_report.py              # Report generator
 setup.sh                        # Environment + data setup

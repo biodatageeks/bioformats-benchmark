@@ -17,7 +17,7 @@ echo "=== Installing benchmark dependencies (pinned to the 2026-07 run) ==="
 uv pip install --python .venv/bin/python \
     polars-bio==0.32.0 \
     "snputils @ git+https://github.com/AI-sandbox/snputils.git@bdb1a56b52a6b16210d60e347d33d023dc98352f" \
-    pysam==0.24.0 oxbow==0.8.1 biobear==0.23.7 \
+    pysam==0.24.0 PyVCF3==1.0.4 cyvcf2==0.31.4 oxbow==0.8.1 biobear==0.23.7 \
     polars==1.42.1 pyarrow==24.0.0 \
     psutil matplotlib notebook maturin
 
@@ -108,6 +108,35 @@ if [ ! -f "${BCF_FILE}.csi" ]; then
     bcftools index "$BCF_FILE"
 fi
 
+# Reader matrix: a deterministic 25,000-variant, 2,548-sample slice. Keeping
+# the wide cohort while bounding the row count makes the pure-Python readers
+# feasible and preserves 63.7 million directly comparable GT dosage cells.
+GENOTYPE_REGION="chr22:10516173-16717478"
+GENOTYPE_VCF_FILE="${BCF_DIR}/ALL.chr22.phased.first-25000.vcf.gz"
+GENOTYPE_BCF_FILE="${BCF_DIR}/ALL.chr22.phased.first-25000.bcf"
+if [ ! -f "$GENOTYPE_VCF_FILE" ]; then
+    bcftools view --threads 1 -r "$GENOTYPE_REGION" -Oz \
+        -o "$GENOTYPE_VCF_FILE" "$BCF_FILE"
+fi
+if [ ! -f "${GENOTYPE_VCF_FILE}.tbi" ]; then
+    bcftools index --threads 1 -t "$GENOTYPE_VCF_FILE"
+fi
+if [ ! -f "$GENOTYPE_BCF_FILE" ]; then
+    bcftools view --threads 1 -r "$GENOTYPE_REGION" -Ob \
+        -o "$GENOTYPE_BCF_FILE" "$BCF_FILE"
+fi
+if [ ! -f "${GENOTYPE_BCF_FILE}.csi" ]; then
+    bcftools index --threads 1 "$GENOTYPE_BCF_FILE"
+fi
+for genotype_file in "$GENOTYPE_VCF_FILE" "$GENOTYPE_BCF_FILE"; do
+    genotype_rows="$(bcftools index -n "$genotype_file")"
+    genotype_samples="$(bcftools query -l "$genotype_file" | wc -l | tr -d ' ')"
+    if [ "$genotype_rows" != "25000" ] || [ "$genotype_samples" != "2548" ]; then
+        echo "Unexpected reader-matrix shape for $genotype_file: ${genotype_rows}x${genotype_samples}" >&2
+        exit 1
+    fi
+done
+
 # FASTQ: EBI SRA
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"
 FASTQ_FILE="${FASTQ_DIR}/ERR194158.fastq.gz"
@@ -136,4 +165,6 @@ echo "Data files:"
 echo "  BAM:   /Users/mwiewior/research/data/WES/NA12878.proper.wes.md.chr1.bam"
 echo "  VCF:   $VCF_FILE"
 echo "  BCF:   $BCF_FILE"
+echo "  Reader-matrix VCF: $GENOTYPE_VCF_FILE"
+echo "  Reader-matrix BCF: $GENOTYPE_BCF_FILE"
 echo "  FASTQ: $FASTQ_FILE"
