@@ -126,8 +126,10 @@ uses bounded Arrow record batches; polars-bio uses lazy scans and streaming
 collection. PyVCF3's BCF cell is recorded as unsupported because the library
 only reads text VCF.
 
-See [BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head correctness proof,
-raw measurements, timing and memory comparison, and reproduction metadata.
+See [GENOTYPE_READER_BENCHMARK.md](GENOTYPE_READER_BENCHMARK.md) for the
+output-equivalent pysam/PyVCF3/cyvcf2/Oxbow/polars-bio/snputils comparison, and
+[BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head full-cohort scaling and
+correctness proof.
 
 ## Configuration
 
@@ -146,6 +148,7 @@ Results are written to:
 - `results/genotype_reader_benchmark.json` — t=1 VCF/BCF reader matrix with raw timing/RSS, medians, and equivalence hashes
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
+- `GENOTYPE_READER_BENCHMARK.md` — tracked output-equivalent t=1 VCF/BCF reader comparison
 
 ## Project Structure
 
