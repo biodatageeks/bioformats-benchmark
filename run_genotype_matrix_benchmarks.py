@@ -257,7 +257,7 @@ def main() -> None:
             "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
             "polars_bio_build_profile": os.environ.get("POLARS_BIO_BUILD_PROFILE"),
             "polars_bio_rustflags": os.environ.get("POLARS_BIO_RUSTFLAGS"),
-            "timing_scope": "parse, GT decode, ALT-dosage conversion, and row-major int8 materialization; imports excluded",
+            "timing_scope": "source open, header/schema discovery, parse, GT decode, ALT-dosage conversion, and row-major int8 materialization; imports and thread-pool configuration excluded",
             "memory_metric": "fresh-process peak RSS including retained comparable output",
             "cache_state": "warm filesystem cache; deterministic rotating reader order",
         },

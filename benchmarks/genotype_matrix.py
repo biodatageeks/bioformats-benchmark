@@ -1,9 +1,10 @@
 """Fresh-process VCF/BCF GT-to-dosage benchmark for one reader.
 
 Every supported reader materializes the same row-major ``int8`` NumPy matrix,
-1-based variant positions, and input sample order. Imports and reader-specific
-configuration happen before the timed region; parsing, decoding, dosage
-conversion, and final materialization happen inside it.
+1-based variant positions, and input sample order. Imports and thread-pool
+configuration happen before the timed region; source opening, header/schema
+discovery, parsing, decoding, dosage conversion, and final materialization
+happen inside it.
 """
 
 from __future__ import annotations

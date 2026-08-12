@@ -116,9 +116,10 @@ reversed on alternating rounds to reduce cache/order bias.
 ### Cross-reader VCF/BCF fairness
 
 `run_genotype_matrix_benchmarks.py` uses fresh child processes and caps all
-known native thread pools at one thread. Parsing, GT decoding, biallelic
-ALT-dosage conversion, and final row-major NumPy `int8` materialization are
-timed. Imports are excluded. Every completed run must match the same position,
+known native thread pools at one thread. Source opening, header/schema
+discovery, parsing, GT decoding, biallelic ALT-dosage conversion, and final
+row-major NumPy `int8` materialization are timed. Imports and thread-pool
+configuration are excluded. Every completed run must match the same position,
 sample-order, and all-cell SHA-256 values across both file formats before a
 result is accepted. Peak RSS includes the retained comparable matrix. Oxbow
 uses bounded Arrow record batches; polars-bio uses lazy scans and streaming
