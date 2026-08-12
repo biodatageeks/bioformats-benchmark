@@ -16,11 +16,11 @@ chromosome_ploidy="autosomal").genotypes`.
 
 | Reader | Output representation | Median time | Mean ± SD | Median peak RSS | Mean ± SD |
 |---|---|---:|---:|---:|---:|
-| polars-bio | 993,881-row `List(Int8)` column, list width 2,548 | 5.192 s | 5.189 ± 0.013 s | 2,645.1 MB | 2,645.1 ± 0.6 MB |
-| snputils | 993,881 × 2,548 NumPy `int8` matrix | 8.698 s | 8.708 ± 0.042 s | 10,068.5 MB | 10,068.6 ± 0.4 MB |
+| polars-bio | 993,881-row `List(Int8)` column, list width 2,548 | 5.648 s | 5.688 ± 0.295 s | 2,650.4 MB | 2,649.7 ± 1.5 MB |
+| snputils | 993,881 × 2,548 NumPy `int8` matrix | 10.311 s | 10.645 ± 0.898 s | 10,071.1 MB | 10,132.0 ± 105.7 MB |
 
-For this full-dosage materialization workload, polars-bio is **1.675× faster**
-(**40.3% less wall time**) and uses **73.7% less peak RSS**, or **3.806× lower
+For this full-dosage materialization workload, polars-bio is **1.826× faster**
+(**45.2% less wall time**) and uses **73.7% less peak RSS**, or **3.800× lower
 peak RSS**. These results apply to the exact full-cohort dosage workload; they
 do not imply the same ratio for metadata-only scans, sparse samples, filtered
 queries, or other BCF schemas.
@@ -69,12 +69,12 @@ round: polars-bio/snputils, snputils/polars-bio, polars-bio/snputils.
 
 | Round | Order | Reader | Time | Peak RSS |
 |---:|---:|---|---:|---:|
-| 1 | 1 | polars-bio | 5.192 s | 2,645.1 MB |
-| 1 | 2 | snputils | 8.672 s | 10,069.0 MB |
-| 2 | 1 | snputils | 8.698 s | 10,068.2 MB |
-| 2 | 2 | polars-bio | 5.200 s | 2,645.7 MB |
-| 3 | 1 | polars-bio | 5.175 s | 2,644.6 MB |
-| 3 | 2 | snputils | 8.755 s | 10,068.5 MB |
+| 1 | 1 | polars-bio | 6.001 s | 2,650.4 MB |
+| 1 | 2 | snputils | 10.311 s | 10,071.1 MB |
+| 2 | 1 | snputils | 9.961 s | 10,070.9 MB |
+| 2 | 2 | polars-bio | 5.648 s | 2,650.7 MB |
+| 3 | 1 | polars-bio | 5.415 s | 2,648.0 MB |
+| 3 | 2 | snputils | 11.662 s | 10,254.1 MB |
 
 Wall time includes file reading, decoding, dosage conversion, and complete
 materialization; module imports and one-time reader configuration are outside
@@ -95,8 +95,8 @@ and full flags are stored in the machine-readable result metadata.
 | BCF | `ALL.chr22.phased.bcf`, 135,128,073 bytes (128.87 MiB) |
 | BCF SHA-256 | `b61c6aaa746416306a01b3aa92db23b5e1f4faf7296a114ed32d8e64a400a250` |
 | Source VCF SHA-256 | `b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c` |
-| datafusion-bio-formats PR head | [`ce9cbc8`](https://github.com/biodatageeks/datafusion-bio-formats/commit/ce9cbc824a2695af1b2256d538f9ad710e04eeff) |
-| polars-bio feature branch commit | [`5f7e336`](https://github.com/biodatageeks/polars-bio/commit/5f7e336730b5f82e6427a7155f50e4b5d65e5bc9) |
+| datafusion-bio-formats PR head | [`a4ebbe8`](https://github.com/biodatageeks/datafusion-bio-formats/commit/a4ebbe8c10bf75494faac0cdd2fdcee8b417a8a5) |
+| polars-bio feature branch commit | [`d51a915`](https://github.com/biodatageeks/polars-bio/commit/d51a9158b3c09c47a6eb011ed6564311fa6bf94e) |
 | snputils commit | [`bdb1a56`](https://github.com/AI-sandbox/snputils/commit/bdb1a56b52a6b16210d60e347d33d023dc98352f) |
 | polars-bio | 0.33.1 |
 | snputils | 1.1.1.dev17+gbdb1a56b5 |
@@ -109,7 +109,7 @@ and full flags are stored in the machine-readable result metadata.
 
 ```bash
 git clone https://github.com/biodatageeks/polars-bio.git
-git -C polars-bio checkout 5f7e336730b5f82e6427a7155f50e4b5d65e5bc9
+git -C polars-bio checkout d51a9158b3c09c47a6eb011ed6564311fa6bf94e
 
 git clone https://github.com/biodatageeks/bioformats-benchmark.git
 cd bioformats-benchmark
@@ -119,8 +119,8 @@ POLARS_BIO_SOURCE="$(cd ../polars-bio && pwd)" \
 POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dynamic_lookup' \
 bash setup.sh
 
-POLARS_BIO_REF=5f7e336730b5f82e6427a7155f50e4b5d65e5bc9 \
-DATAFUSION_BIO_FORMATS_REF=ce9cbc824a2695af1b2256d538f9ad710e04eeff \
+POLARS_BIO_REF=d51a9158b3c09c47a6eb011ed6564311fa6bf94e \
+DATAFUSION_BIO_FORMATS_REF=a4ebbe8c10bf75494faac0cdd2fdcee8b417a8a5 \
 POLARS_BIO_BUILD_PROFILE=release \
 POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dynamic_lookup' \
 .venv/bin/python run_bcf_benchmarks.py --runs 3 --threads 1
