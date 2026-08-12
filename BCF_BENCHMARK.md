@@ -21,15 +21,20 @@ repeated single-threaded control measured under the same conditions.
 
 | `t` | polars-bio median | Scale-up vs `t=1` | Parallel efficiency | polars-bio peak RSS | snputils control | polars-bio vs snputils |
 |---:|---:|---:|---:|---:|---:|---:|
-| 1 | 4.837 s | 1.000× | 100.0% | 2,640.5 MB | 8.190 s / 10,068.2 MB | 1.693× faster |
-| 2 | 2.796 s | 1.730× | 86.5% | 2,643.9 MB | 8.159 s / 10,068.8 MB | 2.918× faster |
-| 4 | 1.552 s | 3.117× | 77.9% | 2,649.2 MB | 8.172 s / 10,066.9 MB | 5.265× faster |
-| 8 | 0.860 s | 5.624× | 70.3% | 2,658.8 MB | 8.165 s / 10,067.2 MB | 9.494× faster |
+| 1 | 5.248 s | 1.000× | 100.0% | 2,658.7 MB | 8.513 s / 10,067.4 MB | 1.622× faster |
+| 2 | 3.203 s | 1.638× | 81.9% | 2,663.2 MB | 8.461 s / 10,065.9 MB | 2.642× faster |
+| 4 | 1.727 s | 3.039× | 76.0% | 2,667.9 MB | 8.516 s / 10,067.7 MB | 4.931× faster |
+| 8 | 0.941 s | 5.577× | 69.7% | 2,677.7 MB | 8.568 s / 10,066.6 MB | 9.105× faster |
 
-At the apples-to-apples single-thread point, polars-bio is **1.693× faster**
-(**40.9% less wall time**) and uses **73.8% less peak RSS**. At `t=8`, it is
-**5.624× faster than its own `t=1` result** and **9.494× faster than the serial
-snputils control**, while retaining a **73.6% peak-RSS reduction**.
+At the apples-to-apples single-thread point, polars-bio is **1.622× faster**
+(**38.4% less wall time**) and uses **73.6% less peak RSS**. At `t=8`, it is
+**5.577× faster than its own `t=1` result** and **9.105× faster than the serial
+snputils control**, while retaining a **73.4% peak-RSS reduction**.
+
+The final reviewed head applies the shared 8 MB genotype-byte budget to direct
+dosage batches. That memory-safety cap makes the final numbers slightly slower
+than the pre-review curve while preventing a large-cohort/default-batch request
+from reserving unbounded dosage storage.
 
 These numbers apply to this full-cohort dosage workload. They do not imply the
 same ratios for metadata-only scans, sparse sample projections, filtered
@@ -38,7 +43,7 @@ queries, or other BCF schemas.
 ## Why parallel scaling initially appeared flat
 
 The fixture has `##contig=<ID=chr22>` without a declared length. PR head
-`36dad82` includes the fix for the prior behavior: the BCF CSI estimator could
+`5e47f85` includes the fix for the prior behavior: the BCF CSI estimator could
 split a contig only when that optional header length existed. The requested
 `t=2/4/8` values therefore all produced a single physical partition, even
 though the benchmark correctly set DataFusion target partitions.
@@ -92,18 +97,18 @@ warm-cache measurements. Reader order alternated each round.
 
 | `t` | Round | Order | polars-bio time / RSS | snputils time / RSS |
 |---:|---:|---|---:|---:|
-| 1 | 1 | polars-bio → snputils | 4.837 s / 2,640.0 MB | 8.190 s / 10,072.0 MB |
-| 1 | 2 | snputils → polars-bio | 4.823 s / 2,640.5 MB | 8.227 s / 10,068.2 MB |
-| 1 | 3 | polars-bio → snputils | 4.844 s / 2,641.0 MB | 8.174 s / 10,068.1 MB |
-| 2 | 1 | polars-bio → snputils | 2.796 s / 2,644.1 MB | 8.172 s / 10,068.8 MB |
-| 2 | 2 | snputils → polars-bio | 2.794 s / 2,643.2 MB | 8.157 s / 10,069.0 MB |
-| 2 | 3 | polars-bio → snputils | 2.814 s / 2,643.9 MB | 8.159 s / 10,068.2 MB |
-| 4 | 1 | polars-bio → snputils | 1.550 s / 2,649.2 MB | 8.148 s / 10,066.2 MB |
-| 4 | 2 | snputils → polars-bio | 1.552 s / 2,648.8 MB | 8.172 s / 10,069.0 MB |
-| 4 | 3 | polars-bio → snputils | 1.556 s / 2,650.4 MB | 8.289 s / 10,066.9 MB |
-| 8 | 1 | polars-bio → snputils | 0.867 s / 2,657.5 MB | 8.165 s / 10,069.2 MB |
-| 8 | 2 | snputils → polars-bio | 0.860 s / 2,659.1 MB | 8.162 s / 10,064.5 MB |
-| 8 | 3 | polars-bio → snputils | 0.852 s / 2,658.8 MB | 8.191 s / 10,067.2 MB |
+| 1 | 1 | polars-bio → snputils | 5.314 s / 2,660.9 MB | 8.592 s / 10,067.4 MB |
+| 1 | 2 | snputils → polars-bio | 5.248 s / 2,658.7 MB | 8.513 s / 10,065.9 MB |
+| 1 | 3 | polars-bio → snputils | 5.244 s / 2,658.2 MB | 8.414 s / 10,070.5 MB |
+| 2 | 1 | polars-bio → snputils | 3.198 s / 2,663.3 MB | 8.461 s / 10,066.3 MB |
+| 2 | 2 | snputils → polars-bio | 3.228 s / 2,662.1 MB | 8.445 s / 10,065.8 MB |
+| 2 | 3 | polars-bio → snputils | 3.203 s / 2,663.2 MB | 8.489 s / 10,065.9 MB |
+| 4 | 1 | polars-bio → snputils | 1.722 s / 2,668.4 MB | 8.489 s / 10,071.2 MB |
+| 4 | 2 | snputils → polars-bio | 1.745 s / 2,667.8 MB | 8.516 s / 10,067.7 MB |
+| 4 | 3 | polars-bio → snputils | 1.727 s / 2,667.9 MB | 8.529 s / 10,065.1 MB |
+| 8 | 1 | polars-bio → snputils | 0.941 s / 2,677.7 MB | 8.577 s / 10,067.0 MB |
+| 8 | 2 | snputils → polars-bio | 0.946 s / 2,676.6 MB | 8.568 s / 10,066.6 MB |
+| 8 | 3 | polars-bio → snputils | 0.929 s / 2,678.7 MB | 8.564 s / 10,065.5 MB |
 
 Wall time includes file reading, decoding, dosage conversion, null-to-sentinel
 normalization, and complete materialization; module imports and one-time reader
@@ -113,8 +118,9 @@ after retaining the result.
 polars-bio was built with `maturin develop --release --locked` and
 `RUSTFLAGS="-C target-cpu=native -C link-arg=-undefined -C
 link-arg=dynamic_lookup"`. The latter two flags provide macOS Python-extension
-linkage; `-C target-cpu=native` is the CPU optimization flag. The build profile
-and full flags are stored in every machine-readable result.
+linkage; `-C target-cpu=native` is the CPU optimization flag. Every
+machine-readable result records the release profile, native CPU flag, and exact
+source revisions.
 
 ## Inputs and exact revisions
 
@@ -123,8 +129,8 @@ and full flags are stored in every machine-readable result.
 | BCF | `ALL.chr22.phased.bcf`, 135,128,073 bytes (128.87 MiB) |
 | BCF SHA-256 | `b61c6aaa746416306a01b3aa92db23b5e1f4faf7296a114ed32d8e64a400a250` |
 | Source VCF SHA-256 | `b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c` |
-| datafusion-bio-formats PR head | [`36dad82`](https://github.com/biodatageeks/datafusion-bio-formats/commit/36dad82c09f7291c0147d8560117d8c242806f9b) |
-| polars-bio feature branch commit | [`dc4101f`](https://github.com/biodatageeks/polars-bio/commit/dc4101fb5ba9231d4d1ef57df16651db20c84e0e) |
+| datafusion-bio-formats PR head | [`5e47f85`](https://github.com/biodatageeks/datafusion-bio-formats/commit/5e47f8595037d6b03b784f8dec137d904cafae1d) |
+| polars-bio feature branch commit | [`03eae00`](https://github.com/biodatageeks/polars-bio/commit/03eae0069cd245498fa416b4f42c541421d0cacc) |
 | snputils commit | [`bdb1a56`](https://github.com/AI-sandbox/snputils/commit/bdb1a56b52a6b16210d60e347d33d023dc98352f) |
 | polars-bio / snputils | 0.33.1 / 1.1.1.dev17+gbdb1a56b5 |
 | Python / NumPy | 3.12.9 / 2.5.2 |
@@ -137,7 +143,7 @@ and full flags are stored in every machine-readable result.
 
 ```bash
 git clone https://github.com/biodatageeks/polars-bio.git
-git -C polars-bio checkout dc4101fb5ba9231d4d1ef57df16651db20c84e0e
+git -C polars-bio checkout 03eae0069cd245498fa416b4f42c541421d0cacc
 
 git clone https://github.com/biodatageeks/bioformats-benchmark.git
 cd bioformats-benchmark
@@ -148,8 +154,8 @@ POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dy
 bash setup.sh
 
 for t in 1 2 4 8; do
-  POLARS_BIO_REF=dc4101fb5ba9231d4d1ef57df16651db20c84e0e \
-  DATAFUSION_BIO_FORMATS_REF=36dad82c09f7291c0147d8560117d8c242806f9b \
+  POLARS_BIO_REF=03eae0069cd245498fa416b4f42c541421d0cacc \
+  DATAFUSION_BIO_FORMATS_REF=5e47f8595037d6b03b784f8dec137d904cafae1d \
   POLARS_BIO_BUILD_PROFILE=release \
   POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dynamic_lookup' \
   .venv/bin/python run_bcf_benchmarks.py \
