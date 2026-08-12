@@ -106,7 +106,15 @@ def compare_summaries(summary: dict[str, dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs", type=int, default=3)
-    parser.add_argument("--threads", type=int, default=1)
+    parser.add_argument(
+        "--threads",
+        type=int,
+        default=1,
+        help=(
+            "polars-bio DataFusion target partitions and thread caps; "
+            "the pinned snputils BCF reader remains serial"
+        ),
+    )
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--skip-verify", action="store_true")
     parser.add_argument("--output", default="results/bcf_benchmark_results.json")
@@ -163,6 +171,8 @@ def main() -> None:
         "file_size_bytes": bcf_path.stat().st_size,
         "file_sha256": file_sha256(bcf_path),
         "threads": args.threads,
+        "polars_bio_target_partitions": args.threads,
+        "snputils_bcf_parallelism": "serial; reader exposes no thread-count option",
         "python": platform.python_version(),
         "platform": platform.platform(),
         "machine": platform.machine(),

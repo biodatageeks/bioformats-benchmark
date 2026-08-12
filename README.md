@@ -58,7 +58,10 @@ python run_benchmarks.py --format vcf
 python run_benchmarks.py --format fastq
 
 # 5. Verify and benchmark BCF in isolated child processes (3 runs each)
-python run_bcf_benchmarks.py
+for t in 1 2 4 8; do
+  python run_bcf_benchmarks.py --threads "$t" \
+    --output "results/bcf_benchmark_t${t}.json"
+done
 
 # 6. Run a single benchmark standalone
 DATA_PATH=/path/to/file.bam BENCH_VARIANT=with_tags python -m benchmarks.bench_bam_pysam
@@ -81,12 +84,14 @@ python run_bcf_benchmarks.py
 
 ### BCF fairness and correctness
 
-Both BCF runners read the same file, project only `FORMAT/GT`, use one thread by
-default, and materialize the same ALT-dosage values. `snputils` returns its
-native 2-D NumPy `int8` matrix. `polars-bio` keeps the source lazy, projection
-pushes `GT`, directly decodes the BCF allele bytes into nullable Arrow `Int8`
-dosage, and collects with Polars' streaming engine; its equivalent output is a
-list column with one list per variant.
+Both BCF runners read the same file, project only `FORMAT/GT`, and materialize
+the same ALT-dosage values. `snputils` returns its native 2-D NumPy `int8`
+matrix and exposes no BCF reader thread-count option. `polars-bio` keeps the
+source lazy, projection-pushes `GT`, directly decodes the BCF allele bytes into
+nullable Arrow `Int8` dosage, and collects with Polars' streaming engine; its
+equivalent output is a list column with one list per variant. The tracked report
+includes a polars-bio `t=1,2,4,8` scaling sweep against the serial snputils
+control.
 
 Before timing, `benchmarks.verify_bcf_equivalence` compares all variant keys,
 the complete sample order, and all 2.53 billion dosage values in bounded row
@@ -101,13 +106,15 @@ raw measurements, timing and memory comparison, and reproduction metadata.
 - **Data file paths**: Defaults in `benchmarks/common.py`; BCF is overridable with `BCF_PATH`
 - **Benchmark variant**: Controlled by `BENCH_VARIANT` (`dosage` for BCF)
 - **Number of runs**: Set in `run_benchmarks.py` (`NUM_RUNS` constant, default: 2)
-- **BCF runs/threads**: `run_bcf_benchmarks.py --runs 3 --threads 1`
+- **BCF runs/partitions**: `run_bcf_benchmarks.py --runs 3 --threads 1`; the
+  thread value controls polars-bio target partitions and thread caps, while the
+  pinned snputils BCF reader remains serial
 
 ## Output
 
 Results are written to:
 - `results/benchmark_results.json` — raw benchmark data (grouped by format and variant)
-- `results/bcf_benchmark_results.json` — BCF raw runs, environment metadata, and summary statistics
+- `results/bcf_benchmark_t{1,2,4,8}.json` — BCF raw runs, environment metadata, and summary statistics for the scaling sweep
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 
