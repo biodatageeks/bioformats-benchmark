@@ -79,6 +79,10 @@ python run_genotype_matrix_benchmarks.py --runs 3
 
 # 8. Generate report
 python generate_report.py
+
+# 9. Generate publication figures for the genotype-reader comparison
+python generate_genotype_reader_figures.py \
+  --output-dir /path/to/polars-bio/docs/blog/posts/figures/vcf-bcf-readers
 ```
 
 To benchmark an unreleased polars-bio checkout, point setup at the checkout.
@@ -173,6 +177,7 @@ benchmarks/
 run_benchmarks.py               # Multi-format orchestrator
 run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
 run_genotype_matrix_benchmarks.py # pysam/PyVCF3/cyvcf2/Oxbow/polars/snputils
+generate_genotype_reader_figures.py # Timing, memory, and scaling plots
 run_thread_benchmarks.py        # polars-bio thread scaling (BAM)
 generate_report.py              # Report generator
 setup.sh                        # Environment + data setup
