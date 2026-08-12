@@ -171,5 +171,5 @@ comparisons. Publication figures are generated directly from that JSON:
 .venv/bin/python generate_genotype_reader_figures.py \
   --input results/genotype_reader_benchmark.json \
   --scaling-dir results \
-  --output-dir /path/to/polars-bio/docs/blog/posts/figures/vcf-bcf-readers
+  --output-dir /path/to/polars-bio/docs/blog/posts/figures/bcf-readers
 ```

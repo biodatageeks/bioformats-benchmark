@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate publication figures from the tracked genotype-reader results."""
+"""Generate BCF publication figures from the tracked genotype-reader results."""
 
 from __future__ import annotations
 
@@ -10,52 +10,43 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-READERS = ("pysam", "pyvcf3", "cyvcf2", "oxbow", "polars-bio", "snputils")
+READERS = ("pysam", "cyvcf2", "oxbow", "polars-bio", "snputils")
 LABELS = {
     "pysam": "pysam",
-    "pyvcf3": "PyVCF3",
     "cyvcf2": "cyvcf2",
     "oxbow": "Oxbow",
     "polars-bio": "polars-bio",
     "snputils": "snputils",
 }
-COLORS = {"VCF": "#4c78a8", "BCF": "#f58518"}
+BAR_COLORS = [
+    "#9ca3af" if reader != "polars-bio" else "#f58518" for reader in READERS
+]
 
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def grouped_bars(payload: dict, metric: str, ylabel: str, output: Path) -> None:
+def bcf_bars(payload: dict, metric: str, ylabel: str, output: Path) -> None:
     x = np.arange(len(READERS))
-    width = 0.37
-    figure, axis = plt.subplots(figsize=(10.5, 5.5), constrained_layout=True)
+    figure, axis = plt.subplots(figsize=(9.5, 5.5), constrained_layout=True)
+    values = [
+        payload["results"].get("BCF", {}).get(reader, {}).get(metric, np.nan)
+        for reader in READERS
+    ]
+    bars = axis.bar(x, values, width=0.62, color=BAR_COLORS)
+    axis.bar_label(
+        bars,
+        labels=["" if np.isnan(value) else f"{value:g}" for value in values],
+        padding=3,
+        fontsize=9,
+    )
 
-    for index, file_format in enumerate(("VCF", "BCF")):
-        values = [
-            payload["results"].get(file_format, {}).get(reader, {}).get(metric, np.nan)
-            for reader in READERS
-        ]
-        bars = axis.bar(
-            x + (index - 0.5) * width,
-            values,
-            width,
-            label=file_format,
-            color=COLORS[file_format],
-        )
-        axis.bar_label(
-            bars,
-            labels=["" if np.isnan(value) else f"{value:g}" for value in values],
-            padding=2,
-            fontsize=8,
-            rotation=90,
-        )
-
-    axis.set_yscale("log")
     axis.set_ylabel(ylabel)
     axis.set_xticks(x, [LABELS[reader] for reader in READERS])
-    axis.grid(axis="y", which="both", alpha=0.22)
-    axis.legend(frameon=False)
+    axis.set_ylim(bottom=0)
+    axis.margins(y=0.12)
+    axis.grid(axis="y", alpha=0.22)
     axis.spines[["top", "right"]].set_visible(False)
     output.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(output, dpi=180, transparent=False)
@@ -86,6 +77,7 @@ def scaling_plot(results_dir: Path, output: Path) -> None:
     axis.set_xlabel("Configured thread/partition count")
     axis.set_ylabel("Median wall time (seconds)")
     axis.set_xticks(threads)
+    axis.set_ylim(bottom=0)
     axis.grid(alpha=0.25)
     axis.legend(frameon=False)
     axis.spines[["top", "right"]].set_visible(False)
@@ -104,17 +96,17 @@ def main() -> None:
     args = parser.parse_args()
 
     payload = load_json(args.input)
-    grouped_bars(
+    bcf_bars(
         payload,
         "time_seconds_median",
-        "Median wall time (seconds, log scale)",
-        args.output_dir / "vcf-bcf-reader-time.png",
+        "Median wall time (seconds)",
+        args.output_dir / "bcf-reader-time.png",
     )
-    grouped_bars(
+    bcf_bars(
         payload,
         "peak_rss_mb_median",
-        "Peak RSS (MB, log scale)",
-        args.output_dir / "vcf-bcf-reader-memory.png",
+        "Peak RSS (MB)",
+        args.output_dir / "bcf-reader-memory.png",
     )
     scaling_plot(args.scaling_dir, args.output_dir / "bcf-thread-scaling.png")
 

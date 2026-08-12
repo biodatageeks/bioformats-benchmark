@@ -80,9 +80,9 @@ python run_genotype_matrix_benchmarks.py --runs 3
 # 8. Generate report
 python generate_report.py
 
-# 9. Generate publication figures for the genotype-reader comparison
+# 9. Generate BCF-only publication figures for the genotype-reader comparison
 python generate_genotype_reader_figures.py \
-  --output-dir /path/to/polars-bio/docs/blog/posts/figures/vcf-bcf-readers
+  --output-dir /path/to/polars-bio/docs/blog/posts/figures/bcf-readers
 ```
 
 To benchmark an unreleased polars-bio checkout, point setup at the checkout.
