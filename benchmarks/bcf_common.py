@@ -9,19 +9,6 @@ EXPECTED_ROWS = int(os.environ.get("BCF_EXPECTED_ROWS", "993881"))
 EXPECTED_SAMPLES = int(os.environ.get("BCF_EXPECTED_SAMPLES", "2548"))
 CORE_COLUMNS = ["chrom", "start", "id", "ref", "alt"]
 
-# The IGSR chromosome 22 fixture is phased, diploid, and biallelic. Keeping this
-# map strict makes an unexpected genotype representation fail the benchmark
-# instead of silently producing incomparable output.
-GT_TO_DOSAGE = {
-    "0|0": 0,
-    "0|1": 1,
-    "1|0": 1,
-    "1|1": 2,
-    ".|.": -1,
-    "./.": -1,
-}
-
-
 def validate_variant() -> None:
     if BCF_VARIANT != "dosage":
         raise ValueError(
@@ -39,17 +26,18 @@ def polars_bio_bcf_scan():
         format_fields=["GT"],
         use_zero_based=False,
         projection_pushdown=True,
+        genotype_output="dosage",
     )
 
 
 def dosage_expression():
-    """Convert nested phased GT strings into snputils-compatible ALT dosage."""
+    """Normalize nullable typed dosage to snputils' -1 missing sentinel."""
     import polars as pl
 
     return (
         pl.col("genotypes")
         .struct.field("GT")
-        .list.eval(pl.element().replace_strict(GT_TO_DOSAGE, return_dtype=pl.Int8))
+        .list.eval(pl.element().fill_null(-1))
         .alias("dosage")
     )
 

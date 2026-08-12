@@ -1,6 +1,6 @@
 # BCF dosage benchmark: polars-bio vs snputils
 
-Run date: 2026-08-11
+Run date: 2026-08-12
 
 This benchmark compares the exact genotype-dosage workload from the snputils
 BCF benchmark with a lazy/streaming polars-bio implementation. Both readers
@@ -16,22 +16,24 @@ chromosome_ploidy="autosomal").genotypes`.
 
 | Reader | Output representation | Median time | Mean ± SD | Median peak RSS | Mean ± SD |
 |---|---|---:|---:|---:|---:|
-| polars-bio | 993,881-row `List(Int8)` column, list width 2,548 | 227.395 s | 227.605 ± 1.214 s | 2,785.5 MB | 2,790.5 ± 9.5 MB |
-| snputils | 993,881 × 2,548 NumPy `int8` matrix | 8.317 s | 8.329 ± 0.029 s | 10,068.2 MB | 10,067.5 ± 1.6 MB |
+| polars-bio | 993,881-row `List(Int8)` column, list width 2,548 | 5.344 s | 5.378 ± 0.131 s | 2,648.1 MB | 2,648.0 ± 0.2 MB |
+| snputils | 993,881 × 2,548 NumPy `int8` matrix | 9.792 s | 9.960 ± 0.637 s | 10,070.8 MB | 10,071.0 ± 0.6 MB |
 
-For this full-dosage materialization workload, snputils is **27.341× faster**.
-polars-bio uses **72.3% less peak RSS**, or **3.615× lower peak RSS**. This is
-a workload-specific tradeoff: it does not imply the same relationship for
-metadata-only scans, projections without genotypes, filtered queries, or other
-BCF schemas.
+For this full-dosage materialization workload, polars-bio is **1.832× faster**
+(**45.4% less wall time**) and uses **73.7% less peak RSS**, or **3.803× lower
+peak RSS**. These results apply to the exact full-cohort dosage workload; they
+do not imply the same ratio for metadata-only scans, sparse samples, filtered
+queries, or other BCF schemas.
 
-The likely reason is architectural. snputils uses a specialized bulk BCF path
-and vectorized NumPy dosage decode after eagerly decompressing the file. That
-is extremely fast but keeps the decompressed input and output buffers resident.
-polars-bio incrementally decodes BCF through DataFusion, projection-pushes GT,
-maps nested genotype strings to dosage in Polars, and streams into the final
-list column. The generic string-to-dosage route costs substantially more CPU,
-while incremental execution limits peak memory.
+The performance change is architectural. The original polars-bio benchmark
+routed every genotype through generic noodles values, owned strings, and then a
+Polars string-to-dosage expression; that path took about 227 seconds. The new
+explicit dosage mode validates borrowed BCF FORMAT series and writes nullable
+Arrow `Int8` buffers directly. Its common fixed-diploid Int8 path bulk-decodes
+the raw allele bytes without genotype strings or per-cell Arrow builder calls.
+BGZF input and Arrow record batches remain bounded and streaming, which avoids
+snputils' resident decompressed-input buffer while also beating its specialized
+eager decoder here.
 
 ## Correctness and comparability
 
@@ -53,8 +55,10 @@ The comparison passed. Evidence hashes from the verified output are:
 | Row-major dosage bytes | `a0a2fb3b997e7ac5b7abebee5d85d437098c25fd4cc0178eb88830547f0062cb` |
 | Position array bytes | `db55a6b0aac688960a47c2c4b180b4d03c897134f4807fe8984750509979e50d` |
 
-The polars-bio mapping is strict (`0|0 → 0`, `0|1`/`1|0 → 1`, `1|1 → 2`,
-missing → `-1`), so an unexpected genotype encoding fails rather than silently
+The source returns nullable typed dosage (`0|0 → 0`, `0|1`/`1|0 → 1`, `1|1 →
+2`, missing → null). The benchmark normalizes null to snputils' `-1` sentinel
+before comparison and retention. Invalid reserved values, values after
+vector-end, excessive ploidy, and multiallelic records fail rather than silently
 changing the workload.
 
 ## Raw runs
@@ -65,18 +69,24 @@ round: polars-bio/snputils, snputils/polars-bio, polars-bio/snputils.
 
 | Round | Order | Reader | Time | Peak RSS |
 |---:|---:|---|---:|---:|
-| 1 | 1 | polars-bio | 227.395 s | 2,785.5 MB |
-| 1 | 2 | snputils | 8.362 s | 10,068.2 MB |
-| 2 | 1 | snputils | 8.317 s | 10,065.7 MB |
-| 2 | 2 | polars-bio | 228.911 s | 2,784.5 MB |
-| 3 | 1 | polars-bio | 226.510 s | 2,801.5 MB |
-| 3 | 2 | snputils | 8.308 s | 10,068.6 MB |
+| 1 | 1 | polars-bio | 5.267 s | 2,648.1 MB |
+| 1 | 2 | snputils | 10.664 s | 10,070.5 MB |
+| 2 | 1 | snputils | 9.424 s | 10,071.7 MB |
+| 2 | 2 | polars-bio | 5.344 s | 2,648.2 MB |
+| 3 | 1 | polars-bio | 5.523 s | 2,647.8 MB |
+| 3 | 2 | snputils | 9.792 s | 10,070.8 MB |
 
 Wall time includes file reading, decoding, dosage conversion, and complete
 materialization; module imports and one-time reader configuration are outside
 the timer for both readers. Peak RSS is process `ru_maxrss`, measured after the
 result is retained. DataFusion, Polars, Rayon, OpenMP, BLAS, and related thread
 controls were all set to one thread.
+
+polars-bio was built with `maturin develop --release --locked` and
+`RUSTFLAGS="-C target-cpu=native -C link-arg=-undefined -C
+link-arg=dynamic_lookup"`. The latter two flags provide macOS Python-extension
+linkage; `-C target-cpu=native` is the CPU optimization flag. The build profile
+and full flags are stored in the machine-readable result metadata.
 
 ## Inputs and exact revisions
 
@@ -85,8 +95,8 @@ controls were all set to one thread.
 | BCF | `ALL.chr22.phased.bcf`, 135,128,073 bytes (128.87 MiB) |
 | BCF SHA-256 | `b61c6aaa746416306a01b3aa92db23b5e1f4faf7296a114ed32d8e64a400a250` |
 | Source VCF SHA-256 | `b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c` |
-| datafusion-bio-formats PR head | [`30c6188`](https://github.com/biodatageeks/datafusion-bio-formats/commit/30c618855be0692f8403166f6f3733764ed3da1f) |
-| polars-bio feature branch commit | [`08172c2`](https://github.com/biodatageeks/polars-bio/commit/08172c2e6b3ef7cc855069c07297102e6040c481) |
+| datafusion-bio-formats PR head | [`20b832c`](https://github.com/biodatageeks/datafusion-bio-formats/commit/20b832c9612a237086059eb48192a1f72c9549f9) |
+| polars-bio feature branch commit | [`cd021bf`](https://github.com/biodatageeks/polars-bio/commit/cd021bfa2cc629adb48c2febfd163607ee70cb5e) |
 | snputils commit | [`bdb1a56`](https://github.com/AI-sandbox/snputils/commit/bdb1a56b52a6b16210d60e347d33d023dc98352f) |
 | polars-bio | 0.33.1 |
 | snputils | 1.1.1.dev17+gbdb1a56b5 |
@@ -99,16 +109,20 @@ controls were all set to one thread.
 
 ```bash
 git clone https://github.com/biodatageeks/polars-bio.git
-git -C polars-bio checkout 08172c2e6b3ef7cc855069c07297102e6040c481
+git -C polars-bio checkout cd021bfa2cc629adb48c2febfd163607ee70cb5e
 
 git clone https://github.com/biodatageeks/bioformats-benchmark.git
 cd bioformats-benchmark
 git checkout feat/bcf-format
 
-POLARS_BIO_SOURCE="$(cd ../polars-bio && pwd)" bash setup.sh
+POLARS_BIO_SOURCE="$(cd ../polars-bio && pwd)" \
+POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dynamic_lookup' \
+bash setup.sh
 
-POLARS_BIO_REF=08172c2e6b3ef7cc855069c07297102e6040c481 \
-DATAFUSION_BIO_FORMATS_REF=30c618855be0692f8403166f6f3733764ed3da1f \
+POLARS_BIO_REF=cd021bfa2cc629adb48c2febfd163607ee70cb5e \
+DATAFUSION_BIO_FORMATS_REF=20b832c9612a237086059eb48192a1f72c9549f9 \
+POLARS_BIO_BUILD_PROFILE=release \
+POLARS_BIO_RUSTFLAGS='-C target-cpu=native -C link-arg=-undefined -C link-arg=dynamic_lookup' \
 .venv/bin/python run_bcf_benchmarks.py --runs 3 --threads 1
 ```
 

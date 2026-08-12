@@ -67,8 +67,9 @@ DATA_PATH=/path/to/file.bam BENCH_VARIANT=with_tags python -m benchmarks.bench_b
 python generate_report.py
 ```
 
-To benchmark an unreleased polars-bio checkout, point setup at the checkout so
-`maturin develop --release` installs it into the benchmark environment:
+To benchmark an unreleased polars-bio checkout, point setup at the checkout.
+Setup installs it with `maturin develop --release --locked` and defaults to
+`RUSTFLAGS="-C target-cpu=native"`:
 
 ```bash
 POLARS_BIO_SOURCE=/path/to/polars-bio bash setup.sh
@@ -83,9 +84,9 @@ python run_bcf_benchmarks.py
 Both BCF runners read the same file, project only `FORMAT/GT`, use one thread by
 default, and materialize the same ALT-dosage values. `snputils` returns its
 native 2-D NumPy `int8` matrix. `polars-bio` keeps the source lazy, projection
-pushes `GT`, converts the nested phased strings to `Int8` dosage, and collects
-with Polars' streaming engine; its equivalent output is a list column with one
-list per variant.
+pushes `GT`, directly decodes the BCF allele bytes into nullable Arrow `Int8`
+dosage, and collects with Polars' streaming engine; its equivalent output is a
+list column with one list per variant.
 
 Before timing, `benchmarks.verify_bcf_equivalence` compares all variant keys,
 the complete sample order, and all 2.53 billion dosage values in bounded row

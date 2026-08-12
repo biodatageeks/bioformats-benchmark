@@ -21,9 +21,8 @@ _result = None
 def benchmark():
     global _result
 
-    # Project FORMAT/GT at the DataFusion source, convert it to Int8 dosage in
-    # Polars, and materialize with the streaming engine. The result is one list
-    # per variant and is logically equivalent to snputils' 2-D dosage ndarray.
+    # Project direct typed FORMAT/GT dosage at the DataFusion source, normalize
+    # null to snputils' -1 sentinel, and materialize with the streaming engine.
     _result = (
         polars_bio_bcf_scan().select(dosage_expression()).collect(engine="streaming")
     )

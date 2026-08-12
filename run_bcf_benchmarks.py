@@ -92,7 +92,10 @@ def compare_summaries(summary: dict[str, dict]) -> dict:
     polars_memory = polars["peak_rss_mb_median"]
     snputils_memory = snputils["peak_rss_mb_median"]
     return {
-        "snputils_time_speedup": round(polars_time / snputils_time, 3),
+        "polars_bio_time_speedup": round(snputils_time / polars_time, 3),
+        "polars_bio_time_reduction_percent": round(
+            100 * (1 - polars_time / snputils_time), 1
+        ),
         "polars_bio_peak_rss_advantage": round(snputils_memory / polars_memory, 3),
         "polars_bio_peak_rss_reduction_percent": round(
             100 * (1 - polars_memory / snputils_memory), 1
@@ -174,6 +177,8 @@ def main() -> None:
         "snputils_ref": SNPUTILS_REF,
         "polars_bio_ref": os.environ.get("POLARS_BIO_REF"),
         "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
+        "polars_bio_build_profile": os.environ.get("POLARS_BIO_BUILD_PROFILE"),
+        "polars_bio_rustflags": os.environ.get("POLARS_BIO_RUSTFLAGS"),
         "cache_state": "warm; full equivalence scan precedes timed rounds",
         "timing_scope": "read, decode, dosage conversion, and materialization; imports excluded",
         "memory_metric": "fresh-process peak RSS including retained materialized output",

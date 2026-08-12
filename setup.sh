@@ -25,11 +25,12 @@ uv pip install --python .venv/bin/python \
 # feat/bcf-pr218-bench branch). The release wheel above is replaced in-place.
 if [ -n "${POLARS_BIO_SOURCE:-}" ]; then
     echo "=== Building polars-bio from: $POLARS_BIO_SOURCE ==="
+    POLARS_BIO_RUSTFLAGS="${POLARS_BIO_RUSTFLAGS:--C target-cpu=native}"
     (
         unset CONDA_PREFIX
         source "$SCRIPT_DIR/.venv/bin/activate"
         cd "$POLARS_BIO_SOURCE"
-        maturin develop --release --locked
+        RUSTFLAGS="$POLARS_BIO_RUSTFLAGS" maturin develop --release --locked
     )
 fi
 
