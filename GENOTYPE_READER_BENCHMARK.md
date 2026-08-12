@@ -98,11 +98,18 @@ Reader-native execution is preserved where possible:
 - polars-bio uses a lazy scan, projection pushdown, and streaming collection.
 
 PyVCF3 cannot read BCF, so its BCF cell is explicitly unsupported. Oxbow's VCF
-time is reproducible across both rounds. Oxbow streams the file in bounded
-Arrow batches, but its sample-major nested GT representation requires traversal
-of 2,548 sample fields per batch before the common row-major dosage matrix can
-be formed. This result should not be interpreted as an Oxbow row-count or
-parser-only benchmark.
+time is reproducible across both rounds. The adapter uses Oxbow's compact
+`genotype_by="field"` layout and bounded Arrow batches; the alternative sample
+layout creates 2,548 top-level columns, while `samples_nested=True` only adds
+another struct wrapper.
+
+A post-run 1,000-row diagnostic separated Oxbow batch construction from the
+common normalization. VCF source creation, schema discovery, and first-batch
+materialization took 27.433 s; converting that already-materialized batch to
+the dosage matrix took 0.060 s. The equivalent BCF stages took 0.499 s and
+0.067 s. The wide text-VCF batch construction therefore dominates Oxbow's
+result, not the benchmark's NumPy dosage conversion. This remains a full-output
+benchmark and should not be interpreted as an Oxbow row-count benchmark.
 
 ## Raw runs
 
