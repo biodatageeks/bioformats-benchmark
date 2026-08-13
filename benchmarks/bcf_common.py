@@ -21,7 +21,7 @@ def polars_bio_bcf_scan():
     """Return the lazy, projection-pushed BCF scan before materialization."""
     import polars_bio as pb
 
-    return pb.scan_vcf(
+    return pb.scan_bcf(
         BCF_PATH,
         info_fields=[],
         format_fields=["GT"],

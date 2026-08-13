@@ -141,8 +141,9 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
     }
     if FORMAT == "bcf":
         scan_options["genotype_output"] = "dosage"
-
-    scan = pb.scan_vcf(str(INPUT_PATH), **scan_options)
+        scan = pb.scan_bcf(str(INPUT_PATH), **scan_options)
+    else:
+        scan = pb.scan_vcf(str(INPUT_PATH), **scan_options)
     samples = [
         str(sample) for sample in pb.get_metadata(scan)["header"]["sample_names"]
     ]
