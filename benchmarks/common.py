@@ -3,23 +3,50 @@
 import json
 import os
 import resource
+import sys
 import time
 
 # Data file paths (format-specific env vars override defaults)
-BAM_PATH = os.environ.get("BAM_PATH", "/Users/mwiewior/research/data/WES/NA12878.proper.wes.md.chr1.bam")
-VCF_PATH = os.environ.get("VCF_PATH", "/Users/mwiewior/research/data/VCF/homo_sapiens-chr1.vcf.gz")
-FASTQ_PATH = os.environ.get("FASTQ_PATH", "/Users/mwiewior/research/data/FASTQ/ERR194158.fastq.bgz")
+BAM_PATH = os.environ.get(
+    "BAM_PATH", "/Users/mwiewior/research/data/WES/NA12878.proper.wes.md.chr1.bam"
+)
+VCF_PATH = os.environ.get(
+    "VCF_PATH", "/Users/mwiewior/research/data/VCF/homo_sapiens-chr1.vcf.gz"
+)
+BCF_PATH = os.environ.get(
+    "BCF_PATH", "/Users/mwiewior/research/data/BCF/ALL.chr22.phased.bcf"
+)
+FASTQ_PATH = os.environ.get(
+    "FASTQ_PATH", "/Users/mwiewior/research/data/FASTQ/ERR194158.fastq.bgz"
+)
 # biobear needs .gz extension — use the regular gzip version
-FASTQ_PATH_BB = os.environ.get("FASTQ_PATH_BB", "/Users/mwiewior/research/data/FASTQ/ERR194158.fastq.gz")
+FASTQ_PATH_BB = os.environ.get(
+    "FASTQ_PATH_BB", "/Users/mwiewior/research/data/FASTQ/ERR194158.fastq.gz"
+)
 
 # Benchmark variant (controlled by BENCH_VARIANT env var)
 # BAM: "with_tags" or "without_tags"
 # VCF: "with_info" or "without_info"
+# BCF: "dosage"
 # FASTQ: "all_columns"
 BENCH_VARIANT = os.environ.get("BENCH_VARIANT", "with_tags")
 
 # BAM tags present in the test file
-BAM_TAGS = ["E2", "MD", "MQ", "NM", "OC", "OP", "OQ", "PG", "RG", "UQ", "XN", "XT", "ZQ"]
+BAM_TAGS = [
+    "E2",
+    "MD",
+    "MQ",
+    "NM",
+    "OC",
+    "OP",
+    "OQ",
+    "PG",
+    "RG",
+    "UQ",
+    "XN",
+    "XT",
+    "ZQ",
+]
 
 
 def run_benchmark(fn, name, columns=None):
@@ -49,9 +76,13 @@ def run_benchmark(fn, name, columns=None):
         if columns is None:
             columns = []
 
-    # Peak RSS from resource module (macOS returns bytes)
+    # Peak RSS from resource module (bytes on macOS, KiB on Linux).
     usage = resource.getrusage(resource.RUSAGE_SELF)
-    peak_rss_mb = usage.ru_maxrss / (1024 * 1024)
+    peak_rss_mb = (
+        usage.ru_maxrss / (1024 * 1024)
+        if sys.platform == "darwin"
+        else usage.ru_maxrss / 1024
+    )
 
     result = {
         "name": name,
