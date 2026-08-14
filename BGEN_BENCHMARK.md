@@ -32,6 +32,11 @@ Polars. The advantage here comes from partition parallelism, not from a faster
 per-core decoder, and the table reports both points rather than only the
 favourable one.
 
+The tables above come from one complete suite run. A confirmation run on the
+final reviewed commits, after the last round of review fixes, measured 6.862 s
+at eight partitions against snputils' 13.368 s (1.948x), so the documented
+figures are slightly conservative.
+
 polars-bio also carries more output. Its `genotypes` struct holds `PLOIDY`
 alongside `DS`, which the other readers do not produce, and the dosage matrix
 crosses Arrow, Polars, and NumPy before it is returned. That shows up in peak
