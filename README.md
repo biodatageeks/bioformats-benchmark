@@ -14,7 +14,9 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | lazy/streaming | BAM, VCF, BCF, FASTQ |
-| **snputils** | eager | VCF, BCF |
+| **snputils** | eager | VCF, BCF, BGEN |
+| **bgen** | eager | BGEN |
+| **pysnptools** | eager | BGEN (unphased only) |
 
 ## Test Variants
 
@@ -26,6 +28,8 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | VCF | `without_info` | Fixed fields + FORMAT only (INFO excluded) |
 | BCF | `dosage` | All phased GT calls converted to an `Int8` ALT-dosage matrix |
 | VCF/BCF | `genotype-matrix` | Identical 25,000 x 2,548 row-major `Int8` ALT-dosage matrix |
+| BGEN | `dosage` | Expected copies of the second encoded allele as a `float32` matrix |
+| BGEN | `probabilities` | Complete `float32` genotype-probability tensor |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
 
 ## Data Requirements
@@ -35,6 +39,7 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | BAM | `NA12878.proper.wes.md.chr1.bam` (~2 GB) | Extract from full WES BAM with `samtools view -b ... chr1` |
 | VCF | `homo_sapiens-chr1.vcf.gz` | Ensembl (downloaded by `setup.sh`) |
 | BCF | `ALL.chr22.phased.bcf` (~129 MiB) | IGSR/1000 Genomes GRCh38 phased chromosome 22 callset, converted by `setup.sh` |
+| BGEN | `chr22.full.bgen` (~153 MiB), `chr22.first-25000[.unphased].bgen` | Exported from the same chromosome 22 callset by `setup.sh` with plink2 |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
 
 The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
@@ -42,6 +47,11 @@ dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
 verifies the source VCF SHA-256
 (`b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c`),
 and each run records the generated BCF SHA-256 in its result metadata.
+
+The BGEN fixtures are exported from the same callset, so the BGEN benchmark
+compares the same variants and sample order as the VCF/BCF one. See
+[BGEN_BENCHMARK.md](BGEN_BENCHMARK.md) for the results, which include an
+element-wise check against the independent `bgen` package.
 
 The cross-reader VCF/BCF matrix uses rows in
 `chr22:10516173-16717478` from that same callset: exactly 25,000 variants,

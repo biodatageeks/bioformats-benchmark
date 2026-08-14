@@ -18,6 +18,7 @@ uv pip install --python .venv/bin/python \
     polars-bio==0.32.0 \
     "snputils @ git+https://github.com/AI-sandbox/snputils.git@bdb1a56b52a6b16210d60e347d33d023dc98352f" \
     pysam==0.24.0 PyVCF3==1.0.4 cyvcf2==0.31.4 oxbow==0.8.1 biobear==0.23.7 \
+    bgen==1.10.0 "pysnptools[bgen]==0.5.15" \
     polars==1.42.1 pyarrow==24.0.0 \
     psutil matplotlib notebook maturin
 
@@ -137,7 +138,49 @@ for genotype_file in "$GENOTYPE_VCF_FILE" "$GENOTYPE_BCF_FILE"; do
     fi
 done
 
-# FASTQ: EBI SRA
+# === BGEN fixtures ===
+#
+# The BGEN reader benchmark uses the same chromosome 22 callset as the BCF
+# benchmark, exported by plink2, so both benchmarks compare the same variants
+# and the same sample order. Two exports are produced: the phased one that the
+# source callset implies, and an unphased one, because pysnptools' BGEN reader
+# rejects phased input.
+BGEN_DIR="/Users/mwiewior/research/data/BGEN"
+BGEN_SLICE="${BGEN_DIR}/chr22.first-25000.bgen"
+BGEN_SLICE_UNPHASED="${BGEN_DIR}/chr22.first-25000.unphased.bgen"
+BGEN_FULL="${BGEN_DIR}/chr22.full.bgen"
+
+if [ ! -f "$BGEN_SLICE" ] || [ ! -f "$BGEN_SLICE_UNPHASED" ] || [ ! -f "$BGEN_FULL" ]; then
+    command -v plink2 >/dev/null || {
+        echo "plink2 is required to create the BGEN benchmark fixtures." >&2
+        echo "Download it from https://www.cog-genomics.org/plink/2.0/" >&2
+        exit 1
+    }
+    mkdir -p "$BGEN_DIR"
+fi
+
+# plink2's bgen-1.2 export writes an empty zlib payload for very small blocks,
+# so these fixtures are only valid at the cohort sizes used here.
+if [ ! -f "$BGEN_SLICE" ]; then
+    echo "=== Exporting phased BGEN slice ==="
+    plink2 --vcf "$GENOTYPE_VCF_FILE" --export bgen-1.2 bits=8 \
+        --out "${BGEN_DIR}/chr22.first-25000"
+fi
+if [ ! -f "$BGEN_SLICE_UNPHASED" ]; then
+    echo "=== Exporting unphased BGEN slice ==="
+    plink2 --vcf "$GENOTYPE_VCF_FILE" --make-pgen erase-phase \
+        --out "${BGEN_DIR}/chr22.first-25000.unphased.tmp"
+    plink2 --pfile "${BGEN_DIR}/chr22.first-25000.unphased.tmp" \
+        --export bgen-1.2 bits=8 --out "${BGEN_DIR}/chr22.first-25000.unphased"
+    rm -f "${BGEN_DIR}"/chr22.first-25000.unphased.tmp.*
+fi
+if [ ! -f "$BGEN_FULL" ]; then
+    echo "=== Exporting whole-chromosome BGEN ==="
+    plink2 --vcf "$BCF_VCF_FILE" --export bgen-1.2 bits=8 \
+        --out "${BGEN_DIR}/chr22.full"
+fi
+
+# === FASTQ: EBI SRA ===
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"
 FASTQ_FILE="${FASTQ_DIR}/ERR194158.fastq.gz"
 if [ ! -f "$FASTQ_FILE" ]; then
@@ -167,4 +210,7 @@ echo "  VCF:   $VCF_FILE"
 echo "  BCF:   $BCF_FILE"
 echo "  Reader-matrix VCF: $GENOTYPE_VCF_FILE"
 echo "  Reader-matrix BCF: $GENOTYPE_BCF_FILE"
+echo "  BGEN slice (phased):   $BGEN_SLICE"
+echo "  BGEN slice (unphased): $BGEN_SLICE_UNPHASED"
+echo "  BGEN whole chromosome: $BGEN_FULL"
 echo "  FASTQ: $FASTQ_FILE"

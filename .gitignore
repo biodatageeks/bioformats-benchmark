@@ -1,6 +1,7 @@
 .idea
 .venv/
 .venv-baseline/
+.venv-*/
 results/
 __pycache__/
 *.pyc
