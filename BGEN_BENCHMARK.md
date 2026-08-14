@@ -1,6 +1,6 @@
 # BGEN genotype-reader benchmark
 
-Run date: 2026-08-14
+Run date: 2026-08-14 (re-run on the reviewed commits)
 
 This benchmark compares polars-bio, snputils, the `bgen` package, and pysnptools
 on BGEN genotype matrices. Every reader must produce the same ordered variant
@@ -16,15 +16,16 @@ fresh-process runs. Lower is better.
 
 | Reader | Time | Peak RSS | Speed relative to snputils |
 |---|---:|---:|---:|
-| **polars-bio**, 8 partitions | **6.948 s** | 27,380 MB | **1.997× faster** |
-| polars-bio, 4 partitions | 9.776 s | 26,606 MB | 1.420× faster |
-| bgen | 10.405 s | 21,779 MB | 1.334× faster |
-| polars-bio, 2 partitions | 13.686 s | 25,895 MB | 1.014× faster |
-| snputils | 13.879 s | 21,950 MB | 1.000× |
-| polars-bio, 1 partition | 24.633 s | 27,468 MB | 0.563× |
+| **polars-bio**, 8 partitions | **7.073 s** | 25,936 MB | **1.895× faster** |
+| polars-bio, 4 partitions | 9.585 s | 25,911 MB | 1.398× faster |
+| bgen | 10.436 s | 21,779 MB | 1.284× faster |
+| snputils | 13.403 s | 21,947 MB | 1.000× |
+| polars-bio, 2 partitions | 13.689 s | 25,962 MB | 0.979× |
+| polars-bio, 1 partition | 24.568 s | 25,232 MB | 0.546× |
 
-polars-bio passes snputils at two partitions and is **1.997× faster at eight**,
-a 49.9% reduction in wall time. At one partition it is 1.78× slower: snputils'
+polars-bio matches snputils at two partitions, passes it at four, and is
+**1.895× faster at eight**, a 47.2% reduction in wall time. At one partition it
+is 1.83× slower: snputils'
 BGEN reader is a single-threaded C extension built around libdeflate, and
 polars-bio spends its extra time building Arrow arrays and handing them to
 Polars. The advantage here comes from partition parallelism, not from a faster
@@ -34,7 +35,7 @@ favourable one.
 polars-bio also carries more output. Its `genotypes` struct holds `PLOIDY`
 alongside `DS`, which the other readers do not produce, and the dosage matrix
 crosses Arrow, Polars, and NumPy before it is returned. That shows up in peak
-RSS, which is 24.7% above snputils.
+RSS, which is 18.2% above snputils.
 
 ### Chromosome slice, both workloads
 
@@ -44,16 +45,16 @@ three fresh-process runs.
 
 | Reader | Dosage (phased) | Dosage (unphased) | Probabilities (phased) | Probabilities (unphased) |
 |---|---:|---:|---:|---:|
-| **polars-bio**, 8 partitions | **0.183 s** | **0.189 s** | 1.296 s | 0.599 s |
-| polars-bio, 4 partitions | 0.298 s | 0.301 s | 1.491 s | 0.781 s |
-| polars-bio, 1 partition | 0.591 s | 0.593 s | 2.090 s | 1.352 s |
-| snputils | 0.329 s | 0.324 s | 0.379 s | 0.372 s |
-| bgen | 0.276 s | 0.316 s | **0.317 s** | **0.315 s** |
-| pysnptools | unsupported | 1.849 s | unsupported | 2.098 s |
+| **polars-bio**, 8 partitions | **0.188 s** | **0.190 s** | 1.296 s | 0.593 s |
+| polars-bio, 4 partitions | 0.297 s | 0.296 s | 1.488 s | 0.774 s |
+| polars-bio, 1 partition | 0.585 s | 0.594 s | 2.057 s | 1.314 s |
+| snputils | 0.315 s | 0.316 s | 0.365 s | 0.358 s |
+| bgen | 0.273 s | 0.312 s | **0.316 s** | **0.314 s** |
+| pysnptools | unsupported | 1.852 s | unsupported | 2.089 s |
 
-For dosage, polars-bio is 1.80× faster than snputils at eight partitions and
-1.10× faster at four. For the complete probability tensor it is slower
-everywhere: 3.4× slower at its best point on the phased file and 1.6× slower on
+For dosage, polars-bio is 1.68× faster than snputils at eight partitions and
+1.06× faster at four. For the complete probability tensor it is slower
+everywhere: 3.6× slower at its best point on the phased file and 1.7× slower on
 the unphased file. The probability path returns a nested Arrow list that is
 converted to Polars and back before NumPy sees it, and that conversion does not
 parallelize, so extra partitions help far less than they do for dosage.
@@ -167,7 +168,8 @@ Reader-native execution is preserved where possible:
 | Whole chromosome SHA-256 | `867e8bf0cc162ab0…` |
 | Source callset | IGSR/1000 Genomes GRCh38 phased chromosome 22, the same VCF used by the BCF benchmark |
 | Export | `plink2 --export bgen-1.2 bits=8`, Layout 2, zlib |
-| datafusion-bio-formats | [`46ca587`](https://github.com/biodatageeks/datafusion-bio-formats/commit/46ca587d05f62b133a4b96609a1eaf04ab515313) |
+| datafusion-bio-formats | [`b96628f`](https://github.com/biodatageeks/datafusion-bio-formats/commit/b96628f9e3e40689828246de78949a79ace2e29d) |
+| polars-bio branch build | [`ef9b5c2`](https://github.com/biodatageeks/polars-bio/commit/ef9b5c2) |
 | snputils | [`482c6d1`](https://github.com/AI-sandbox/snputils/commit/482c6d1dfd6c4001935dfaec81ae01a5e0ec3e53) |
 | bgen / pysnptools | 1.10.0 / 0.5.15 |
 | polars-bio / Polars / PyArrow / NumPy | 0.33.1 (branch build) / 1.40.1 / 24.0.0 / 2.4.4 |
