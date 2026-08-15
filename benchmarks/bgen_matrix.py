@@ -71,29 +71,45 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
     else:
         # GP is list<sample: list<state: float32>>. plink2 can leave a few
         # variants unphased inside an otherwise phased file, so probability
-        # widths vary by row. Pad each sample to the widest state vector with
-        # NaN, which is the layout snputils also produces for mixed widths.
+        # widths can vary by row.
         per_variant = struct.field("GP")
         per_sample = per_variant.values
-        offsets = np.asarray(per_sample.offsets, dtype=np.int64)
+        # Offsets stay int32: widening 63.7M of them to int64 costs more than
+        # the comparison it feeds.
+        offsets = np.asarray(per_sample.offsets)
         widths = np.diff(offsets)
-        leaf = np.asarray(
-            per_sample.values.to_numpy(zero_copy_only=False), dtype=np.float32
-        )[: int(offsets[-1])]
+        leaf = per_sample.values.to_numpy(zero_copy_only=False)
         width = int(widths.max())
-        matrix = np.full(
-            (len(per_variant) * EXPECTED_SAMPLES, width), np.nan, dtype=np.float32
-        )
-        if np.all(widths == width):
-            matrix[:] = leaf.reshape(-1, width)
+        variants = len(per_variant)
+
+        if per_sample.null_count == 0 and int(widths.min()) == width:
+            # Uniform width: the Arrow values buffer already is the array, so
+            # reshape it rather than copying into a new one. This is the same
+            # zero-copy path snputils takes with `np.frombuffer(...).reshape`.
+            matrix = leaf[: int(offsets[-1])].reshape(variants, EXPECTED_SAMPLES, width)
         else:
-            # `leaf` concatenates each sample's states in row-major order, so the
-            # mask of slots a sample actually stores selects exactly those values
-            # in the same order.
-            matrix[np.arange(width)[None, :] < widths[:, None]] = leaf
-        matrix = np.ascontiguousarray(
-            matrix.reshape(len(per_variant), EXPECTED_SAMPLES, width)
-        )
+            # Mixed widths need NaN padding on the right, which snputils also
+            # produces. Every sample of one variant shares that variant's width,
+            # and a file is usually one width with a few exceptions, so copy
+            # runs of equally wide variants in one slice each instead of looping
+            # per variant.
+            matrix = np.empty((variants, EXPECTED_SAMPLES, width), dtype=np.float32)
+            variant_widths = widths[::EXPECTED_SAMPLES]
+            variant_starts = offsets[::EXPECTED_SAMPLES]
+            boundaries = np.flatnonzero(np.diff(variant_widths)) + 1
+            run_starts = np.concatenate(([0], boundaries))
+            run_stops = np.concatenate((boundaries, [variants]))
+            for first, last in zip(run_starts, run_stops):
+                row_width = int(variant_widths[first])
+                begin = int(variant_starts[first])
+                end = begin + (last - first) * EXPECTED_SAMPLES * row_width
+                matrix[first:last, :, :row_width] = leaf[begin:end].reshape(
+                    last - first, EXPECTED_SAMPLES, row_width
+                )
+                if row_width < width:
+                    matrix[first:last, :, row_width:] = np.nan
+        if not matrix.flags.c_contiguous:
+            matrix = np.ascontiguousarray(matrix)
     samples = [str(name) for name in pb.get_metadata(scan)["header"]["sample_names"]]
     return matrix, positions, samples, f"lazy-streaming-t{THREAD_NUM}"
 
