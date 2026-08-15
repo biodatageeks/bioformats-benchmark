@@ -27,6 +27,7 @@ import time
 from pathlib import Path
 
 import numpy as np
+import pyarrow as pa
 
 READER = os.environ["BGEN_READER"].lower()
 MODE = os.environ.get("BGEN_MODE", "dosage").lower()
@@ -34,6 +35,7 @@ INPUT_PATH = Path(os.environ["BGEN_PATH"]).expanduser()
 EXPECTED_ROWS = int(os.environ["BGEN_EXPECTED_ROWS"])
 EXPECTED_SAMPLES = int(os.environ["BGEN_EXPECTED_SAMPLES"])
 THREAD_NUM = int(os.environ.get("THREAD_NUM", "1"))
+PROBABILITY_LAYOUT = os.environ.get("BGEN_PROBABILITY_LAYOUT", "nested").lower()
 
 if MODE not in {"dosage", "probabilities"}:
     raise ValueError(f"unsupported mode: {MODE!r}")
@@ -53,9 +55,15 @@ def _sample_path() -> str:
 
 def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
     genotype_output = "dosage" if MODE == "dosage" else "probability"
+    # The fixed layout drops the per-sample offsets but requires every variant
+    # to store the same number of states, so it is chosen explicitly rather than
+    # attempted and retried: a failed attempt costs a whole scan. snputils'
+    # native bulk probability reader carries the same requirement.
+    layout = PROBABILITY_LAYOUT if MODE == "probabilities" else "nested"
     scan = pb.scan_bgen(
         str(INPUT_PATH),
         genotype_output=genotype_output,
+        probability_layout=layout,
         use_zero_based=False,
         projection_pushdown=True,
     )
@@ -74,13 +82,24 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
         # widths can vary by row.
         per_variant = struct.field("GP")
         per_sample = per_variant.values
+        variants = len(per_variant)
+        if pa.types.is_fixed_size_list(per_sample.type):
+            # No offsets exist, so the values buffer already is the array.
+            width = per_sample.type.list_size
+            leaf = per_sample.values.to_numpy(zero_copy_only=False)
+            matrix = leaf.reshape(variants, EXPECTED_SAMPLES, width)
+            if not matrix.flags.c_contiguous:
+                matrix = np.ascontiguousarray(matrix)
+            samples = [
+                str(name) for name in pb.get_metadata(scan)["header"]["sample_names"]
+            ]
+            return matrix, positions, samples, f"lazy-streaming-{layout}-t{THREAD_NUM}"
         # Offsets stay int32: widening 63.7M of them to int64 costs more than
         # the comparison it feeds.
         offsets = np.asarray(per_sample.offsets)
         widths = np.diff(offsets)
         leaf = per_sample.values.to_numpy(zero_copy_only=False)
         width = int(widths.max())
-        variants = len(per_variant)
 
         if per_sample.null_count == 0 and int(widths.min()) == width:
             # Uniform width: the Arrow values buffer already is the array, so
@@ -111,7 +130,7 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
         if not matrix.flags.c_contiguous:
             matrix = np.ascontiguousarray(matrix)
     samples = [str(name) for name in pb.get_metadata(scan)["header"]["sample_names"]]
-    return matrix, positions, samples, f"lazy-streaming-t{THREAD_NUM}"
+    return matrix, positions, samples, f"lazy-streaming-{layout}-t{THREAD_NUM}"
 
 
 # --------------------------------------------------------------------------
