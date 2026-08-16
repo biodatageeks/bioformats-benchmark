@@ -55,10 +55,12 @@ def _sample_path() -> str:
 
 def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
     genotype_output = "dosage" if MODE == "dosage" else "probability"
-    # The fixed layout drops the per-sample offsets but requires every variant
-    # to store the same number of states, so it is chosen explicitly rather than
-    # attempted and retried: a failed attempt costs a whole scan. snputils'
-    # native bulk probability reader carries the same requirement.
+    # The fixed layout drops the per-sample offsets and NaN-pads a narrower
+    # sample to the file's widest, so it applies to mixed-width files too. It is
+    # still chosen explicitly rather than attempted and retried: a failed
+    # attempt costs a whole scan. snputils' native bulk probability reader
+    # requires uniform widths, which is why the two are compared on the
+    # unphased fixture as well.
     layout = PROBABILITY_LAYOUT if MODE == "probabilities" else "nested"
     scan = pb.scan_bgen(
         str(INPUT_PATH),
