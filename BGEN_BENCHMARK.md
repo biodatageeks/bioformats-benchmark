@@ -1,6 +1,6 @@
 # BGEN genotype-reader benchmark
 
-Run date: 2026-08-16 (re-run on the batch-buffer probability path, [datafusion-bio-formats#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226))
+Run date: 2026-08-16 (re-run on the batch-buffer probability path and balanced payload ranges, [datafusion-bio-formats#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226) and [#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227))
 
 This benchmark compares polars-bio, snputils, the `bgen` package, and pysnptools
 on BGEN genotype matrices. Every reader must produce the same ordered variant
@@ -16,15 +16,15 @@ fresh-process runs. Lower is better.
 
 | Reader | Time | Peak RSS | Speed relative to snputils |
 |---|---:|---:|---:|
-| **polars-bio**, 8 partitions | **7.475 s** | 23,052 MB | **1.886× faster** |
-| polars-bio, 4 partitions | 10.281 s | 22,817 MB | 1.371× faster |
-| bgen | 10.779 s | 21,797 MB | 1.308× faster |
-| snputils | 14.098 s | 21,952 MB | 1.000× |
-| polars-bio, 2 partitions | 14.837 s | 22,459 MB | 0.950× |
-| polars-bio, 1 partition | 27.837 s | 22,473 MB | 0.506× |
+| **polars-bio**, 8 partitions | **5.449 s** | 23,046 MB | **2.576× faster** |
+| polars-bio, 4 partitions | 8.739 s | 23,476 MB | 1.606× faster |
+| bgen | 10.686 s | 21,797 MB | 1.313× faster |
+| snputils | 14.036 s | 21,951 MB | 1.000× |
+| polars-bio, 2 partitions | 14.409 s | 23,658 MB | 0.974× |
+| polars-bio, 1 partition | 27.149 s | 22,238 MB | 0.517× |
 
-polars-bio is **1.886× faster at eight partitions**, a 47.0% reduction in wall
-time, roughly matches snputils at two, and is 1.98× slower at one: snputils' BGEN
+polars-bio is **2.576× faster at eight partitions**, a 61.2% reduction in wall
+time, roughly matches snputils at two, and is 1.93× slower at one: snputils' BGEN
 reader is a single-threaded C extension built around libdeflate, and polars-bio
 spends its extra time building Arrow arrays and handing them to Polars. The
 advantage here comes from partition parallelism, not from a faster per-core
@@ -37,12 +37,10 @@ before it is returned — but the decoder no longer stages each variant in its o
 allocation before copying it into the batch, which is where most of that
 overhead was.
 
-Scaling against one partition is 1.88× at two, 2.71× at four and 3.72× at eight.
-It is better here than on the slice below, and for a reason worth knowing: a
-payload range is capped at the smaller of `max_range_bytes` (16 MiB) and one
-partition's byte share. On a 160 MB file the 16 MiB cap binds and the scan gets
-about ten chunks to spread; on the 5 MB slice the partition share binds and it
-gets only `target + 1`. See [Partition scaling](#partition-scaling).
+Scaling against one partition is 1.88× at two, 3.11× at four and 4.98× at eight.
+Two partitions is the one point that did not improve when payload ranges were
+balanced, because at that width the 16 MiB `max_range_bytes` limit binds before
+the partition split does. See [Partition scaling](#partition-scaling).
 
 ### Chromosome slice, both workloads
 
@@ -52,17 +50,18 @@ three fresh-process runs.
 
 | Reader | Dosage (phased) | Dosage (unphased) | Probabilities (phased) | Probabilities (unphased) |
 |---|---:|---:|---:|---:|
-| **polars-bio**, 8 partitions | **0.196 s** | **0.203 s** | **0.337 s** | **0.302 s** |
-| polars-bio, 4 partitions | 0.314 s | 0.323 s | 0.481 s | 0.441 s |
-| polars-bio, 2 partitions | 0.563 s | 0.555 s | 0.788 s | 0.745 s |
-| polars-bio, 1 partition | 0.653 s | 0.646 s | 0.925 s | 0.866 s |
-| snputils | 0.334 s | 0.335 s | 0.389 s | 0.381 s |
-| bgen | 0.279 s | 0.326 s | 0.329 s | 0.324 s |
-| pysnptools | unsupported | 1.918 s | unsupported | 2.201 s |
+| **polars-bio**, 8 partitions | **0.166 s** | **0.174 s** | **0.297 s** | **0.264 s** |
+| polars-bio, 4 partitions | 0.236 s | 0.229 s | 0.368 s | 0.332 s |
+| polars-bio, 2 partitions | 0.391 s | 0.396 s | 0.585 s | 0.540 s |
+| polars-bio, 1 partition | 0.636 s | 0.651 s | 0.922 s | 0.873 s |
+| snputils | 0.331 s | 0.333 s | 0.399 s | 0.374 s |
+| bgen | 0.282 s | 0.322 s | 0.333 s | 0.327 s |
+| pysnptools | unsupported | 1.926 s | unsupported | 2.184 s |
 
-polars-bio is fastest at eight partitions in every column: 1.70× snputils on
-phased dosage, 1.65× on unphased dosage, 1.15× on phased probabilities and 1.26×
-on unphased probabilities.
+polars-bio is fastest at eight partitions in every column: 1.99× snputils on
+phased dosage, 1.91× on unphased dosage, 1.34× on phased probabilities and 1.42×
+on unphased probabilities. It is also ahead of the `bgen` package in all four,
+which it was not before payload ranges were balanced.
 
 Probabilities are measured through the fixed-width layout, which emits no
 per-sample list offsets and NaN-pads a narrower sample to the file's widest.
@@ -70,11 +69,9 @@ That layout previously rejected the phased file outright, because plink2 leaves
 461 of its 25,000 variants unphased and the widths therefore mix; the phased
 column above was 1.296 s through the nested layout before it was supported.
 
-**The result is still reported per workload,** and the honest comparison is
-against the `bgen` package rather than only against snputils: polars-bio passes
-it on unphased probabilities and remains marginally behind it on the phased file
-(0.337 s against 0.329 s). At one partition polars-bio is slower than every
-other reader in every column; the advantage is partition parallelism.
+**The result is still reported per workload.** At one partition polars-bio is
+slower than every other reader in every column; the advantage is partition
+parallelism, and the table shows that point too.
 
 pysnptools cannot read the phased files at all: `pysnptools.distreader.Bgen`
 asserts unphased input. Its cells are recorded as unsupported rather than slow.
@@ -85,25 +82,29 @@ Speedup against the same reader at one partition, from the table above:
 
 | Partitions | Dosage (phased) | Dosage (unphased) | Probabilities (phased) | Probabilities (unphased) |
 |---:|---:|---:|---:|---:|
-| 2 | 1.16× | 1.16× | 1.17× | 1.16× |
-| 4 | 2.08× | 2.00× | 1.92× | 1.96× |
-| 8 | 3.33× | 3.18× | 2.75× | 2.87× |
+| 2 | 1.63× | 1.64× | 1.58× | 1.62× |
+| 4 | 2.69× | 2.84× | 2.51× | 2.63× |
+| 8 | 3.83× | 3.74× | 3.10× | 3.31× |
 
-**The two-partition step is worth 1.16×, not 2×, and the cause is planning
-rather than decoding.** BGEN payload ranges are capped at one partition's byte
-share, and a variant's payload cannot be split across ranges, so a scan is
-handed `target_partitions + 1` indivisible chunks — which never divide evenly
-into `target_partitions`. One partition always takes two chunks. At two
-partitions the planned split is 87.2% / 12.8%, and 1 / 0.872 = 1.15.
+Scaling is sub-linear and the table says so. Two partitions return about 1.6×,
+eight about 3.1–3.8× on this 4.9 MB slice, against 4.98× for the 160 MB whole
+chromosome above — a small file amortises the fixed per-scan cost over less
+work.
 
-Measured directly on the Rust scan, capping ranges at a fixed 128 KiB instead
-and changing nothing else: two partitions go from 1.16× to 1.82×, four from
-2.10× to 3.21×, eight from 3.64× to 5.09×, with one partition unchanged. The
-decoder is not the ceiling here; the largest partition is.
+**These figures used to be far worse, for a reason worth recording.** A BGEN
+payload range was capped at one partition's byte share, and a variant's payload
+cannot be split across ranges, so a scan was handed `target_partitions + 1`
+indivisible chunks — which never divide evenly into `target_partitions`. One
+partition always took two. At two partitions the planned split was 87.2% / 12.8%,
+and 1 / 0.872 = 1.15, which was exactly the measured two-partition speedup: 1.16×
+in every column. Ranges now target several per partition, bounded below so a scan
+does not issue reads far under a useful object size
+([#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227)).
 
-That is left as a known limitation rather than tuned away, because finer ranges
-mean more object-store requests — cheap against a local file, expensive against
-remote storage — so the fix is a trade-off that deserves its own change.
+The remaining ceiling is not the decoder. Measured on the Rust scan alone, eight
+partitions reach 4.63× of one, while the end-to-end figures above reach 3.1–3.8×;
+the difference is the fixed Python-side cost of handing the result to NumPy,
+which does not parallelise.
 
 ## Zero mismatches
 
@@ -218,7 +219,7 @@ Reader-native execution is preserved where possible:
 | Whole chromosome SHA-256 | `867e8bf0cc162ab0…` |
 | Source callset | IGSR/1000 Genomes GRCh38 phased chromosome 22, the same VCF used by the BCF benchmark |
 | Export | `plink2 --export bgen-1.2 bits=8`, Layout 2, zlib |
-| datafusion-bio-formats | [`cdcad67`](https://github.com/biodatageeks/datafusion-bio-formats/commit/cdcad67), branch `agent/bgen-probability-perf` ([#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226), not yet merged) |
+| datafusion-bio-formats | [`cbbb489`](https://github.com/biodatageeks/datafusion-bio-formats/commit/cbbb489), branch `agent/bgen-range-granularity` ([#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227) stacked on [#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226); neither merged yet) |
 | polars-bio branch build | [`ad93755`](https://github.com/biodatageeks/polars-bio/commit/ad93755), built against the provider commit above |
 | snputils | [`482c6d1`](https://github.com/AI-sandbox/snputils/commit/482c6d1dfd6c4001935dfaec81ae01a5e0ec3e53) |
 | bgen / pysnptools | 1.10.0 / 0.5.15 |
