@@ -6,9 +6,11 @@ the `datafusion-bio-format-pgen` provider. This compares it against
 [pgenlib](https://pypi.org/project/Pgenlib/), PLINK 2's own reference reader,
 on the same chromosome 22 callset the BCF and BGEN benchmarks use.
 
-**polars-bio is faster than snputils on the dosage workload and still slower
-than pgenlib.** The remaining gap is understood and mechanical; the causes are
-in [Why polars-bio is slower](#why-polars-bio-is-slower).
+**At equal core count polars-bio is the slowest of the three.** pgenlib and
+snputils are single-threaded, so only the one-partition polars-bio rows are
+like-for-like; its eight-partition rows spend eight cores to close a gap the
+others do not have. The remaining gap is understood and mechanical; the causes
+are in [Why polars-bio is slower](#why-polars-bio-is-slower).
 
 ## Two workloads, because "dosage" is overloaded
 
@@ -48,12 +50,23 @@ fresh-process runs. Lower is better.
 
 ### Dosage workload — `float32`, 10.13 GB output
 
-| Reader | Time | Peak RSS | vs pgenlib | vs snputils |
-|---|---:|---:|---:|---:|
-| pgenlib `read_dosages_list` | **1.853 s** | 12,382 MB | 1.00× | 1.86× faster |
-| polars-bio, 8 partitions | **2.934 s** | 18,299 MB | 0.63× | **1.17× faster** |
-| snputils (int8 read + widen) | 3.446 s | 14,681 MB | 0.54× | 1.00× |
-| polars-bio, 1 partition | 6.190 s | 17,767 MB | 0.30× | 0.56× |
+Single-threaded readers first; these are the comparable rows.
+
+| Reader | Threads | Time | Peak RSS | vs pgenlib | vs snputils |
+|---|---:|---:|---:|---:|---:|
+| pgenlib `read_dosages_list` | 1 | **1.853 s** | 12,382 MB | 1.00× | 1.86× faster |
+| snputils (int8 read + widen) | 1 | 3.446 s | 14,681 MB | 0.54× | 1.00× |
+| **polars-bio** | **1** | **6.190 s** | 17,767 MB | **0.30×** | **0.54×** |
+| polars-bio | 8 | 2.934 s | 18,299 MB | 0.63× | 1.17× |
+
+At one partition polars-bio is 3.3× slower than pgenlib and 1.8× slower than
+snputils. The eight-partition row is included because partition parallelism is
+what polars-bio offers and the others do not, but it is not a like-for-like
+comparison and should not be read as one.
+
+Note that snputils has no native float dosage reader, so 1.75 s of its 3.446 s
+is the int8→float32 widening this workload charges it; its native int8 decode
+is the 1.696 s in the hardcall table below.
 
 ### Hardcall workload — `int8`, 2.53 GB output
 
@@ -68,9 +81,9 @@ polars-bio has no int8 representation, so this workload charges it a full
 `float32` materialization plus a narrowing pass. The dosage table above is the
 one to read for decode performance.
 
-polars-bio is **1.58× slower than pgenlib** on the dosage workload at eight
-partitions and 1.17× *faster* than snputils there. pgenlib is single-threaded,
-so the like-for-like row is one partition, where polars-bio is **3.3× slower**.
+Every earlier revision of this document compared polars-bio at eight
+partitions against single-threaded readers and drew a conclusion from it. That
+is corrected above: the comparison is at one partition.
 
 ### Decode only
 
