@@ -187,6 +187,16 @@ differ bitwise, not cells that differ by more than an epsilon.
 polars-bio is bit-identical to pgenlib at every partition count in both
 workloads.
 
+**snputils is not an independent check.** Its PGEN reader wraps pgenlib and
+calls `read_list` directly, so `snputils vs pgenlib` is close to a tautology
+and is reported only for completeness. The load-bearing comparison is
+`polars-bio vs pgenlib`, which is a genuinely separate implementation — the
+provider decodes the format in Rust and shares no code with PLINK 2.
+
+The same fact explains the timings: snputils is pgenlib plus a NumPy wrapper,
+so it is not a third implementation outperforming polars-bio, and its ~0.87 s
+overhead over raw pgenlib on the same call is the wrapper.
+
 ### The comparison can fail
 
 A zero-difference result is worthless if the comparison cannot report a
