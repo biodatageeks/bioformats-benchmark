@@ -180,6 +180,46 @@ if [ ! -f "$BGEN_FULL" ]; then
         --out "${BGEN_DIR}/chr22.full"
 fi
 
+# === PGEN fixtures ===
+#
+# The PGEN reader benchmark uses the same chromosome 22 callset as the BCF and
+# BGEN benchmarks, so all three compare the same variants and sample order.
+# Unlike BGEN these are hardcalls: --make-pgen writes the 2-bit-packed genotype
+# block plus the .pvar/.psam companions the readers discover by basename.
+PGEN_DIR="/Users/mwiewior/research/data/PGEN"
+PGEN_SLICE="${PGEN_DIR}/chr22.first-25000.pgen"
+PGEN_FULL="${PGEN_DIR}/chr22.full.pgen"
+
+if [ ! -f "$PGEN_SLICE" ] || [ ! -f "$PGEN_FULL" ]; then
+    command -v plink2 >/dev/null || {
+        echo "plink2 is required to create the PGEN benchmark fixtures." >&2
+        echo "Download it from https://www.cog-genomics.org/plink/2.0/" >&2
+        exit 1
+    }
+    mkdir -p "$PGEN_DIR"
+fi
+
+if [ ! -f "$PGEN_SLICE" ]; then
+    echo "=== Exporting PGEN slice ==="
+    plink2 --vcf "$GENOTYPE_VCF_FILE" --make-pgen \
+        --out "${PGEN_DIR}/chr22.first-25000"
+fi
+if [ ! -f "$PGEN_FULL" ]; then
+    echo "=== Exporting whole-chromosome PGEN ==="
+    plink2 --vcf "$BCF_VCF_FILE" --make-pgen --out "${PGEN_DIR}/chr22.full"
+fi
+
+# The readers discover .pvar and .psam from the .pgen basename, so a fileset
+# missing a companion fails at open rather than mid-scan. Check here instead.
+for pgen_prefix in "${PGEN_DIR}/chr22.first-25000" "${PGEN_DIR}/chr22.full"; do
+    for companion in pvar psam; do
+        if [ ! -f "${pgen_prefix}.${companion}" ]; then
+            echo "Missing PGEN companion: ${pgen_prefix}.${companion}" >&2
+            exit 1
+        fi
+    done
+done
+
 # === FASTQ: EBI SRA ===
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"
 FASTQ_FILE="${FASTQ_DIR}/ERR194158.fastq.gz"

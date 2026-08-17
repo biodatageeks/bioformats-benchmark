@@ -53,6 +53,12 @@ compares the same variants and sample order as the VCF/BCF one. See
 [BGEN_BENCHMARK.md](BGEN_BENCHMARK.md) for the results, which include an
 element-wise check against the independent `bgen` package.
 
+The PGEN fixtures come from that same callset via `plink2 --make-pgen`, so the
+PGEN benchmark compares the same variants and sample order again. See
+[PGEN_BENCHMARK.md](PGEN_BENCHMARK.md) for the results, which include an
+element-wise check against pgenlib, PLINK 2's reference reader, and a self-test
+proving that check can fail.
+
 The cross-reader VCF/BCF matrix uses rows in
 `chr22:10516173-16717478` from that same callset: exactly 25,000 variants,
 2,548 samples, and 63,700,000 dosage cells. `setup.sh` derives both indexed
@@ -141,6 +147,12 @@ output-equivalent pysam/PyVCF3/cyvcf2/Oxbow/polars-bio/snputils comparison, and
 [BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head full-cohort scaling and
 correctness proof.
 
+polars-bio must be built release with `-C target-cpu=native` before any timing
+run. A plain `maturin develop` is a debug build and measured 3.1x slower on the
+PGEN slice — enough to invert the comparison against snputils. The PGEN runner
+records the loaded extension's size in its result metadata so the profile can be
+checked afterwards.
+
 ## Configuration
 
 - **Data file paths**: Defaults in `benchmarks/common.py`; BCF is overridable with `BCF_PATH`
@@ -156,9 +168,11 @@ Results are written to:
 - `results/benchmark_results.json` — raw benchmark data (grouped by format and variant)
 - `results/bcf_benchmark_t{1,2,4,8}.json` — BCF raw runs, environment metadata, and summary statistics for the scaling sweep
 - `results/genotype_reader_benchmark.json` — t=1 VCF/BCF reader matrix with raw timing/RSS, medians, and equivalence hashes
+- `results/pgen_reader_benchmark.json`, `results/pgen_reader_benchmark_full_cohort.json` — PGEN reader matrix with raw timing/RSS, medians, equivalence hashes, the polars-bio build fingerprint, and the element-wise pgenlib verification
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 - `GENOTYPE_READER_BENCHMARK.md` — tracked output-equivalent t=1 VCF/BCF reader comparison
+- `PGEN_BENCHMARK.md` — tracked PGEN polars-bio/snputils/pgenlib comparison
 
 ## Project Structure
 
