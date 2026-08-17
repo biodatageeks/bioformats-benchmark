@@ -15,16 +15,17 @@ and conflating them produces a meaningless comparison:
     different track from the dosage one. pgenlib reads it with ``read_list``
     and snputils with ``genotype_mode="dosage"`` — note that snputils' name for
     this workload is "dosage" even though the values are hardcall counts.
-    polars-bio has no int8 representation, so its ``DS`` output is cast, and
-    the cast is charged to polars-bio.
+    polars-bio emits it natively as ``ALT_COUNT``, one byte per genotype.
 
 On a fileset with no dosage track the two workloads produce numerically equal
 values, which is why they can be cross-checked; they are still distinct
 operations with distinct costs.
 
-Each reader uses its own fastest native API. Earlier revisions of this harness
-used non-native paths — a per-variant pgenlib loop and snputils' 3-D allele
-reader — which understated both by 5.5x and 27x respectively.
+Each reader uses its own fastest native API: ``pgenlib.read_list`` /
+``read_dosages_list``, ``snputils.read_pgen``, and ``polars_bio``'s
+``read_pgen_matrix``. Earlier revisions of this harness used non-native paths — a
+per-variant pgenlib loop, snputils' 3-D allele reader, and polars-bio's DataFrame
+path — which understated them by 5.5x, 27x, and 1.7x respectively.
 """
 
 from __future__ import annotations
@@ -80,44 +81,27 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str]]:
     import polars_bio as pb
 
     pb.set_option("datafusion.execution.target_partitions", str(THREAD_NUM))
-    # Fewer, larger record batches cut the cost of consolidating the scan's
-    # chunked output into one contiguous array: 2.23s -> 1.39s on the whole
-    # chromosome. This is a caller-tunable DataFusion option, so polars-bio is
-    # measured with it set, the same way every other reader gets its own
-    # fastest native path.
-    pb.set_option("datafusion.execution.batch_size", "262144")
     # ALT_COUNT is polars-bio's native int8 hardcall column; DS is its float32
     # dosage column. Using each for its own workload keeps this comparable to
     # pgenlib's read_list / read_dosages_list split.
     field = "ALT_COUNT" if MODE == "hardcall" else "DS"
-    frame = (
-        pb.scan_pgen(
-            str(INPUT_PATH),
-            genotype_fields=[field],
-            use_zero_based=False,
-            projection_pushdown=True,
-        )
-        .select("start", "genotypes")
-        .collect()
+    # read_pgen_matrix is polars-bio's dense-matrix path, the counterpart of
+    # pgenlib's read_list/read_dosages_list: it streams the scan's batches into
+    # one preallocated array. Going through read_pgen instead costs a second
+    # full copy of the values, because the batches are first consolidated into a
+    # contiguous Arrow buffer and only then viewed as an array — 3.2s and
+    # 22.3 GB against 1.9s and 10.9 GB for the DS workload.
+    matrix = pb.read_pgen_matrix(
+        str(INPUT_PATH),
+        field=field,
+        missing=MISSING_I8 if MODE == "hardcall" else np.nan,
+        use_zero_based=False,
     )
-    positions = frame["start"].to_numpy().astype(np.int64, copy=False)
-    table = frame.select("genotypes").to_arrow().column("genotypes").combine_chunks()
-    struct = table.chunk(0) if hasattr(table, "chunk") else table
-    values = struct.field(field)
-    inner = values.flatten()
-    flat = inner.to_numpy(zero_copy_only=False)
-    if MODE == "hardcall":
-        narrowed = np.ascontiguousarray(flat, dtype=np.int8)
-        if inner.null_count:
-            narrowed[np.asarray(inner.is_null())] = MISSING_I8
-        matrix = narrowed.reshape(len(values), -1)
-    else:
-        matrix = np.ascontiguousarray(flat, dtype=np.float32).reshape(len(values), -1)
-
-    header = pb.get_metadata(pb.scan_pgen(str(INPUT_PATH), genotype_fields=[field]))[
-        "header"
-    ]
-    return matrix, positions, list(header["sample_names"])
+    return (
+        matrix.values,
+        matrix.positions.astype(np.int64, copy=False),
+        list(matrix.sample_names),
+    )
 
 
 def _read_snputils() -> tuple[np.ndarray, np.ndarray, list[str]]:
@@ -169,6 +153,19 @@ READERS = {
     "snputils": _read_snputils,
     "pgenlib": _read_pgenlib,
 }
+# The extension module each reader loads, imported before the clock starts.
+#
+# Every reader imports its library inside its own read function, so each used to
+# be charged for its own module load. That is a one-time process cost paid once
+# however many filesets are then read, and the magnitudes are not comparable:
+# polars-bio's extension is ~228 MB and takes ~0.46s to import, against ~0.03s
+# for pgenlib and snputils. Charging it to a single ~1.8s read measures startup,
+# not throughput, so it is warmed here and reported separately instead.
+MODULES = {
+    "polars-bio": "polars_bio",
+    "snputils": "snputils",
+    "pgenlib": "pgenlib",
+}
 MODES = ("dosage", "hardcall")
 DTYPES = {"dosage": np.float32, "hardcall": np.int8}
 
@@ -198,6 +195,12 @@ def _peak_rss_mb() -> float:
 def main() -> None:
     if MODE not in MODES:
         raise SystemExit(f"unknown mode {MODE!r}; expected one of {MODES}")
+
+    import importlib
+
+    import_start = time.perf_counter()
+    importlib.import_module(MODULES[READER])
+    import_seconds = time.perf_counter() - import_start
 
     start = time.perf_counter()
     matrix, positions, samples = read()
@@ -239,6 +242,8 @@ def main() -> None:
         "output_bytes": int(matrix.nbytes),
         "dtype": str(matrix.dtype),
         "time_seconds": round(elapsed, 4),
+        # Recorded, not charged: see MODULES.
+        "import_seconds": round(import_seconds, 4),
         "peak_rss_mb": round(_peak_rss_mb(), 1),
         "value_sha256": _hash_rows_in_order(matrix, order),
         "position_sha256": hashlib.sha256(
