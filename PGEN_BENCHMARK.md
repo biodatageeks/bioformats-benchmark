@@ -112,56 +112,52 @@ PGEN panel shows snputils and pgenlib within noise of each other on hardcalls
 
 ## Why polars-bio is slower
 
-Measured decomposition of the dosage workload at one partition:
+The per-cell and per-variant overheads described in earlier revisions of this
+document — a `ListBuilder::append_option` per genotype cell, a per-variant
+`Vec<Option<f32>>`, dosage derived through an intermediate allele pair — were
+fixed in [#232](https://github.com/biodatageeks/datafusion-bio-formats/pull/232)
+and are gone. What remains, measured at one partition:
 
 | Stage | Time |
 |---|---:|
 | Planning, PVAR/PSAM parsing, metadata columns | 0.48 s |
-| Genotype decode + Arrow array construction | ~9.6 s |
-| `combine_chunks` — concatenating 189 batches into one 10.13 GB array | 2.37 s |
-| **Total** | **~12.3 s** |
-| pgenlib, one pass into a preallocated buffer, zero copies | 1.87 s |
+| Genotype decode + Arrow array construction | 4.13 s |
+| Consolidating 189 batches into one 10.13 GB array | ~1.4 s |
+| **Total** | **~6.2 s** |
+| pgenlib, one pass into a preallocated buffer | 1.85 s |
 
-Three mechanical causes, in order of size:
+Two causes, in order of size:
 
-**1. Per-cell Arrow builder calls.** `build_ds_array` appends one value at a
-time:
+**1. LD reconstruction writes a code per sample that a second pass reads back.**
+`plink2 --make-pgen` writes LD-compressed records — on this fixture 81% are
+`record_type=0x14` and only 3.8% are eligible for the dense decode. Those
+records go through `decode_main_into`, which reconstructs a `u8` category per
+sample against the previous record, after which `append_codes` reads it and
+writes the `f32` output. pgenlib fuses the two. Profiling the Rust scan alone
+puts `decode_difflist`, `Cursor::varint`, and `decode_main_into` together at
+roughly a fifth of samples, with per-variant `RecordIndex::record` lookups
+another tenth, and no single dominant hotspot beyond that. Fusing decode and
+emit means restructuring the decode core around a sink that writes the final
+representation directly, while still retaining codes for the next record's LD
+base — larger than a perf patch.
 
-```rust
-for row in rows {
-    for value in values(decoded) {
-        builder.values().append_option(*value);   // 2.53 billion calls
-    }
-    builder.append(true);
-}
-```
-
-Each call carries a null-check branch, a validity-bitmap bit push, and a
-capacity-checked value push: ~3.8 ns/cell against pgenlib's ~0.6 ns/cell. The
-GT path already uses a slice append (`append_slice(call)`), makes half as many
-calls, and is 1.75 s faster for the same output size — the cost tracks call
-count, not bytes.
-
-**2. Dosage derived through an intermediate allele pair.** For a hardcall
-fileset each cell goes 2-bit → category → `[u16; 2]` → iterator filter/count →
-`f32`:
-
-```rust
-fn alt1_hardcall_dosage(call: &[u16; 2]) -> f32 {
-    call.iter().filter(|&&allele| allele == 1).count() as f32
-}
-```
-
-pgenlib goes 2-bit → table lookup → `f32`.
-
-**3. A concatenation pgenlib never performs.** polars-bio emits 189 batches;
-one contiguous NumPy array requires concatenating them, which copies 10.13 GB.
-`batch_soft_byte_limit` does not change this. Because the decode parallelizes
-but this copy does not, partition scaling saturates near 3× rather than
-approaching 8×.
+**2. One materialization pass pgenlib never performs.** polars-bio emits
+batches; a single contiguous NumPy array requires consolidating them, copying
+10.13 GB at roughly memory bandwidth. Writing chunks into a preallocated array
+instead of `combine_chunks` measures the same (1.376 s vs 1.393 s), so this is
+a floor rather than something to tune. A larger `datafusion.execution.batch_size`
+reduces it (2.23 s → 1.39 s), which is why the harness sets it. **This cost
+does not exist for streaming or SQL consumers** — it is created by the
+benchmark's requirement for one contiguous array, which pgenlib satisfies for
+free by decoding straight into the caller's buffer.
 
 Peak RSS follows from the same architecture: polars-bio holds the Arrow buffer
-and the NumPy output simultaneously, 19.2 GB against pgenlib's 12.4 GB.
+and the NumPy output simultaneously, 17.8 GB against pgenlib's 12.4 GB.
+
+Whether the remaining gap is worth closing depends on the use case. For a query
+engine the decode feeds Arrow, and the second cost never appears; for a
+whole-matrix export, pgenlib is the better tool and is what this benchmark
+measures against.
 
 ## Zero mismatches
 
