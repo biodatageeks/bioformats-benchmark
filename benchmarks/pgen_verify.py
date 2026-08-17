@@ -28,7 +28,11 @@ def _load(reader: str) -> np.ndarray:
 
 
 def _compare(left: np.ndarray, right: np.ndarray) -> dict:
-    both_missing = np.isnan(left) & np.isnan(right)
+    if np.issubdtype(left.dtype, np.floating):
+        both_missing = np.isnan(left) & np.isnan(right)
+    else:
+        # The int8 workload uses PLINK 2's -9 sentinel rather than NaN.
+        both_missing = (left < 0) & (right < 0)
     differing = (left != right) & ~both_missing
     count = int(np.count_nonzero(differing))
     if count:
@@ -62,10 +66,12 @@ def main() -> None:
     if left.shape != right.shape:
         raise AssertionError(f"shape mismatch: {left.shape} != {right.shape}")
 
-    bitwise = int(np.count_nonzero(left.view(np.uint32) != right.view(np.uint32)))
+    view = np.uint32 if left.dtype.itemsize == 4 else np.uint8
+    bitwise = int(np.count_nonzero(left.view(view) != right.view(view)))
     result = {
         "left": left_name,
         "right": right_name,
+        "mode": os.environ.get("PGEN_MODE", "dosage"),
         "path": str(Path(os.environ["PGEN_PATH"]).resolve()),
         "cells": int(left.size),
         "bitwise_differences": bitwise,
@@ -79,7 +85,7 @@ def main() -> None:
         probe = left.copy()
         flat = probe.reshape(-1)
         index = flat.size // 2
-        flat[index] = 0.0 if not np.isnan(flat[index]) and flat[index] != 0.0 else 1.0
+        flat[index] = 1 if flat[index] != 1 else 2
         detected = _compare(probe, right)["value_differences"]
         result["selftest_single_cell_detected"] = int(detected)
         if detected < 1:

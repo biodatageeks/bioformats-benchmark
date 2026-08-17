@@ -1,12 +1,30 @@
-"""Read one PLINK 2 fileset into a canonical float32 ALT-dosage matrix.
+"""Read one PLINK 2 fileset into a canonical genotype matrix.
 
-Every reader materializes the same array from the same `.pgen`, so a completed
-run is evidence that the readers agree, not just that they finished. One reader
-per child process, so a measurement never observes another reader's warm state.
+Two workloads, because "dosage" means different things in different libraries
+and conflating them produces a meaningless comparison:
 
-The matrix is ALT allele count per sample per variant: 0, 1, or 2 for a diploid
-hardcall, NaN where the call is missing. PLINK 2 encodes missing as -9; that is
-normalized to NaN here so every reader's missing cells compare equal.
+``dosage``
+    ALT dosage as ``float32``. This is PGEN's dosage track, which stores
+    ``uint16/16384`` and is genuinely fractional — a real dosage fileset holds
+    values like 0.125. polars-bio emits it as ``DS``; pgenlib reads it with
+    ``read_dosages_list``. snputils has no native float dosage reader, so its
+    int8 hardcalls are cast, and the cast is charged to snputils.
+
+``hardcall``
+    ALT allele count as ``int8``: 0, 1, 2, or -9 for missing. This is a
+    different track from the dosage one. pgenlib reads it with ``read_list``
+    and snputils with ``genotype_mode="dosage"`` — note that snputils' name for
+    this workload is "dosage" even though the values are hardcall counts.
+    polars-bio has no int8 representation, so its ``DS`` output is cast, and
+    the cast is charged to polars-bio.
+
+On a fileset with no dosage track the two workloads produce numerically equal
+values, which is why they can be cross-checked; they are still distinct
+operations with distinct costs.
+
+Each reader uses its own fastest native API. Earlier revisions of this harness
+used non-native paths — a per-variant pgenlib loop and snputils' 3-D allele
+reader — which understated both by 5.5x and 27x respectively.
 """
 
 from __future__ import annotations
@@ -22,65 +40,97 @@ from pathlib import Path
 import numpy as np
 
 READER = os.environ["PGEN_READER"].lower()
+MODE = os.environ.get("PGEN_MODE", "dosage").lower()
 INPUT_PATH = Path(os.environ["PGEN_PATH"]).expanduser()
 EXPECTED_ROWS = int(os.environ["PGEN_EXPECTED_ROWS"])
 EXPECTED_SAMPLES = int(os.environ["PGEN_EXPECTED_SAMPLES"])
 THREAD_NUM = int(os.environ.get("THREAD_NUM", "1"))
+
+# PLINK 2's missing sentinel, used by the int8 workload. The float32 workload
+# uses NaN, because -9 is a valid-looking float and NaN is not.
+MISSING_I8 = np.int8(-9)
 
 
 def _companion(suffix: str) -> Path:
     return INPUT_PATH.with_suffix(suffix)
 
 
+def _prefix() -> str:
+    return str(INPUT_PATH)[: -len(".pgen")]
+
+
+def _positions_from_pvar() -> np.ndarray:
+    return np.array(
+        [
+            int(line.split("\t")[1])
+            for line in _companion(".pvar").read_text().splitlines()
+            if line and not line.startswith("#")
+        ],
+        dtype=np.int64,
+    )
+
+
+def _samples_from_psam() -> list[str]:
+    lines = [line for line in _companion(".psam").read_text().splitlines() if line]
+    iid_column = lines[0].lstrip("#").split("\t").index("IID")
+    return [line.split("\t")[iid_column] for line in lines[1:]]
+
+
 def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str]]:
     import polars_bio as pb
 
     pb.set_option("datafusion.execution.target_partitions", str(THREAD_NUM))
-    scan = pb.scan_pgen(
-        str(INPUT_PATH),
-        genotype_fields=["GT"],
-        use_zero_based=False,
-        projection_pushdown=True,
+    frame = (
+        pb.scan_pgen(
+            str(INPUT_PATH),
+            genotype_fields=["DS"],
+            use_zero_based=False,
+            projection_pushdown=True,
+        )
+        .select("start", "genotypes")
+        .collect()
     )
-    frame = scan.select("start", "genotypes").collect()
     positions = frame["start"].to_numpy().astype(np.int64, copy=False)
     table = frame.select("genotypes").to_arrow().column("genotypes").combine_chunks()
     struct = table.chunk(0) if hasattr(table, "chunk") else table
+    ds = struct.field("DS")
+    flat = ds.flatten().to_numpy(zero_copy_only=False)
+    matrix = np.ascontiguousarray(flat, dtype=np.float32).reshape(len(ds), -1)
+    if MODE == "hardcall":
+        # polars-bio has no int8 representation; the narrowing is its cost.
+        missing = np.isnan(matrix)
+        narrowed = matrix.astype(np.int8)
+        narrowed[missing] = MISSING_I8
+        matrix = np.ascontiguousarray(narrowed)
 
-    gt = struct.field("GT")
-    samples_per_row = gt.flatten()  # FixedSizeList<uint16, 2>, one per sample
-    alleles = samples_per_row.flatten().to_numpy(zero_copy_only=False)
-    # Sum the two allele slots straight into the float32 output. The strided
-    # views avoid materializing an intermediate pairs array, which at
-    # whole-chromosome scale is another 10 GB on top of the Arrow buffer and
-    # the output, and would be charged to polars-bio as reader overhead.
-    dosage = np.add(alleles[0::2], alleles[1::2], dtype=np.float32)
-    if samples_per_row.null_count:
-        dosage[np.asarray(samples_per_row.is_null()).reshape(-1)] = np.nan
-    matrix = np.ascontiguousarray(dosage.reshape(len(gt), -1))
-
-    header = pb.get_metadata(pb.scan_pgen(str(INPUT_PATH), genotype_fields=["GT"]))[
+    header = pb.get_metadata(pb.scan_pgen(str(INPUT_PATH), genotype_fields=["DS"]))[
         "header"
     ]
     return matrix, positions, list(header["sample_names"])
 
 
 def _read_snputils() -> tuple[np.ndarray, np.ndarray, list[str]]:
-    from snputils import PGENReader
+    import snputils
 
-    obj = PGENReader(str(INPUT_PATH)).read()
-    calls = np.asarray(obj.calldata_gt)
-    if calls.ndim == 3:
-        # (variants, samples, ploidy) per-haplotype calls.
-        missing = (calls < 0).any(axis=2)
-        dosage = calls.sum(axis=2).astype(np.float32)
+    obj = snputils.read_pgen(
+        _prefix(),
+        genotype_mode="dosage",
+        fields=["GT"],
+        chromosome_ploidy="autosomal",
+    )
+    calls = np.asarray(obj.genotypes)
+    if MODE == "dosage":
+        # snputils has no native float dosage reader; the widening is its cost.
+        widened = calls.astype(np.float32)
+        widened[calls < 0] = np.nan
+        matrix = np.ascontiguousarray(widened)
     else:
-        missing = calls < 0
-        dosage = calls.astype(np.float32)
-    dosage[missing] = np.nan
-    matrix = np.ascontiguousarray(dosage, dtype=np.float32)
-    positions = np.asarray(obj.variants_pos).astype(np.int64, copy=False)
-    return matrix, positions, [str(name) for name in np.asarray(obj.samples)]
+        matrix = np.ascontiguousarray(calls, dtype=np.int8)
+    # fields=["GT"] is snputils' fastest genotype-only path but leaves the
+    # variant/sample tables unpopulated, so positions and identifiers come from
+    # the companions — the same helper pgenlib uses, so both reference readers
+    # are charged identically for them.
+    return matrix, _positions_from_pvar(), _samples_from_psam()
 
 
 def _read_pgenlib() -> tuple[np.ndarray, np.ndarray, list[str]]:
@@ -89,32 +139,18 @@ def _read_pgenlib() -> tuple[np.ndarray, np.ndarray, list[str]]:
     reader = pgenlib.PgenReader(str(INPUT_PATH).encode())
     rows = reader.get_variant_ct()
     cols = reader.get_raw_sample_ct()
-    counts = np.empty((rows, cols), dtype=np.int8)
-    buffer = np.empty(cols, dtype=np.int8)
-    for index in range(rows):
-        reader.read(index, buffer)
-        counts[index] = buffer
+    indices = np.arange(rows, dtype=np.uint32)
+    if MODE == "dosage":
+        matrix = np.empty((rows, cols), dtype=np.float32)
+        reader.read_dosages_list(indices, matrix)
+    else:
+        matrix = np.empty((rows, cols), dtype=np.int8)
+        reader.read_list(indices, matrix)
     reader.close()
 
-    dosage = counts.astype(np.float32)
-    dosage[counts < 0] = np.nan
-    matrix = np.ascontiguousarray(dosage)
-
-    # pgenlib reads only the .pgen, so positions and sample identifiers are
-    # parsed from the companions here. That keeps the oracle independent of
-    # polars-bio rather than borrowing its companion parsing.
-    positions = np.array(
-        [
-            int(line.split("\t")[1])
-            for line in _companion(".pvar").read_text().splitlines()
-            if line and not line.startswith("#")
-        ],
-        dtype=np.int64,
-    )
-    psam_lines = [line for line in _companion(".psam").read_text().splitlines() if line]
-    iid_column = psam_lines[0].lstrip("#").split("\t").index("IID")
-    samples = [line.split("\t")[iid_column] for line in psam_lines[1:]]
-    return matrix, positions, samples
+    # pgenlib reads only the .pgen, so positions and sample identifiers come
+    # from the companions. That keeps the oracle independent of polars-bio.
+    return matrix, _positions_from_pvar(), _samples_from_psam()
 
 
 READERS = {
@@ -122,6 +158,8 @@ READERS = {
     "snputils": _read_snputils,
     "pgenlib": _read_pgenlib,
 }
+MODES = ("dosage", "hardcall")
+DTYPES = {"dosage": np.float32, "hardcall": np.int8}
 
 
 def make_reader(name: str):
@@ -147,17 +185,21 @@ def _peak_rss_mb() -> float:
 
 
 def main() -> None:
+    if MODE not in MODES:
+        raise SystemExit(f"unknown mode {MODE!r}; expected one of {MODES}")
+
     start = time.perf_counter()
     matrix, positions, samples = read()
     elapsed = time.perf_counter() - start
 
+    expected_dtype = np.dtype(DTYPES[MODE])
     if matrix.shape != (EXPECTED_ROWS, EXPECTED_SAMPLES):
         raise AssertionError(
             f"expected {(EXPECTED_ROWS, EXPECTED_SAMPLES)}, got {matrix.shape}"
         )
-    if matrix.dtype != np.dtype(np.float32) or not matrix.flags.c_contiguous:
+    if matrix.dtype != expected_dtype or not matrix.flags.c_contiguous:
         raise AssertionError(
-            f"expected a C-contiguous float32 array, got {matrix.dtype}, "
+            f"expected a C-contiguous {expected_dtype} array, got {matrix.dtype}, "
             f"C-contiguous={matrix.flags.c_contiguous}"
         )
     if positions.shape != (EXPECTED_ROWS,):
@@ -169,17 +211,22 @@ def main() -> None:
 
     # A scan with more than one partition may emit rows out of source order, so
     # hash in position order and record separately whether the emission order
-    # actually descended. Hiding the reordering would make a real behavior
-    # invisible; sorting before hashing keeps the comparison meaningful.
+    # actually descended.
     order = np.argsort(positions, kind="stable")
     descents = int((np.diff(positions) < 0).sum())
+    missing = (
+        int(np.isnan(matrix).sum()) if MODE == "dosage" else int((matrix < 0).sum())
+    )
 
     result = {
         "reader": READER,
+        "mode": MODE,
         "threads": THREAD_NUM,
         "rows": int(matrix.shape[0]),
         "samples": int(matrix.shape[1]),
         "values": int(matrix.size),
+        "output_bytes": int(matrix.nbytes),
+        "dtype": str(matrix.dtype),
         "time_seconds": round(elapsed, 4),
         "peak_rss_mb": round(_peak_rss_mb(), 1),
         "value_sha256": _hash_rows_in_order(matrix, order),
@@ -188,7 +235,7 @@ def main() -> None:
         ).hexdigest(),
         "sample_sha256": hashlib.sha256("\n".join(samples).encode()).hexdigest(),
         "emission_order_descents": descents,
-        "missing_cells": int(np.isnan(matrix).sum()),
+        "missing_cells": missing,
     }
     print("PGEN_RESULT:" + json.dumps(result, sort_keys=True))
 

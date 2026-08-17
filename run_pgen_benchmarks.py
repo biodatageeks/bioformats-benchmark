@@ -29,6 +29,7 @@ from pathlib import Path
 import psutil
 
 READERS = ("polars-bio", "snputils", "pgenlib")
+MODES = ("dosage", "hardcall")
 # pgenlib is PLINK 2's own reference implementation and the oracle every other
 # reader is checked against.
 REFERENCE_READER = "pgenlib"
@@ -137,6 +138,7 @@ def run_verification(
     env: dict[str, str],
     left: str,
     right: str,
+    mode: str,
     timeout: int,
     selftest: bool,
 ) -> dict:
@@ -144,6 +146,7 @@ def run_verification(
     child_env.update(
         {
             "PGEN_READER": right,
+            "PGEN_MODE": mode,
             "PGEN_VERIFY_LEFT": left,
             "PGEN_VERIFY_RIGHT": right,
             "THREAD_NUM": "1",
@@ -227,6 +230,7 @@ def check_equivalence(runs: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument("--modes", nargs="+", choices=MODES, default=["dosage"])
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--timeout", type=int, default=3600)
     parser.add_argument("--readers", nargs="+", choices=READERS, default=list(READERS))
@@ -264,10 +268,11 @@ def main() -> None:
             parser.error(f"missing companion: {companion}")
 
     combinations = []
-    for reader in args.readers:
-        threads = args.polars_bio_partitions if reader == "polars-bio" else [1]
-        combinations.extend((reader, count) for count in threads)
-    raw = {f"{reader}:t{count}": [] for reader, count in combinations}
+    for mode in args.modes:
+        for reader in args.readers:
+            threads = args.polars_bio_partitions if reader == "polars-bio" else [1]
+            combinations.extend((mode, reader, count) for count in threads)
+    raw = {f"{mode}:{reader}:t{count}": [] for mode, reader, count in combinations}
 
     base_env = os.environ.copy()
     base_env.update(
@@ -291,14 +296,15 @@ def main() -> None:
         order = combinations[shift:] + combinations[:shift]
         if round_index % 2:
             order.reverse()
-        for order_index, (reader, threads) in enumerate(order, start=1):
+        for order_index, (mode, reader, threads) in enumerate(order, start=1):
             print(
                 f"Round {round_index + 1}/{args.runs}, "
-                f"{order_index}/{len(order)}: {reader} t={threads}",
+                f"{order_index}/{len(order)}: {mode} {reader} t={threads}",
                 flush=True,
             )
             env = base_env.copy()
             env["PGEN_READER"] = reader
+            env["PGEN_MODE"] = mode
             env["THREAD_NUM"] = str(threads)
             env["POLARS_MAX_THREADS"] = str(threads)
             env["RAYON_NUM_THREADS"] = str(threads)
@@ -306,57 +312,81 @@ def main() -> None:
             result["round"] = round_index + 1
             result["order_in_round"] = order_index
             print(
-                f"    {result['time_seconds']:.3f}s  rss={result['peak_rss_mb']:.0f}MB",
+                f"    {result['time_seconds']:.3f}s  rss={result['peak_rss_mb']:.0f}MB"
+                f"  [{result['dtype']}, {result['output_bytes'] / 1e9:.2f} GB]",
                 flush=True,
             )
-            raw[f"{reader}:t{threads}"].append(result)
+            raw[f"{mode}:{reader}:t{threads}"].append(result)
 
-    all_runs = [run for runs in raw.values() for run in runs]
-    equivalence = check_equivalence(all_runs)
+    # Equivalence is checked within a mode: the two modes deliberately produce
+    # different dtypes, so cross-mode hashes are not comparable.
+    equivalence = {}
+    for mode in args.modes:
+        mode_runs = [
+            run
+            for key, runs in raw.items()
+            if key.startswith(f"{mode}:")
+            for run in runs
+        ]
+        equivalence[mode] = check_equivalence(mode_runs)
 
     verifications = []
     if not args.skip_verification:
-        for reader in args.readers:
-            if reader == REFERENCE_READER:
-                continue
-            print(f"\nVerifying {reader} against {REFERENCE_READER}", flush=True)
-            verifications.append(
-                run_verification(
-                    args.python,
-                    base_env,
-                    reader,
-                    REFERENCE_READER,
-                    args.timeout,
-                    # Prove the comparison can fail, once, on the reader under test.
-                    selftest=(reader == "polars-bio"),
+        for mode in args.modes:
+            for reader in args.readers:
+                if reader == REFERENCE_READER:
+                    continue
+                print(
+                    f"\nVerifying {reader} against {REFERENCE_READER} ({mode})",
+                    flush=True,
                 )
-            )
+                verifications.append(
+                    run_verification(
+                        args.python,
+                        base_env,
+                        reader,
+                        REFERENCE_READER,
+                        mode,
+                        args.timeout,
+                        # Prove the comparison can fail, on the reader under test.
+                        selftest=(reader == "polars-bio"),
+                    )
+                )
         for check in verifications:
             if check["left"] == "polars-bio" and check["bitwise_differences"]:
                 raise AssertionError(
                     f"polars-bio differs from {check['right']} in "
-                    f"{check['bitwise_differences']} of {check['cells']} cells"
+                    f"{check['bitwise_differences']} of {check['cells']} cells "
+                    f"({check['mode']})"
                 )
 
-    results = {}
-    for reader, threads in combinations:
+    results = {mode: {} for mode in args.modes}
+    for mode, reader, threads in combinations:
         key = reader if reader != "polars-bio" else f"polars-bio-t{threads}"
-        results[key] = summarize(raw[f"{reader}:t{threads}"])
+        results[mode][key] = summarize(raw[f"{mode}:{reader}:t{threads}"])
 
+    # pgenlib is PLINK 2's own reader and the fastest baseline available, so it
+    # is the primary reference. snputils is reported alongside it because it is
+    # the library this comparison was originally written against.
     comparisons = {}
-    snputils = results.get("snputils")
-    if snputils is not None:
-        comparisons = {
+    for mode, readers in results.items():
+        baselines = {name: readers.get(name) for name in ("pgenlib", "snputils")}
+        comparisons[mode] = {
             key: {
-                "speedup_over_snputils": round(
-                    snputils["time_seconds_median"] / summary["time_seconds_median"], 3
-                ),
-                "peak_rss_ratio_vs_snputils": round(
-                    summary["peak_rss_mb_median"] / snputils["peak_rss_mb_median"], 3
-                ),
+                f"speedup_over_{name}": round(
+                    baseline["time_seconds_median"] / summary["time_seconds_median"], 3
+                )
+                for name, baseline in baselines.items()
+                if baseline is not None and key != name
             }
-            for key, summary in results.items()
-            if key != "snputils"
+            | {
+                f"peak_rss_ratio_vs_{name}": round(
+                    summary["peak_rss_mb_median"] / baseline["peak_rss_mb_median"], 3
+                )
+                for name, baseline in baselines.items()
+                if baseline is not None and key != name
+            }
+            for key, summary in readers.items()
         }
 
     payload = {
@@ -367,6 +397,7 @@ def main() -> None:
             "pvar_size_bytes": path.with_suffix(".pvar").stat().st_size,
             "rows": args.expected_rows,
             "samples": args.expected_samples,
+            "modes": args.modes,
             "polars_bio_partitions": args.polars_bio_partitions,
             "python": platform.python_version(),
             "platform": platform.platform(),
