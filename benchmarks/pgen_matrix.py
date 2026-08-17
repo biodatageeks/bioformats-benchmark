@@ -80,6 +80,12 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str]]:
     import polars_bio as pb
 
     pb.set_option("datafusion.execution.target_partitions", str(THREAD_NUM))
+    # Fewer, larger record batches cut the cost of consolidating the scan's
+    # chunked output into one contiguous array: 2.23s -> 1.39s on the whole
+    # chromosome. This is a caller-tunable DataFusion option, so polars-bio is
+    # measured with it set, the same way every other reader gets its own
+    # fastest native path.
+    pb.set_option("datafusion.execution.batch_size", "262144")
     frame = (
         pb.scan_pgen(
             str(INPUT_PATH),

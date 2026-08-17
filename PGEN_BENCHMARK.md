@@ -6,9 +6,9 @@ the `datafusion-bio-format-pgen` provider. This compares it against
 [pgenlib](https://pypi.org/project/Pgenlib/), PLINK 2's own reference reader,
 on the same chromosome 22 callset the BCF and BGEN benchmarks use.
 
-**polars-bio is currently slower than both.** The gap is understood and
-mechanical, not mysterious; the causes are in
-[Why polars-bio is slower](#why-polars-bio-is-slower).
+**polars-bio is faster than snputils on the dosage workload and still slower
+than pgenlib.** The remaining gap is understood and mechanical; the causes are
+in [Why polars-bio is slower](#why-polars-bio-is-slower).
 
 ## Two workloads, because "dosage" is overloaded
 
@@ -50,23 +50,61 @@ fresh-process runs. Lower is better.
 
 | Reader | Time | Peak RSS | vs pgenlib | vs snputils |
 |---|---:|---:|---:|---:|
-| pgenlib `read_dosages_list` | **1.874 s** | 12,382 MB | 1.00× | 1.87× faster |
-| snputils (int8 read + widen) | 3.498 s | 14,682 MB | 0.54× | 1.00× |
-| polars-bio, 8 partitions | 4.125 s | 19,224 MB | **0.45×** | 0.85× |
-| polars-bio, 1 partition | 12.319 s | 19,582 MB | 0.15× | 0.28× |
+| pgenlib `read_dosages_list` | **1.853 s** | 12,382 MB | 1.00× | 1.86× faster |
+| polars-bio, 8 partitions | **2.934 s** | 18,299 MB | 0.63× | **1.17× faster** |
+| snputils (int8 read + widen) | 3.446 s | 14,681 MB | 0.54× | 1.00× |
+| polars-bio, 1 partition | 6.190 s | 17,767 MB | 0.30× | 0.56× |
 
 ### Hardcall workload — `int8`, 2.53 GB output
 
 | Reader | Time | Peak RSS | vs pgenlib | vs snputils |
 |---|---:|---:|---:|---:|
-| pgenlib `read_list` | **0.846 s** | 5,137 MB | 1.00× | 2.16× faster |
-| snputils `genotype_mode="dosage"` | 1.825 s | 5,285 MB | 0.46× | 1.00× |
-| polars-bio, 8 partitions | 8.105 s | 18,480 MB | **0.10×** | 0.23× |
-| polars-bio, 1 partition | 15.172 s | 19,290 MB | 0.06× | 0.12× |
+| pgenlib `read_list` | **0.827 s** | 5,136 MB | 1.00× | 2.05× faster |
+| snputils `genotype_mode="dosage"` | 1.696 s | 5,281 MB | 0.49× | 1.00× |
+| polars-bio, 8 partitions | 6.546 s | 18,421 MB | **0.13×** | 0.26× |
+| polars-bio, 1 partition | 9.414 s | 17,914 MB | 0.09× | 0.18× |
 
-polars-bio is **2.2× slower than pgenlib** on the dosage workload at eight
-partitions, and **9.6× slower** on the hardcall workload, where it must
-materialize `float32` and narrow it because it has no int8 representation.
+polars-bio has no int8 representation, so this workload charges it a full
+`float32` materialization plus a narrowing pass. The dosage table above is the
+one to read for decode performance.
+
+polars-bio is **1.58× slower than pgenlib** on the dosage workload at eight
+partitions and 1.17× *faster* than snputils there. pgenlib is single-threaded,
+so the like-for-like row is one partition, where polars-bio is **3.3× slower**.
+
+### Decode only
+
+Stripping the materialization from both sides — polars-bio's scan measured in
+Rust with no Python and no contiguous-array consolidation, against pgenlib's
+`read_dosages_list`, both single-threaded:
+
+| | decode |
+|---|---:|
+| pgenlib | 1.51 s |
+| polars-bio, 1 partition | 3.46 s |
+
+**2.3×.** `datafusion/bio-format-pgen/examples/pgen_ds_profile.rs` reproduces
+the polars-bio side.
+
+### Optimization history
+
+The provider was profiled and optimized against this benchmark in
+[datafusion-bio-formats#232](https://github.com/biodatageeks/datafusion-bio-formats/pull/232).
+Single-partition whole-chromosome, interleaved against pgenlib in one session:
+
+| Change | scan | total |
+|---|---:|---:|
+| baseline | 11.2 s | 19.15 s |
+| Arrow values/validity buffers instead of per-cell `append_option` | ~9.0 s | 13.95 s |
+| `DS` joins the single-field fast path | 7.30 s | 9.40 s |
+| table-driven `append_codes` + bulk validity | 5.00 s | 7.49 s |
+| skip hardcall phase orientation for dosage | **4.13 s** | **6.19 s** |
+
+3.1× end to end. A wasted iteration is worth recording: the dense decode path
+was optimized first, before checking that `plink2 --make-pgen` writes
+LD-compressed records — only 3.8% of this fixture takes the dense path, and
+81% are `record_type=0x14`. Tracing which path records actually take should
+have come first.
 
 These figures are consistent with snputils' own published benchmark, whose
 PGEN panel shows snputils and pgenlib within noise of each other on hardcalls
