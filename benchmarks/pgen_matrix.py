@@ -86,10 +86,14 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str]]:
     # measured with it set, the same way every other reader gets its own
     # fastest native path.
     pb.set_option("datafusion.execution.batch_size", "262144")
+    # ALT_COUNT is polars-bio's native int8 hardcall column; DS is its float32
+    # dosage column. Using each for its own workload keeps this comparable to
+    # pgenlib's read_list / read_dosages_list split.
+    field = "ALT_COUNT" if MODE == "hardcall" else "DS"
     frame = (
         pb.scan_pgen(
             str(INPUT_PATH),
-            genotype_fields=["DS"],
+            genotype_fields=[field],
             use_zero_based=False,
             projection_pushdown=True,
         )
@@ -99,17 +103,18 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str]]:
     positions = frame["start"].to_numpy().astype(np.int64, copy=False)
     table = frame.select("genotypes").to_arrow().column("genotypes").combine_chunks()
     struct = table.chunk(0) if hasattr(table, "chunk") else table
-    ds = struct.field("DS")
-    flat = ds.flatten().to_numpy(zero_copy_only=False)
-    matrix = np.ascontiguousarray(flat, dtype=np.float32).reshape(len(ds), -1)
+    values = struct.field(field)
+    inner = values.flatten()
+    flat = inner.to_numpy(zero_copy_only=False)
     if MODE == "hardcall":
-        # polars-bio has no int8 representation; the narrowing is its cost.
-        missing = np.isnan(matrix)
-        narrowed = matrix.astype(np.int8)
-        narrowed[missing] = MISSING_I8
-        matrix = np.ascontiguousarray(narrowed)
+        narrowed = np.ascontiguousarray(flat, dtype=np.int8)
+        if inner.null_count:
+            narrowed[np.asarray(inner.is_null())] = MISSING_I8
+        matrix = narrowed.reshape(len(values), -1)
+    else:
+        matrix = np.ascontiguousarray(flat, dtype=np.float32).reshape(len(values), -1)
 
-    header = pb.get_metadata(pb.scan_pgen(str(INPUT_PATH), genotype_fields=["DS"]))[
+    header = pb.get_metadata(pb.scan_pgen(str(INPUT_PATH), genotype_fields=[field]))[
         "header"
     ]
     return matrix, positions, list(header["sample_names"])
