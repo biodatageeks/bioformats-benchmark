@@ -68,6 +68,13 @@ def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
         probability_layout=layout,
         use_zero_based=False,
         projection_pushdown=True,
+        # Only the value child. polars-bio's `genotypes` struct also carries
+        # `PLOIDY`, a byte per genotype that no other reader here emits and that
+        # this benchmark never reads — and because the returned matrix is a view
+        # into the Arrow struct, it stays resident for the life of the result.
+        # Requesting it would charge polars-bio for output outside the
+        # equivalence contract these readers are held to.
+        genotype_fields=["DS" if MODE == "dosage" else "GP"],
     )
     frame = scan.select("start", "genotypes").collect()
     positions = frame["start"].to_numpy().astype(np.int64, copy=False)
