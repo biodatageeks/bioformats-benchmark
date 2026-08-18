@@ -153,18 +153,46 @@ READERS = {
     "snputils": _read_snputils,
     "pgenlib": _read_pgenlib,
 }
-# The extension module each reader loads, imported before the clock starts.
+def _warm_polars_bio() -> None:
+    import polars_bio
+
+    _ = polars_bio.read_pgen_matrix
+
+
+def _warm_snputils() -> None:
+    import snputils
+
+    # snputils loads its readers lazily, so importing the package warms almost
+    # nothing: `import snputils` costs ~0.03s while the first touch of
+    # `read_pgen` costs ~0.94s as the reader module is loaded. Warming only the
+    # package left that second cost inside the timed region, which charged
+    # snputils for a module load every other reader had excluded. Touch the
+    # attribute the adapter calls, which is what forces the real import.
+    _ = snputils.read_pgen
+
+
+def _warm_pgenlib() -> None:
+    import pgenlib
+
+    _ = pgenlib.PgenReader
+
+
+# What each reader must have loaded before the clock starts.
 #
 # Every reader imports its library inside its own read function, so each used to
 # be charged for its own module load. That is a one-time process cost paid once
 # however many filesets are then read, and the magnitudes are not comparable:
-# polars-bio's extension is ~228 MB and takes ~0.46s to import, against ~0.03s
-# for pgenlib and snputils. Charging it to a single ~1.8s read measures startup,
-# not throughput, so it is warmed here and reported separately instead.
-MODULES = {
-    "polars-bio": "polars_bio",
-    "snputils": "snputils",
-    "pgenlib": "pgenlib",
+# polars-bio's extension is ~228 MB and takes ~0.6s to import, snputils' reader
+# ~0.9s, against ~0.04s for pgenlib. Charging that to a single read measures
+# startup, not throughput, so it is warmed here and reported separately.
+#
+# Warming has to reach the same code the adapter will call. A library that
+# defers its reader to first use is not warmed by importing its package, and
+# the difference is most of a second.
+WARMERS = {
+    "polars-bio": _warm_polars_bio,
+    "snputils": _warm_snputils,
+    "pgenlib": _warm_pgenlib,
 }
 MODES = ("dosage", "hardcall")
 DTYPES = {"dosage": np.float32, "hardcall": np.int8}
@@ -196,10 +224,8 @@ def main() -> None:
     if MODE not in MODES:
         raise SystemExit(f"unknown mode {MODE!r}; expected one of {MODES}")
 
-    import importlib
-
     import_start = time.perf_counter()
-    importlib.import_module(MODULES[READER])
+    WARMERS[READER]()
     import_seconds = time.perf_counter() - import_start
 
     start = time.perf_counter()
@@ -242,7 +268,7 @@ def main() -> None:
         "output_bytes": int(matrix.nbytes),
         "dtype": str(matrix.dtype),
         "time_seconds": round(elapsed, 4),
-        # Recorded, not charged: see MODULES.
+        # Recorded, not charged: see WARMERS.
         "import_seconds": round(import_seconds, 4),
         "peak_rss_mb": round(_peak_rss_mb(), 1),
         "value_sha256": _hash_rows_in_order(matrix, order),
