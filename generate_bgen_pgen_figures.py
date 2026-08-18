@@ -119,11 +119,11 @@ def all_formats():
         [(p, bgen[f"polars-bio-t{p}"]["time_seconds_median"]) for p in (1, 2, 4, 8)]
     )
 
-    pgen = json.loads((HERE / "results/pgen_import_fix.json").read_text())["results"]["dosage"]
+    pgen = json.loads((HERE / "results/pgen_full_partitions.json").read_text())["results"]["dosage"]
     series["PGEN dosage"] = _series(
         [
             (p, pgen[f"polars-bio-t{p}"]["time_seconds_median"])
-            for p in (1, 4, 8)
+            for p in (1, 2, 4, 8)
             if f"polars-bio-t{p}" in pgen
         ]
     )
@@ -162,7 +162,7 @@ def all_formats():
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     bgen_results = json.loads((HERE / "results/bgen_matrix_reader.json").read_text())["results"]
-    pgen_results = json.loads((HERE / "results/pgen_import_fix.json").read_text())["results"]
+    pgen_results = json.loads((HERE / "results/pgen_full_partitions.json").read_text())["results"]
     bgen(bgen_results)
     bgen_scaling(bgen_results)
     pgen(pgen_results)
