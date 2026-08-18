@@ -8,8 +8,8 @@ measures `read_pgen_matrix`. This compares it against
 [pgenlib](https://pypi.org/project/Pgenlib/), PLINK 2's own reference reader,
 on the same chromosome 22 callset the BCF and BGEN benchmarks use.
 
-**At equal core count polars-bio is the fastest of the three** — 1.52× pgenlib
-on dosage, 1.27× on hardcalls, and 2.8×/2.3× snputils. pgenlib and snputils are
+**At equal core count polars-bio is the fastest of the three** — 1.48× pgenlib
+on dosage, 1.28× on hardcalls, and 2.08×/1.28× snputils. pgenlib and snputils are
 single-threaded, so only the one-partition polars-bio rows are like-for-like;
 its multi-partition rows spend cores the others do not use — and buy
 surprisingly little for them, which [Scaling](#scaling) takes apart. What is left
@@ -67,7 +67,10 @@ the int8→float32 widening for the dosage workload.
 993,881 variants by 2,548 samples, 2,532,408,788 values. Medians of three
 fresh-process runs, all readers interleaved in one session. Lower is better.
 
-These figures are the 2026-08-18 session against provider `765a8d2`. The
+These figures are the second 2026-08-18 session, against provider `5f3dcf3`
+and the corrected import warm-up in
+[Corrections](#corrections-to-earlier-revisions-of-this-document) item 6, which
+moved the snputils column by 23–40%. The
 end-to-end tables below, [Scaling](#scaling) and
 [Optimization history](#optimization-history) are from that run. The provider-only
 probes — [Decode only](#decode-only), the scan scaling table, the stage
@@ -80,13 +83,13 @@ Single-threaded readers first; these are the comparable rows.
 
 | Reader | Threads | Time | Peak RSS | vs pgenlib | vs snputils |
 |---|---:|---:|---:|---:|---:|
-| **polars-bio** `read_pgen_matrix` | **1** | **1.221 s** | 12,886 MB | **1.52× faster** | **2.84× faster** |
-| pgenlib `read_dosages_list` | 1 | 1.861 s | 12,381 MB | 1.00× | 1.86× faster |
-| snputils (int8 read + widen) | 1 | 3.462 s | 14,680 MB | 0.54× | 1.00× |
-| polars-bio | 4 | 0.489 s | 12,912 MB | 3.81× faster | 7.08× faster |
-| polars-bio | 8 | 0.379 s | 12,922 MB | 4.91× faster | 9.13× faster |
+| **polars-bio** `read_pgen_matrix` | **1** | **1.277 s** | 12,887 MB | **1.48× faster** | **2.08× faster** |
+| pgenlib `read_dosages_list` | 1 | 1.884 s | 12,382 MB | 1.00× | 1.41× faster |
+| snputils (int8 read + widen) | 1 | 2.651 s | 14,679 MB | 0.71× | 1.00× |
+| polars-bio | 4 | 0.502 s | 12,911 MB | 3.75× faster | 5.28× faster |
+| polars-bio | 8 | 0.385 s | 12,920 MB | 4.89× faster | 6.89× faster |
 
-At one partition polars-bio is **1.52× faster than pgenlib** and 2.84× faster
+At one partition polars-bio is **1.48× faster than pgenlib** and 2.08× faster
 than snputils, using 4% more memory doing it — see
 [Where the remaining gap is](#where-the-remaining-gap-is).
 
@@ -95,19 +98,19 @@ what polars-bio offers and the others do not, but they are not like-for-like and
 should not be read as one. What they *are* useful for is showing how little that
 parallelism buys — see [Scaling](#scaling).
 
-snputils has no native float dosage reader, so part of its 3.462 s is the
+snputils has no native float dosage reader, so part of its 2.651 s is the
 int8→float32 widening this workload charges it; its native int8 decode is the
-1.470 s in the hardcall table below.
+0.875 s in the hardcall table below.
 
 ### Hardcall workload — `int8`, 2.53 GB output
 
 | Reader | Threads | Time | Peak RSS | vs pgenlib | vs snputils |
 |---|---:|---:|---:|---:|---:|
-| **polars-bio** `read_pgen_matrix` | **1** | **0.653 s** | 5,638 MB | **1.27× faster** | **2.25× faster** |
-| pgenlib `read_list` | 1 | 0.826 s | 5,135 MB | 1.00× | 1.78× faster |
-| snputils `genotype_mode="dosage"` | 1 | 1.470 s | 5,279 MB | 0.56× | 1.00× |
-| polars-bio | 4 | 0.296 s | 5,657 MB | 2.79× faster | 4.96× faster |
-| polars-bio | 8 | 0.234 s | 5,672 MB | 3.53× faster | 6.28× faster |
+| **polars-bio** `read_pgen_matrix` | **1** | **0.684 s** | 5,643 MB | **1.28× faster** | **1.28× faster** |
+| pgenlib `read_list` | 1 | 0.873 s | 5,137 MB | 1.00× | 1.002× |
+| snputils `genotype_mode="dosage"` | 1 | 0.875 s | 5,284 MB | 0.998× | 1.00× |
+| polars-bio | 4 | 0.305 s | 5,666 MB | 2.86× faster | 2.87× faster |
+| polars-bio | 8 | 0.238 s | 5,676 MB | 3.67× faster | 3.68× faster |
 
 This workload briefly regressed while the direct decoder was landing — 0.694 s to
 0.759 s at one partition — because building the matrix opened the fileset twice,
@@ -115,15 +118,17 @@ once to learn its shape and once to decode, parsing the 108 MB PVAR each time.
 Dosage's decode absorbed that; hardcall's did not. Holding the fileset open
 across both recovered it.
 
-pgenlib drifted by up to 4.6% between sessions earlier in this work, and this
-session shows both halves of that at once: it reproduced its dosage figure to
-within 0.1% (1.861 s against 1.863 s) but ran 4.2% faster on hardcalls
-(0.826 s against 0.862 s), with snputils moving 2.7% and 4.4% on the same two
-workloads. Margins within a session stand as measured; do not compare across
-sessions to a third decimal place. In particular, most of the hardcall
-improvement over the previous revision of this document is the machine, not the
-provider — the dosage column, where the reference held still, is the one to
-read.
+pgenlib has drifted by up to 5.7% between sessions in this work, and this
+session ran uniformly slower than the previous one: pgenlib +1.2% on dosage and
++5.7% on hardcalls, polars-bio +4.6% and +4.7%. Because everything moved
+together, the within-session ratios are what carry meaning, and they barely
+changed — 1.475× pgenlib on dosage against 1.524×, 1.276× on hardcalls against
+1.265×. Margins within a session stand as measured; do not compare across
+sessions to a third decimal place.
+
+The snputils column is the exception: it moved 23% on dosage and 40% on
+hardcalls because a harness bug was fixed, not because anything about the
+reader changed. That is item 6 below.
 
 polars-bio emits `ALT_COUNT` natively as `int8`, so this workload no longer
 charges it a `float32` materialization and a narrowing pass, as earlier
@@ -169,8 +174,11 @@ Single-partition whole-chromosome, interleaved in one session:
 | open the fileset once instead of twice | — | 1.29 s |
 | fetch and decode the input a range at a time, without copying it | — | **1.22 s** |
 
-Final figures are medians of three interleaved runs; the eight-partition dosage
-row varied 0.374–0.382 s, so do not read it to three digits.
+Medians of three interleaved runs; the eight-partition dosage row varied
+0.374–0.382 s, so do not read it to three digits. **This progression is the
+earlier 2026-08-18 session**, which ran about 4% faster overall than the session
+the result tables above come from — the sequence is internally consistent, and
+the last row's 1.22 s is the same read the current table records as 1.277 s.
 
 **15.7× end to end.** The hardcall workload went 2.959 s → 0.653 s over the same
 sequence. Note that the last row spans a session boundary — see the drift
@@ -396,8 +404,11 @@ and is reported only for completeness. The load-bearing comparison is
 provider decodes the format in Rust and shares no code with PLINK 2.
 
 The same fact explains the timings: snputils is pgenlib plus a NumPy wrapper,
-so it is not a third implementation outperforming polars-bio, and its ~0.64 s
-overhead over raw pgenlib on the same hardcall call is the wrapper.
+so it is not a third implementation outperforming polars-bio. On hardcalls the
+two are now within 2 ms of each other — 0.875 s against 0.873 s — which is what
+a thin wrapper around the same reader should look like, and is the shape the
+import fix in [Corrections](#corrections-to-earlier-revisions-of-this-document)
+item 6 restored. Its dosage figure carries the int8→float32 widening on top.
 
 ### The comparison can fail
 
@@ -464,7 +475,24 @@ Recorded because each changed a headline number:
    so the cost was always included: ~0.46 s of polars-bio's figure against
    ~0.03 s of pgenlib's and snputils'. The harness now warms the import for
    every reader alike. **That is worth ~0.43 s of polars-bio's dosage figure.**
-5. **polars-bio was measured through its DataFrame path**, which is not its
+5. **The import warm-up did not reach snputils' reader.** Correction (4) moved
+   every reader's library import out of the timed region, and the warm-up did
+   that by importing each reader's top-level package. snputils loads its readers
+   lazily, so that warmed almost nothing: `import snputils` costs ~0.03 s while
+   the first touch of `snputils.read_pgen` costs ~0.94 s as the reader module is
+   loaded — and that touch happens inside the adapter, on the clock. snputils
+   was therefore charged for a module load every other reader had excluded, and
+   `import_seconds` recorded 0.017 s, which reads like a fair warm-up but was
+   only measuring the cheap package. Warming is now a per-reader callable that
+   touches the attribute its adapter calls. **snputils' hardcall figure went
+   1.470 s → 0.875 s and its dosage figure 3.462 s → 2.651 s.** The sign of this
+   correction is worth stating plainly: the previous figures flattered
+   polars-bio. It also removes an implausibility — snputils wraps pgenlib, and
+   at 1.470 s against pgenlib's 0.826 s the wrapper appeared to cost 78%; the
+   two now differ by 2 ms. `bgen_matrix.py` never had this bug, because it
+   imports the real reader at module scope, so the BGEN figures are unaffected.
+
+6. **polars-bio was measured through its DataFrame path**, which is not its
    fastest native API for a dense matrix — the same class of error as (1), which
    had measured pgenlib through a per-variant loop. `read_pgen` costs a second
    full copy of the values and measures 3.225 s / 22.3 GB on the dosage
@@ -480,7 +508,7 @@ Recorded because each changed a headline number:
 | Whole chromosome SHA-256 | `ca2267eb44335ee1…` |
 | Source callset | IGSR/1000 Genomes GRCh38 phased chromosome 22, as used by the BCF and BGEN benchmarks |
 | Export | `plink2 --make-pgen`, PLINK v2.0.0-a.7.3 M1 (8 Aug 2026) |
-| datafusion-bio-formats | [`765a8d2`](https://github.com/biodatageeks/datafusion-bio-formats/commit/765a8d2), branch `perf/pgen-batch-array-build` ([#232](https://github.com/biodatageeks/datafusion-bio-formats/pull/232), not merged) |
+| datafusion-bio-formats | [`5f3dcf3`](https://github.com/biodatageeks/datafusion-bio-formats/commit/5f3dcf3); the PGEN provider in it is [#232](https://github.com/biodatageeks/datafusion-bio-formats/pull/232) as merged to master |
 | polars-bio branch build | branch `feat/bgen-pr220-bench` ([#436](https://github.com/biodatageeks/polars-bio/pull/436), not merged), pinning the provider commit above |
 | snputils / pgenlib | 1.1.1.dev17+gbdb1a56b5 / 0.94.1 |
 | polars-bio / Polars / PyArrow / NumPy | 0.33.1 (branch build) / 1.42.1 / 24.0.0 / 2.5.2 |

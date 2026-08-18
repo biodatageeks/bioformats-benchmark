@@ -1,6 +1,12 @@
 # BGEN genotype-reader benchmark
 
-Run date: 2026-08-16 (re-run on the batch-buffer probability path and balanced payload ranges, [datafusion-bio-formats#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226) and [#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227))
+Run date: 2026-08-18 for the whole-chromosome dosage table, re-measured against
+[datafusion-bio-formats#234](https://github.com/biodatageeks/datafusion-bio-formats/pull/234)
+and [#235](https://github.com/biodatageeks/datafusion-bio-formats/pull/235),
+which cut the one-partition scan by 2.1x. The slice tables below are from the
+2026-08-16 session ([#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226)
+and [#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227)) and
+were **not** re-measured; they are marked where they appear.
 
 This benchmark compares polars-bio, snputils, the `bgen` package, and pysnptools
 on BGEN genotype matrices. Every reader must produce the same ordered variant
@@ -11,38 +17,48 @@ The runner refuses to publish a result when those disagree.
 
 ### Whole chromosome, ALT dosage
 
-993,881 variants by 2,548 samples, 2,532,408,788 dosage values. Medians of two
-fresh-process runs. Lower is better.
+993,881 variants by 2,548 samples, 2,532,408,788 dosage values. Medians of three
+fresh-process runs, all readers interleaved in one session. Lower is better.
 
 | Reader | Time | Peak RSS | Speed relative to snputils |
 |---|---:|---:|---:|
-| **polars-bio**, 8 partitions | **5.449 s** | 23,046 MB | **2.576× faster** |
-| polars-bio, 4 partitions | 8.739 s | 23,476 MB | 1.606× faster |
-| bgen | 10.686 s | 21,797 MB | 1.313× faster |
-| snputils | 14.036 s | 21,951 MB | 1.000× |
-| polars-bio, 2 partitions | 14.409 s | 23,658 MB | 0.974× |
-| polars-bio, 1 partition | 27.149 s | 22,238 MB | 0.517× |
+| **polars-bio**, 8 partitions | **3.789 s** | 23,276 MB | **5.755× faster** |
+| polars-bio, 4 partitions | 5.419 s | 22,236 MB | 4.024× faster |
+| polars-bio, 2 partitions | 8.255 s | 21,909 MB | 2.642× faster |
+| **polars-bio, 1 partition** | **14.142 s** | 24,291 MB | **1.542× faster** |
+| bgen | 15.680 s | 20,377 MB | 1.391× faster |
+| snputils | 21.807 s | 21,020 MB | 1.000× |
 
-polars-bio is **2.576× faster at eight partitions**, a 61.2% reduction in wall
-time, roughly matches snputils at two, and is 1.93× slower at one: snputils' BGEN
-reader is a single-threaded C extension built around libdeflate, and polars-bio
-spends its extra time building Arrow arrays and handing them to Polars. The
-advantage here comes from partition parallelism, not from a faster per-core
-decoder, and the table reports both points rather than only the favourable one.
+**polars-bio is now the fastest of the three at one thread**, 1.109× the `bgen`
+package and 1.542× snputils, where it used to be 1.93× slower than snputils. The
+three one-partition runs were 13.600 s, 14.181 s and 14.142 s, all below the
+`bgen` package's slowest of 15.813 s, so the ranges do not overlap.
 
-Peak RSS is now 5.0% above snputils, down from 18.2%. polars-bio still carries
-more output — its `genotypes` struct holds `PLOIDY` alongside `DS`, which the
-other readers do not produce, and the matrix crosses Arrow, Polars, and NumPy
-before it is returned — but the decoder no longer stages each variant in its own
-allocation before copying it into the batch, which is where most of that
-overhead was.
+Earlier revisions of this document explained the one-thread gap as polars-bio
+"building Arrow arrays and handing them to Polars". That was wrong, and
+measuring it is what closed the gap: Arrow construction is **four milliseconds**
+of a one-partition scan, because the decoder writes Arrow's layout as it goes.
+The cost was the per-sample decode loop, and
+[Where the time went](#where-the-time-went) has the account.
 
-Scaling against one partition is 1.88× at two, 3.11× at four and 4.98× at eight.
-Two partitions is the one point that did not improve when payload ranges were
-balanced, because at that width the 16 MiB `max_range_bytes` limit binds before
-the partition split does. See [Partition scaling](#partition-scaling).
+**Peak RSS moved the wrong way and is not explained.** One partition now peaks at
+24,291 MB against 22,238 MB before, 19.2% above the `bgen` package. The two- and
+four-partition rows sit at ~22 GB, so it is specific to the one-partition shape.
+A plausible reading is that a scan that produces batches twice as fast keeps more
+of them in flight ahead of a Python consumer that did not get faster, but that is
+a hypothesis and it has not been measured. polars-bio also carries output the
+others do not: its `genotypes` struct holds `PLOIDY` alongside `DS`.
+
+Scaling against one partition is 1.71× at two, 2.61× at four and 3.73× at eight,
+down from 1.88×/3.11×/4.98×. That is Amdahl arithmetic rather than a regression —
+the serial baseline is 1.9× faster than it was, so the same parallel work divides
+a smaller total.
 
 ### Chromosome slice, both workloads
+
+*From the 2026-08-16 session; **not** re-measured against the decode changes, so
+the one-partition rows here are still the old, slower loop. The whole-chromosome
+table above is the current one.*
 
 25,000 variants by 2,548 samples, the same slice the
 [VCF/BCF genotype benchmark](GENOTYPE_READER_BENCHMARK.md) uses. Medians of
@@ -69,16 +85,19 @@ That layout previously rejected the phased file outright, because plink2 leaves
 461 of its 25,000 variants unphased and the widths therefore mix; the phased
 column above was 1.296 s through the nested layout before it was supported.
 
-**The result is still reported per workload.** At one partition polars-bio is
-slower than every other reader in every column; the advantage is partition
-parallelism, and the table shows that point too.
+**The result is still reported per workload.** At one partition polars-bio was
+slower than every other reader in every column of this slice session. That is no
+longer true of the whole chromosome, where it is now the fastest of the three at
+one thread; the slice has not been re-measured and its one-partition rows should
+be read as historical.
 
 pysnptools cannot read the phased files at all: `pysnptools.distreader.Bgen`
 asserts unphased input. Its cells are recorded as unsupported rather than slow.
 
 ### Partition scaling
 
-Speedup against the same reader at one partition, from the table above:
+*Slice figures, from the 2026-08-16 session; not re-measured.* Speedup against
+the same reader at one partition, from the slice table above:
 
 | Partitions | Dosage (phased) | Dosage (unphased) | Probabilities (phased) | Probabilities (unphased) |
 |---:|---:|---:|---:|---:|
@@ -87,9 +106,10 @@ Speedup against the same reader at one partition, from the table above:
 | 8 | 3.83× | 3.74× | 3.10× | 3.31× |
 
 Scaling is sub-linear and the table says so. Two partitions return about 1.6×,
-eight about 3.1–3.8× on this 4.9 MB slice, against 4.98× for the 160 MB whole
-chromosome above — a small file amortises the fixed per-scan cost over less
-work.
+eight about 3.1–3.8× on this 4.9 MB slice — a small file amortises the fixed
+per-scan cost over less work. The whole chromosome now returns 3.73× at eight,
+down from 4.98× in this session, because its one-partition baseline got 1.9×
+faster while the parallel work did not.
 
 **These figures used to be far worse, for a reason worth recording.** A BGEN
 payload range was capped at one partition's byte share, and a variant's payload
@@ -105,6 +125,57 @@ The remaining ceiling is not the decoder. Measured on the Rust scan alone, eight
 partitions reach 4.63× of one, while the end-to-end figures above reach 3.1–3.8×;
 the difference is the fixed Python-side cost of handing the result to NumPy,
 which does not parallelise.
+
+## Where the time went
+
+A one-partition whole-chromosome scan was 24.3 s of Rust, of which the Python
+handoff is about 2 s. `examples/bgen_decode_profile` in the provider splits the
+rest by walking the variant records itself and inflating every payload with the
+same library the reader uses — the floor any reader of this file pays — and then
+running the provider's own scan against it:
+
+| Phase | Before | After |
+|---|---:|---:|
+| zlib inflate (libdeflate) | 9.5 s | 9.5 s |
+| the decode loop | 14.4 s | **2.3 s** |
+| Arrow batch construction | 0.004 s | 0.004 s |
+| I/O, planning, record parsing | 0.2 s | 0.2 s |
+
+Two things fall out of that table.
+
+**Decompression is a shared floor, not a gap.** 7.61 GB comes out of a 160 MB
+file, and every reader here pays about 9.5 s to produce it through libdeflate.
+The `bgen` package reads the file in 15.7 s, so its own work is around 6 s; this
+provider's is now 2.3 s. Attributing the old gap to decompression was never
+consistent with both readers using the same library.
+
+**Arrow construction is four milliseconds.** The decoder writes Arrow's layout as
+it goes, so building a batch only wraps buffers. The earlier explanation in this
+document — that polars-bio "builds Arrow arrays and hands them to Polars" — was
+measuring nothing.
+
+The cost was the loop that turns a decompressed block into output, at 5.15 ns per
+genotype over 2.53 billion of them. Two changes account for the difference:
+
+- **The per-sample helpers were out-of-line calls.** `byte_dosage_numerator` and
+  `GenotypeBuffers::close_sample` are invoked once per sample and a profile
+  showed each as a real frame: 15% and 18% of the scan. Neither was reachable by
+  a hint — one already carried `#[inline]` and LLVM declined it; the other's
+  callers were marked but it was not. `#[inline(always)]` on both was worth 31%
+  of the non-decompression work
+  ([#234](https://github.com/biodatageeks/datafusion-bio-formats/pull/234)).
+- **The loop decided per sample what the read had already decided for all of
+  them.** It gathered through the selected-sample index array even when the
+  selection was the whole cohort in file order, recorded a uniform ploidy one
+  byte at a time, and checked a missingness that a fully called variant does not
+  have. A whole-cohort, diploid, fully called dosage read now fills the values
+  buffer straight from the stored byte pairs. That took the non-decompression
+  work from 10.2 s to 2.3 s
+  ([#235](https://github.com/biodatageeks/datafusion-bio-formats/pull/235)).
+
+The output is bit-identical across both changes, which the equivalence table
+below is the check on: the dosages are written by the same expression the
+per-sample path uses, not an equivalent one.
 
 ## Zero mismatches
 
@@ -219,12 +290,13 @@ Reader-native execution is preserved where possible:
 | Whole chromosome SHA-256 | `867e8bf0cc162ab0…` |
 | Source callset | IGSR/1000 Genomes GRCh38 phased chromosome 22, the same VCF used by the BCF benchmark |
 | Export | `plink2 --export bgen-1.2 bits=8`, Layout 2, zlib |
-| datafusion-bio-formats | [`cbbb489`](https://github.com/biodatageeks/datafusion-bio-formats/commit/cbbb489), branch `agent/bgen-range-granularity` ([#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227) stacked on [#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226); neither merged yet) |
-| polars-bio branch build | [`ad93755`](https://github.com/biodatageeks/polars-bio/commit/ad93755), built against the provider commit above |
-| snputils | [`482c6d1`](https://github.com/AI-sandbox/snputils/commit/482c6d1dfd6c4001935dfaec81ae01a5e0ec3e53) |
+| datafusion-bio-formats, whole-chromosome table | [`5f3dcf3`](https://github.com/biodatageeks/datafusion-bio-formats/commit/5f3dcf3), branch `perf/bgen-bulk-dosage-fill` ([#235](https://github.com/biodatageeks/datafusion-bio-formats/pull/235) stacked on [#234](https://github.com/biodatageeks/datafusion-bio-formats/pull/234); neither merged yet) |
+| datafusion-bio-formats, slice tables | [`cbbb489`](https://github.com/biodatageeks/datafusion-bio-formats/commit/cbbb489), branch `agent/bgen-range-granularity` ([#227](https://github.com/biodatageeks/datafusion-bio-formats/pull/227) stacked on [#226](https://github.com/biodatageeks/datafusion-bio-formats/pull/226)) |
+| polars-bio branch build | built against whichever provider commit the table above names |
+| snputils | [`482c6d1`](https://github.com/AI-sandbox/snputils/commit/482c6d1dfd6c4001935dfaec81ae01a5e0ec3e53) for the slice; `bdb1a56` for the whole chromosome |
 | bgen / pysnptools | 1.10.0 / 0.5.15 |
-| polars-bio / Polars / PyArrow / NumPy | 0.33.1 (branch build) / 1.40.1 / 24.0.0 / 2.4.4 |
-| Python | 3.11.13 |
+| polars-bio / Polars / PyArrow / NumPy | 0.33.1 (branch build) / 1.40.1 / 24.0.0 / 2.4.4 (slice); 1.42.1 / 24.0.0 / 2.5.2 (whole chromosome) |
+| Python | 3.11.13 (slice), 3.12.9 (whole chromosome) |
 | Host | Apple M3 Max, 16 CPU cores, 64 GiB RAM, macOS 15.6 arm64 |
 | polars-bio build | release, `RUSTFLAGS="-C target-cpu=native"` |
 
