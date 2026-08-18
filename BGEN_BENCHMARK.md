@@ -41,13 +41,38 @@ of a one-partition scan, because the decoder writes Arrow's layout as it goes.
 The cost was the per-sample decode loop, and
 [Where the time went](#where-the-time-went) has the account.
 
-**Peak RSS moved the wrong way and is not explained.** One partition now peaks at
-24,291 MB against 22,238 MB before, 19.2% above the `bgen` package. The two- and
-four-partition rows sit at ~22 GB, so it is specific to the one-partition shape.
-A plausible reading is that a scan that produces batches twice as fast keeps more
-of them in flight ahead of a Python consumer that did not get faster, but that is
-a hypothesis and it has not been measured. polars-bio also carries output the
-others do not: its `genotypes` struct holds `PLOIDY` alongside `DS`.
+**Peak RSS on this path is not a stable measurement, and should not be read to
+three digits.** An earlier revision of this document recorded the rise from
+20,462 MB to 24,291 MB as an unexplained regression. It is not one. Peak RSS here
+is set almost entirely by one call in the benchmark adapter, and that call's peak
+varies by gigabytes between runs of identical code.
+
+Instrumenting the polars-bio dosage adapter stage by stage:
+
+| Stage | Peak RSS |
+|---|---:|
+| after `collect()` | 12.80 GB, ±35 MB across five runs |
+| after `combine_chunks()` | **16.8 / 20.9 / 21.3 / 21.4 / 22.3 GB** |
+| after both SHA-256 passes | unchanged |
+
+`combine_chunks()` concatenates the scan's 340 Arrow chunks into one, so both the
+chunked and the combined copy of 12.8 GB of genotype data exist at once; where
+the peak lands inside that window is up to the allocator. The 3.8 GB "regression"
+is smaller than the 5.5 GB spread of that single call, and the decoder changes
+cannot explain it in any case — the Rust scan's own peak is 804 MB before and
+797 MB after, and #234 is inlining, which cannot allocate differently at all.
+
+Two things are worth taking from that table rather than from the RSS column.
+**The genotype data itself is stable at 12.80 GB** for a 10.13 GB answer, and the
+0.5 GB difference above 12.66 GB is everything else in the process. **2.53 GB of
+those 12.80 are `PLOIDY`**, which the `genotypes` struct always carries and no
+projection can drop; the returned matrix is a view into the combined Arrow table,
+so that column stays resident for the life of the result. Making `PLOIDY`
+projectable is the one real memory saving visible here.
+
+The comparison readers do not pay the chunk-consolidation cost at all: they build
+their matrix directly. That is a property of this adapter, not of the readers,
+and it is why the RSS column is reported but not leaned on.
 
 Scaling against one partition is 1.71× at two, 2.61× at four and 3.73× at eight,
 down from 1.88×/3.11×/4.98×. That is Amdahl arithmetic rather than a regression —
