@@ -54,6 +54,19 @@ def _sample_path() -> str:
 
 
 def _read_polars_bio() -> tuple[np.ndarray, np.ndarray, list[str], str]:
+    if MODE == "dosage":
+        # The dense-matrix path, the counterpart of what snputils and the `bgen`
+        # package do natively: they build one array, and until this existed
+        # polars-bio was charged for consolidating Arrow chunks into one that
+        # they never pay. `read_pgen_matrix` plays the same role in the PGEN
+        # benchmark.
+        matrix = pb.read_bgen_matrix(str(INPUT_PATH), threads=THREAD_NUM)
+        return (
+            np.ascontiguousarray(matrix.values, dtype=np.float32),
+            np.asarray(matrix.positions, dtype=np.int64),
+            [str(name) for name in matrix.sample_names],
+            f"matrix-t{THREAD_NUM}",
+        )
     genotype_output = "dosage" if MODE == "dosage" else "probability"
     # The fixed layout drops the per-sample offsets and NaN-pads a narrower
     # sample to the file's widest, so it applies to mixed-width files too. It is
