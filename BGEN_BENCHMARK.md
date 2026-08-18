@@ -20,26 +20,35 @@ The runner refuses to publish a result when those disagree.
 993,881 variants by 2,548 samples, 2,532,408,788 dosage values. Medians of three
 fresh-process runs, all readers interleaved in one session. Lower is better.
 
-| Reader | Time | Peak RSS | Speed relative to snputils |
-|---|---:|---:|---:|
-| **polars-bio, 8 partitions** | **3.120 s** | 23,890 MB | **6.894× faster** |
-| polars-bio, 4 partitions | 4.778 s | 23,255 MB | 4.502× faster |
-| polars-bio, 2 partitions | 7.397 s | 24,875 MB | 2.908× faster |
-| **polars-bio, 1 partition** | **12.800 s** | 24,418 MB | **1.680× faster** |
-| bgen | 15.442 s | 21,801 MB | 1.393× faster |
-| snputils | 21.510 s | 21,953 MB | 1.000× |
+| Reader | Time | Speed relative to snputils |
+|---|---:|---:|
+| **polars-bio, 8 partitions** | **2.083 s** | **10.435× faster** |
+| polars-bio, 4 partitions | 3.649 s | 5.957× faster |
+| polars-bio, 2 partitions | 6.742 s | 3.224× faster |
+| **polars-bio, 1 partition** | **11.826 s** | **1.838× faster** |
+| bgen | 15.415 s | 1.410× faster |
+| snputils | 21.737 s | 1.000× |
 
-**polars-bio is now the fastest of the three at one thread**, 1.206× the `bgen`
-package and 1.680× snputils, where it used to be 1.93× slower than snputils. The
-three one-partition runs were 12.338 s, 12.800 s and 12.884 s, all below the
-`bgen` package's slowest, so the ranges do not overlap.
+**polars-bio is the fastest of the three at one thread**, 1.303× the `bgen`
+package and 1.838× snputils, where it used to be 1.93× slower than snputils.
+Scaling against one partition is 1.75× at two, 3.24× at four and 5.68× at eight.
 
-This table asks polars-bio for `genotype_fields=["DS"]`. Its `genotypes` struct
-also carries a `PLOIDY` child that no other reader here emits and that this
-benchmark never reads, and because the returned matrix is a view into the Arrow
-struct it would stay resident for the life of the result. Requesting it charged
-polars-bio for output outside the equivalence contract these readers are held to;
-it is 2.40 GB of retained genotype data and about 8% of the wall time.
+polars-bio is read through `read_bgen_matrix`, which decodes each variant
+straight into the destination array — what snputils and the `bgen` package both
+do natively. Going through `scan_bgen` and consolidating its Arrow chunks into
+one array is work neither comparison reader performs, and it does not
+parallelise: it held end-to-end scaling at 4.15× against a scan that divides
+6.3×. `read_pgen_matrix` plays the same role in the PGEN benchmark.
+
+**The peak-RSS column has been removed rather than updated, because it does not
+measure what it appears to.** Every reader here reports 19–22 GB for a 10.13 GB
+result, and the same polars-bio read measured on its own is 10.3 GB — so roughly
+9–12 GB belongs to the harness process rather than to any reader. Earlier
+revisions leaned on that column in both directions: first recording a rise as an
+unexplained regression, then reporting that projecting `PLOIDY` away saved
+2.40 GB. Neither claim was comparable. The post-read hashing, the
+`ascontiguousarray` and the argsort were each measured at zero cost, so the
+source is unaccounted for and the column stays out until it is understood.
 
 Earlier revisions of this document explained the one-thread gap as polars-bio
 "building Arrow arrays and handing them to Polars". That was wrong, and
@@ -48,9 +57,12 @@ of a one-partition scan, because the decoder writes Arrow's layout as it goes.
 The cost was the per-sample decode loop, and
 [Where the time went](#where-the-time-went) has the account.
 
-**Peak RSS on this path is not a stable measurement, and should not be read to
-three digits.** An earlier revision of this document recorded the rise from
-20,462 MB to 24,291 MB as an unexplained regression. It is not one. Peak RSS here
+**Peak RSS on the Arrow path was not a stable measurement, and this is the
+record of finding that out.** It is kept because it is what led to
+`read_bgen_matrix`, and because the harness's own accounting is still open — the
+result table above no longer reports peak RSS at all. An earlier revision
+recorded the rise from 20,462 MB to 24,291 MB as an unexplained regression. It
+is not one. Peak RSS on that path
 is set almost entirely by one call in the benchmark adapter, and that call's peak
 varies by gigabytes between runs of identical code.
 
@@ -72,9 +84,13 @@ cannot explain it in any case — the Rust scan's own peak is 804 MB before and
 **The same blindness cuts the other way, and is worth stating.** Projecting
 `PLOIDY` away removes 2.40 GB of retained genotype data, measured at
 `collect()` as 12,798 MB against 10,402 MB and stable to ±30 MB across runs. The
-peak-RSS column above does not move: 24,291 MB before, 24,418 MB after. This
-metric cannot see a 2.4 GB improvement any more than it could see a 3.8 GB
+peak that revision reported did not move: 24,291 MB before, 24,418 MB after. It
+could not see a 2.4 GB improvement any more than it could see a 3.8 GB
 regression, because the peak happens later and varies by more than either.
+
+That is why the column is gone. What remains unexplained is larger than either
+figure: every reader in this harness reports 19–22 GB for a 10.13 GB result,
+while the same polars-bio read measured on its own is 10.3 GB.
 
 Two things are worth taking from that table rather than from the RSS column.
 **The genotype data itself is stable at 12.80 GB** for a 10.13 GB answer, and the
