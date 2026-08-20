@@ -14,7 +14,9 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | lazy/streaming | BAM, VCF, BCF, FASTQ |
-| **snputils** | eager | VCF, BCF |
+| **snputils** | eager | VCF, BCF, BGEN |
+| **bgen** | eager | BGEN |
+| **pysnptools** | eager | BGEN (unphased only) |
 
 ## Test Variants
 
@@ -26,6 +28,8 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | VCF | `without_info` | Fixed fields + FORMAT only (INFO excluded) |
 | BCF | `dosage` | All phased GT calls converted to an `Int8` ALT-dosage matrix |
 | VCF/BCF | `genotype-matrix` | Identical 25,000 x 2,548 row-major `Int8` ALT-dosage matrix |
+| BGEN | `dosage` | Expected copies of the second encoded allele as a `float32` matrix |
+| BGEN | `probabilities` | Complete `float32` genotype-probability tensor |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
 
 ## Data Requirements
@@ -35,6 +39,7 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | BAM | `NA12878.proper.wes.md.chr1.bam` (~2 GB) | Extract from full WES BAM with `samtools view -b ... chr1` |
 | VCF | `homo_sapiens-chr1.vcf.gz` | Ensembl (downloaded by `setup.sh`) |
 | BCF | `ALL.chr22.phased.bcf` (~129 MiB) | IGSR/1000 Genomes GRCh38 phased chromosome 22 callset, converted by `setup.sh` |
+| BGEN | `chr22.full.bgen` (~153 MiB), `chr22.first-25000[.unphased].bgen` | Exported from the same chromosome 22 callset by `setup.sh` with plink2 |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
 
 The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
@@ -42,6 +47,17 @@ dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
 verifies the source VCF SHA-256
 (`b428192af4f02507585c3775e59251974c71a968daa895a9a47acb337140614c`),
 and each run records the generated BCF SHA-256 in its result metadata.
+
+The BGEN fixtures are exported from the same callset, so the BGEN benchmark
+compares the same variants and sample order as the VCF/BCF one. See
+[BGEN_BENCHMARK.md](BGEN_BENCHMARK.md) for the results, which include an
+element-wise check against the independent `bgen` package.
+
+The PGEN fixtures come from that same callset via `plink2 --make-pgen`, so the
+PGEN benchmark compares the same variants and sample order again. See
+[PGEN_BENCHMARK.md](PGEN_BENCHMARK.md) for the results, which include an
+element-wise check against pgenlib, PLINK 2's reference reader, and a self-test
+proving that check can fail.
 
 The cross-reader VCF/BCF matrix uses rows in
 `chr22:10516173-16717478` from that same callset: exactly 25,000 variants,
@@ -131,6 +147,12 @@ output-equivalent pysam/PyVCF3/cyvcf2/Oxbow/polars-bio/snputils comparison, and
 [BCF_BENCHMARK.md](BCF_BENCHMARK.md) for the exact-head full-cohort scaling and
 correctness proof.
 
+polars-bio must be built release with `-C target-cpu=native` before any timing
+run. A plain `maturin develop` is a debug build and measured 3.1x slower on the
+PGEN slice — enough to invert the comparison against snputils. The PGEN runner
+records the loaded extension's size in its result metadata so the profile can be
+checked afterwards.
+
 ## Configuration
 
 - **Data file paths**: Defaults in `benchmarks/common.py`; BCF is overridable with `BCF_PATH`
@@ -146,9 +168,11 @@ Results are written to:
 - `results/benchmark_results.json` — raw benchmark data (grouped by format and variant)
 - `results/bcf_benchmark_t{1,2,4,8}.json` — BCF raw runs, environment metadata, and summary statistics for the scaling sweep
 - `results/genotype_reader_benchmark.json` — t=1 VCF/BCF reader matrix with raw timing/RSS, medians, and equivalence hashes
+- `results/pgen_reader_benchmark.json`, `results/pgen_reader_benchmark_full_cohort.json` — PGEN reader matrix with raw timing/RSS, medians, equivalence hashes, the polars-bio build fingerprint, and the element-wise pgenlib verification
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 - `GENOTYPE_READER_BENCHMARK.md` — tracked output-equivalent t=1 VCF/BCF reader comparison
+- `PGEN_BENCHMARK.md` — tracked PGEN polars-bio/snputils/pgenlib comparison
 
 ## Project Structure
 
