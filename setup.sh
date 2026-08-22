@@ -220,6 +220,39 @@ for pgen_prefix in "${PGEN_DIR}/chr22.first-25000" "${PGEN_DIR}/chr22.full"; do
     done
 done
 
+# === BigWig / BigBed scalability fixtures ===
+BBI_DIR="${BBI_DIR:-/Users/mwiewior/research/data/BBI}"
+BIGWIG_FILE="${BIGWIG_PATH:-${BBI_DIR}/GSM7256643_ENCFF713VEX_fold_change_over_control_GRCh38.bigWig}"
+BIGBED_FILE="${BIGBED_PATH:-${BBI_DIR}/ENCFF001JBR.bigBed}"
+BIGWIG_URL="https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7256nnn/GSM7256643/suppl/GSM7256643_ENCFF713VEX_fold_change_over_control_GRCh38.bigWig"
+BIGBED_URL="https://www.encodeproject.org/files/ENCFF001JBR/@@download/ENCFF001JBR.bigBed"
+BIGWIG_SHA256="dffcf1a854895d0d91b2b1250db72dc3572ee97c2ef936423735a74c9744b04e"
+BIGBED_SHA256="b36b6b0886e25876ad06e3845a1b68f8f11b7932c23285c9c5f6301a918bc733"
+
+mkdir -p "$(dirname "$BIGWIG_FILE")" "$(dirname "$BIGBED_FILE")"
+if [ ! -f "$BIGWIG_FILE" ]; then
+    echo "=== Downloading BigWig scalability fixture ==="
+    curl -L --fail --output "$BIGWIG_FILE" "$BIGWIG_URL"
+fi
+if [ ! -f "$BIGBED_FILE" ]; then
+    echo "=== Downloading BigBed scalability fixture ==="
+    curl -L --fail --output "$BIGBED_FILE" "$BIGBED_URL"
+fi
+
+for bbi_spec in \
+    "$BIGWIG_FILE:$BIGWIG_SHA256" \
+    "$BIGBED_FILE:$BIGBED_SHA256"; do
+    bbi_path="${bbi_spec%:*}"
+    expected_bbi_sha256="${bbi_spec##*:}"
+    actual_bbi_sha256="$("$SCRIPT_DIR/.venv/bin/python" -c \
+        'import hashlib, sys; print(hashlib.file_digest(open(sys.argv[1], "rb"), "sha256").hexdigest())' \
+        "$bbi_path")"
+    if [ "$actual_bbi_sha256" != "$expected_bbi_sha256" ]; then
+        echo "BBI fixture checksum mismatch for $bbi_path: $actual_bbi_sha256" >&2
+        exit 1
+    fi
+done
+
 # === FASTQ: EBI SRA ===
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"
 FASTQ_FILE="${FASTQ_DIR}/ERR194158.fastq.gz"
@@ -253,4 +286,6 @@ echo "  Reader-matrix BCF: $GENOTYPE_BCF_FILE"
 echo "  BGEN slice (phased):   $BGEN_SLICE"
 echo "  BGEN slice (unphased): $BGEN_SLICE_UNPHASED"
 echo "  BGEN whole chromosome: $BGEN_FULL"
+echo "  BigWig: $BIGWIG_FILE"
+echo "  BigBed: $BIGBED_FILE"
 echo "  FASTQ: $FASTQ_FILE"

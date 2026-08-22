@@ -2,7 +2,8 @@
 .venv/
 .venv-baseline/
 .venv-*/
-results/
+results/*
+!results/bbi_scaling_full_scan.json
 __pycache__/
 *.pyc
 .ipynb_checkpoints/

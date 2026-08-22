@@ -1,6 +1,7 @@
 # bioformats-benchmark
 
-Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Python bioinformatics libraries, measuring execution time and peak memory usage.
+Benchmark comparing genomic file-reading performance across Python bioinformatics
+libraries, measuring execution time, peak memory usage, and partition scalability.
 
 ## Libraries Tested
 
@@ -13,7 +14,7 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | **oxbow** | lazy/streaming | BAM, VCF, BCF, FASTQ |
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
-| **polars-bio** | lazy/streaming | BAM, VCF, BCF, FASTQ |
+| **polars-bio** | lazy/streaming | BAM, VCF, BCF, BGEN, PGEN, BigWig, BigBed, FASTQ |
 | **snputils** | eager | VCF, BCF, BGEN |
 | **bgen** | eager | BGEN |
 | **pysnptools** | eager | BGEN (unphased only) |
@@ -30,6 +31,8 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | VCF/BCF | `genotype-matrix` | Identical 25,000 x 2,548 row-major `Int8` ALT-dosage matrix |
 | BGEN | `dosage` | Expected copies of the second encoded allele as a `float32` matrix |
 | BGEN | `probabilities` | Complete `float32` genotype-probability tensor |
+| BigWig | four BBI scaling workloads | Arrow streaming, Polars count, all-column aggregate, and literal all-column collection |
+| BigBed | four BBI scaling workloads | Arrow streaming, Polars count, all-column aggregate, and literal all-column collection |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
 
 ## Data Requirements
@@ -40,6 +43,8 @@ Benchmark comparing BAM, VCF, BCF, and FASTQ file reading performance across Pyt
 | VCF | `homo_sapiens-chr1.vcf.gz` | Ensembl (downloaded by `setup.sh`) |
 | BCF | `ALL.chr22.phased.bcf` (~129 MiB) | IGSR/1000 Genomes GRCh38 phased chromosome 22 callset, converted by `setup.sh` |
 | BGEN | `chr22.full.bgen` (~153 MiB), `chr22.first-25000[.unphased].bgen` | Exported from the same chromosome 22 callset by `setup.sh` with plink2 |
+| BigWig | `GSM7256643_...GRCh38.bigWig` (~546 MiB) | NCBI GEO, downloaded and checksum-verified by `setup.sh` |
+| BigBed | `ENCFF001JBR.bigBed` (~16 MiB) | ENCODE, downloaded and checksum-verified by `setup.sh` |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
 
 The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
@@ -58,6 +63,10 @@ PGEN benchmark compares the same variants and sample order again. See
 [PGEN_BENCHMARK.md](PGEN_BENCHMARK.md) for the results, which include an
 element-wise check against pgenlib, PLINK 2's reference reader, and a self-test
 proving that check can fail.
+
+The BigWig/BigBed sweep compares every partition count from one through eight.
+See [BBI_BENCHMARK.md](BBI_BENCHMARK.md) for the issue 238 candidate's
+whole-file scaling results, correctness fingerprints, and memory tradeoff.
 
 The cross-reader VCF/BCF matrix uses rows in
 `chr22:10516173-16717478` from that same callset: exactly 25,000 variants,
@@ -99,6 +108,30 @@ python generate_report.py
 # 9. Generate BCF-only publication figures for the genotype-reader comparison
 python generate_genotype_reader_figures.py \
   --output-dir /path/to/polars-bio/docs/blog/posts/figures/bcf-readers
+
+# 10. Measure every BigWig/BigBed partition count from one through eight
+export POLARS_BIO_SOURCE=/path/to/polars-bio-at-f32af941
+export POLARS_BIO_REF=f32af9416139a8bc9f1565b61b13bad3af738a39
+export DATAFUSION_BIO_FORMATS_REF=d0a23b59271e697c78f421c70a2e48a43cb89a73
+export BIGTOOLS_REF=0d7a5728eb39ee97fddef59cd3da469186bec90d
+export POLARS_BIO_PATCH=benchmarks/polars_bio_issue_443.patch
+export POLARS_BIO_BUILD_PROFILE=release
+export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
+./setup_bbi_benchmark.sh
+.venv-bbi/bin/python run_bbi_benchmarks.py \
+  --python .venv-bbi/bin/python \
+  --partitions 1 2 3 4 5 6 7 8 \
+  --runs 5 \
+  --label candidate \
+  --output results/bbi_scaling_candidate.json
+
+# 11. Plot one run, or compare baseline and candidate result files
+python generate_bbi_figures.py \
+  --input results/bbi_scaling_candidate.json \
+  --output-dir results/bbi-figures
+
+# 12. Validate the BBI benchmark harness
+.venv-bbi/bin/pytest tests/test_bbi_benchmark.py
 ```
 
 To benchmark an unreleased polars-bio checkout, point setup at the checkout.
@@ -112,6 +145,63 @@ POLARS_BIO_REF=<polars-bio-commit> \
 DATAFUSION_BIO_FORMATS_REF=<formats-pr-commit> \
 python run_bcf_benchmarks.py
 ```
+
+For an issue-238 before/after comparison, set `POLARS_BIO_SOURCE` when running
+`setup_bbi_benchmark.sh` and build polars-bio once against the
+released `datafusion-bio-formats` revision and once against the candidate
+revision. Set `POLARS_BIO_PATCH=` for the clean release build and point it at a
+tracked patch for the candidate. Give the runs distinct `--label` and `--output`
+values, then pass both JSON files to `generate_bbi_figures.py`. Use
+`--physical-partitions serial` for the pre-partitioning baseline; candidate runs
+use the strict default `--physical-partitions requested`.
+
+### BigWig/BigBed scalability correctness
+
+`run_bbi_benchmarks.py` launches every measurement in a fresh child process and
+sets `POLARS_MAX_THREADS`, `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and
+DataFusion `target_partitions` to the same `t`. The default sweep is every
+integer from one through eight. Combination order rotates and reverses between
+rounds to reduce cache and thermal bias. Each child also inspects the physical
+plan after timing and records the BBI scan's advertised output partition count.
+Candidate sweeps fail unless that count equals `t`. When the provider reports
+index-derived data-byte estimates, the runner verifies that the layout is stable
+across repetitions and records its coefficient of variation and maximum-to-mean
+ratio for each `t`.
+
+The four workloads separate source scalability from downstream materialization:
+
+- `arrow_stream_all` requests and drains every Arrow column without retaining
+  the whole file. It measures the provider plus the Python Arrow stream and
+  records the source batch count.
+- `polars_count` executes `pl.len()` end to end. Polars currently requests the
+  first public column (`chrom`), so this is intentionally not described as an
+  empty-projection DataFusion `count(*)` workload.
+- `polars_aggregate_all` requests every column and reduces row count, chromosome
+  bytes, coordinates, and payload values to a correctness fingerprint.
+- `polars_collect_all` literally materializes every row and column in a Polars
+  DataFrame. It records retained chunk count, estimated DataFrame size, and peak
+  RSS in addition to wall time.
+
+After the timed workload, every child replays its own data path in an untimed
+all-column validation scan. Arrow-stream validation hashes the drained Arrow
+batches, collect validation hashes the materialized DataFrame, and the count and
+aggregate workloads validate through their Polars scan. Two independently
+seeded, order-independent row-hash sums plus row count, coordinate sums,
+chromosome bytes, and payload aggregates must match across all workloads and
+every `t` before results are written. The timed result is also cross-checked on
+every field it exposes. BigBed performs ten timed scans per child by default
+because the fixture is too short for a stable single timing; the JSON records
+both the iteration count and per-scan time. Each raw sample also records ambient
+CPU use measured immediately before launch. The configured
+`--max-system-cpu-percent` value (or `null` when the optional abort gate is
+disabled) is recorded in result metadata.
+
+The candidate setup applies the tracked
+`benchmarks/polars_bio_issue_443.patch` to a clean `f32af941` checkout, or
+verifies an already-applied exact copy, and refuses any other tracked or
+untracked source changes. The runner then verifies that the live Git diff
+SHA-256 equals the declared patch SHA-256 before writing results, in addition
+to checking the exact DataFusion and BigTools revisions in `Cargo.lock`.
 
 ### BCF fairness and correctness
 
@@ -161,6 +251,8 @@ checked afterwards.
 - **BCF runs/partitions**: `run_bcf_benchmarks.py --runs 3 --threads 1`; the
   thread value controls polars-bio target partitions and thread caps, while the
   pinned snputils BCF reader remains serial
+- **BBI runs/partitions**: `run_bbi_benchmarks.py --runs 5 --partitions 1 2 3 4 5 6 7 8`
+- **BBI paths**: `BIGWIG_PATH` and `BIGBED_PATH`, or the matching runner options
 
 ## Output
 
@@ -169,10 +261,13 @@ Results are written to:
 - `results/bcf_benchmark_t{1,2,4,8}.json` — BCF raw runs, environment metadata, and summary statistics for the scaling sweep
 - `results/genotype_reader_benchmark.json` — t=1 VCF/BCF reader matrix with raw timing/RSS, medians, and equivalence hashes
 - `results/pgen_reader_benchmark.json`, `results/pgen_reader_benchmark_full_cohort.json` — PGEN reader matrix with raw timing/RSS, medians, equivalence hashes, the polars-bio build fingerprint, and the element-wise pgenlib verification
+- `results/bbi_scaling*.json` — BigWig/BigBed raw runs, correctness fingerprints, throughput, speedup, and parallel efficiency for each `t`
+- `results/bbi-figures/{bigwig,bigbed}-scaling.png` — wall-time, throughput, speedup, and efficiency curves
 - `results/report.md` — formatted markdown report with tables, speedup analysis, code snippets, and reproduction instructions
 - `BCF_BENCHMARK.md` — tracked BCF result report for the reviewed PR/branch refs
 - `GENOTYPE_READER_BENCHMARK.md` — tracked output-equivalent t=1 VCF/BCF reader comparison
 - `PGEN_BENCHMARK.md` — tracked PGEN polars-bio/snputils/pgenlib comparison
+- `BBI_BENCHMARK.md` — tracked BigWig/BigBed t=1–8 scalability comparison
 
 ## Project Structure
 
@@ -195,6 +290,8 @@ benchmarks/
   bench_bcf_polars_bio.py        # Lazy/streaming BCF -> dosage lists
   bench_bcf_snputils.py           # BCF -> dosage ndarray
   verify_bcf_equivalence.py       # Full row/sample/genotype comparison
+  bbi_common.py                  # BBI paths + fresh-process timing utility
+  bench_bbi_polars_bio.py        # BBI source, count, aggregate, and collect workloads
   genotype_matrix.py              # One fresh-process VCF/BCF reader workload
   bench_fastq_pysam.py          # FASTQ benchmarks (6 files)
   bench_fastq_oxbow_eager.py
@@ -204,8 +301,12 @@ benchmarks/
   bench_fastq_polars_bio_lazy.py
 run_benchmarks.py               # Multi-format orchestrator
 run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
+run_bbi_benchmarks.py           # BigWig/BigBed t=1..8 scalability runner
+setup_bbi_benchmark.sh          # Exact Python/package environment for BBI runs
+tests/test_bbi_benchmark.py     # BBI runner and plotting validation tests
 run_genotype_matrix_benchmarks.py # pysam/PyVCF3/cyvcf2/Oxbow/polars/snputils
 generate_genotype_reader_figures.py # Timing, memory, and scaling plots
+generate_bbi_figures.py         # BBI scalability and before/after plots
 run_thread_benchmarks.py        # polars-bio thread scaling (BAM)
 generate_report.py              # Report generator
 setup.sh                        # Environment + data setup
