@@ -68,14 +68,14 @@
           "diagnostics_median": {
             "record_batches": 83
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 10164678,
             "maximum_to_mean": 1.0,
             "minimum": 10164678,
             "total": 10164678
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -93,7 +93,7 @@
               "diagnostics": {
                 "record_batches": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -116,7 +116,7 @@
               "diagnostics": {
                 "record_batches": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -139,7 +139,7 @@
               "diagnostics": {
                 "record_batches": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -162,7 +162,7 @@
               "diagnostics": {
                 "record_batches": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -185,7 +185,7 @@
               "diagnostics": {
                 "record_batches": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -214,14 +214,14 @@
           "diagnostics_median": {
             "record_batches": 84
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008921523815140837,
             "maximum": 5091113,
             "maximum_to_mean": 1.0008921523815142,
             "minimum": 5082037,
             "total": 10173150
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -240,7 +240,7 @@
               "diagnostics": {
                 "record_batches": 84
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -264,7 +264,7 @@
               "diagnostics": {
                 "record_batches": 84
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -288,7 +288,7 @@
               "diagnostics": {
                 "record_batches": 84
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -312,7 +312,7 @@
               "diagnostics": {
                 "record_batches": 84
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -336,7 +336,7 @@
               "diagnostics": {
                 "record_batches": 84
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -366,14 +366,14 @@
           "diagnostics_median": {
             "record_batches": 85
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00226206909204912,
             "maximum": 3399528,
             "maximum_to_mean": 1.0016111482620764,
             "minimum": 3383202,
             "total": 10182179
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -393,7 +393,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -418,7 +418,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -443,7 +443,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -468,7 +468,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -493,7 +493,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -524,14 +524,14 @@
           "diagnostics_median": {
             "record_batches": 86
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.004781805556484713,
             "maximum": 2564770,
             "maximum_to_mean": 1.0059035952022135,
             "minimum": 2534450,
             "total": 10198870
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -552,7 +552,7 @@
               "diagnostics": {
                 "record_batches": 86
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -578,7 +578,7 @@
               "diagnostics": {
                 "record_batches": 86
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -604,7 +604,7 @@
               "diagnostics": {
                 "record_batches": 86
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -630,7 +630,7 @@
               "diagnostics": {
                 "record_batches": 86
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -656,7 +656,7 @@
               "diagnostics": {
                 "record_batches": 86
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -688,14 +688,14 @@
           "diagnostics_median": {
             "record_batches": 85
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.003666115920060281,
             "maximum": 2053436,
             "maximum_to_mean": 1.005760466283811,
             "minimum": 2034539,
             "total": 10208375
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -717,7 +717,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -744,7 +744,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -771,7 +771,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -798,7 +798,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -825,7 +825,7 @@
               "diagnostics": {
                 "record_batches": 85
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -858,14 +858,14 @@
           "diagnostics_median": {
             "record_batches": 87
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0026136677377154556,
             "maximum": 1707472,
             "maximum_to_mean": 1.0036139511386282,
             "minimum": 1694100,
             "total": 10207941
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -888,7 +888,7 @@
               "diagnostics": {
                 "record_batches": 87
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -916,7 +916,7 @@
               "diagnostics": {
                 "record_batches": 87
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -944,7 +944,7 @@
               "diagnostics": {
                 "record_batches": 87
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -972,7 +972,7 @@
               "diagnostics": {
                 "record_batches": 87
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1000,7 +1000,7 @@
               "diagnostics": {
                 "record_batches": 87
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1034,14 +1034,14 @@
           "diagnostics_median": {
             "record_batches": 88
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0047010624172534035,
             "maximum": 1470212,
             "maximum_to_mean": 1.0065442348100242,
             "minimum": 1449512,
             "total": 10224572
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -1065,7 +1065,7 @@
               "diagnostics": {
                 "record_batches": 88
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -1094,7 +1094,7 @@
               "diagnostics": {
                 "record_batches": 88
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -1123,7 +1123,7 @@
               "diagnostics": {
                 "record_batches": 88
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -1152,7 +1152,7 @@
               "diagnostics": {
                 "record_batches": 88
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -1181,7 +1181,7 @@
               "diagnostics": {
                 "record_batches": 88
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -1216,14 +1216,14 @@
           "diagnostics_median": {
             "record_batches": 89
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0058356633488153495,
             "maximum": 1294125,
             "maximum_to_mean": 1.0116812886355153,
             "minimum": 1267344,
             "total": 10233460
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -1248,7 +1248,7 @@
               "diagnostics": {
                 "record_batches": 89
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1278,7 +1278,7 @@
               "diagnostics": {
                 "record_batches": 89
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1308,7 +1308,7 @@
               "diagnostics": {
                 "record_batches": 89
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1338,7 +1338,7 @@
               "diagnostics": {
                 "record_batches": 89
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1368,7 +1368,7 @@
               "diagnostics": {
                 "record_batches": 89
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1403,14 +1403,14 @@
       },
       "polars_aggregate_all": {
         "t1": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 10164678,
             "maximum_to_mean": 1.0,
             "minimum": 10164678,
             "total": 10164678
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -1429,7 +1429,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1453,7 +1453,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1477,7 +1477,7 @@
             {
               "ambient_cpu_percent_before": 13.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1501,7 +1501,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1525,7 +1525,7 @@
             {
               "ambient_cpu_percent_before": 13.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1554,14 +1554,14 @@
           "time_seconds_stdev": 0.0012690901727323782
         },
         "t2": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008921523815140837,
             "maximum": 5091113,
             "maximum_to_mean": 1.0008921523815142,
             "minimum": 5082037,
             "total": 10173150
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -1581,7 +1581,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1606,7 +1606,7 @@
             {
               "ambient_cpu_percent_before": 13.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1631,7 +1631,7 @@
             {
               "ambient_cpu_percent_before": 13.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1656,7 +1656,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1681,7 +1681,7 @@
             {
               "ambient_cpu_percent_before": 11.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1711,14 +1711,14 @@
           "time_seconds_stdev": 8.955626093283019e-05
         },
         "t3": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00226206909204912,
             "maximum": 3399528,
             "maximum_to_mean": 1.0016111482620764,
             "minimum": 3383202,
             "total": 10182179
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -1739,7 +1739,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1765,7 +1765,7 @@
             {
               "ambient_cpu_percent_before": 13.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1791,7 +1791,7 @@
             {
               "ambient_cpu_percent_before": 9.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1817,7 +1817,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1843,7 +1843,7 @@
             {
               "ambient_cpu_percent_before": 9.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1874,14 +1874,14 @@
           "time_seconds_stdev": 0.00013569554962393485
         },
         "t4": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.004781805556484713,
             "maximum": 2564770,
             "maximum_to_mean": 1.0059035952022135,
             "minimum": 2534450,
             "total": 10198870
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -1903,7 +1903,7 @@
             {
               "ambient_cpu_percent_before": 10.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1930,7 +1930,7 @@
             {
               "ambient_cpu_percent_before": 13.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1957,7 +1957,7 @@
             {
               "ambient_cpu_percent_before": 24.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1984,7 +1984,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -2011,7 +2011,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -2043,14 +2043,14 @@
           "time_seconds_stdev": 0.00014233169620052295
         },
         "t5": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.003666115920060281,
             "maximum": 2053436,
             "maximum_to_mean": 1.005760466283811,
             "minimum": 2034539,
             "total": 10208375
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -2073,7 +2073,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -2101,7 +2101,7 @@
             {
               "ambient_cpu_percent_before": 9.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -2129,7 +2129,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -2157,7 +2157,7 @@
             {
               "ambient_cpu_percent_before": 10.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -2185,7 +2185,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -2218,14 +2218,14 @@
           "time_seconds_stdev": 7.95484187793987e-05
         },
         "t6": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0026136677377154556,
             "maximum": 1707472,
             "maximum_to_mean": 1.0036139511386282,
             "minimum": 1694100,
             "total": 10207941
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -2249,7 +2249,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -2278,7 +2278,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -2307,7 +2307,7 @@
             {
               "ambient_cpu_percent_before": 11.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -2336,7 +2336,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -2365,7 +2365,7 @@
             {
               "ambient_cpu_percent_before": 13.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -2399,14 +2399,14 @@
           "time_seconds_stdev": 0.00020595482385496182
         },
         "t7": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0047010624172534035,
             "maximum": 1470212,
             "maximum_to_mean": 1.0065442348100242,
             "minimum": 1449512,
             "total": 10224572
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -2431,7 +2431,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2461,7 +2461,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2491,7 +2491,7 @@
             {
               "ambient_cpu_percent_before": 13.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2521,7 +2521,7 @@
             {
               "ambient_cpu_percent_before": 15.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2551,7 +2551,7 @@
             {
               "ambient_cpu_percent_before": 23.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2586,14 +2586,14 @@
           "time_seconds_stdev": 0.0004359324957546449
         },
         "t8": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0058356633488153495,
             "maximum": 1294125,
             "maximum_to_mean": 1.0116812886355153,
             "minimum": 1267344,
             "total": 10233460
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -2619,7 +2619,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2650,7 +2650,7 @@
             {
               "ambient_cpu_percent_before": 11.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2681,7 +2681,7 @@
             {
               "ambient_cpu_percent_before": 11.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2712,7 +2712,7 @@
             {
               "ambient_cpu_percent_before": 12.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2743,7 +2743,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2785,14 +2785,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 83
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 10164678,
             "maximum_to_mean": 1.0,
             "minimum": 10164678,
             "total": 10164678
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -2811,7 +2811,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -2835,7 +2835,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -2859,7 +2859,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -2883,7 +2883,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -2907,7 +2907,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 83
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -2937,14 +2937,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 168
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008921523815140837,
             "maximum": 5091113,
             "maximum_to_mean": 1.0008921523815142,
             "minimum": 5082037,
             "total": 10173150
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -2964,7 +2964,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 168
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -2989,7 +2989,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 168
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -3014,7 +3014,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 168
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -3039,7 +3039,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 168
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -3064,7 +3064,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 168
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -3095,14 +3095,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 255
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00226206909204912,
             "maximum": 3399528,
             "maximum_to_mean": 1.0016111482620764,
             "minimum": 3383202,
             "total": 10182179
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -3123,7 +3123,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 255
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -3149,7 +3149,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 255
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -3175,7 +3175,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 255
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -3201,7 +3201,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 255
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -3227,7 +3227,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 255
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -3259,14 +3259,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 338
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.004781805556484713,
             "maximum": 2564770,
             "maximum_to_mean": 1.0059035952022135,
             "minimum": 2534450,
             "total": 10198870
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -3288,7 +3288,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 338
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -3315,7 +3315,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 338
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -3342,7 +3342,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 338
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -3369,7 +3369,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 338
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -3396,7 +3396,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 338
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -3429,14 +3429,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 424
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.003666115920060281,
             "maximum": 2053436,
             "maximum_to_mean": 1.005760466283811,
             "minimum": 2034539,
             "total": 10208375
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -3459,7 +3459,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 424
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -3487,7 +3487,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 424
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -3515,7 +3515,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 424
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -3543,7 +3543,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 424
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -3571,7 +3571,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 424
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -3605,14 +3605,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 522
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0026136677377154556,
             "maximum": 1707472,
             "maximum_to_mean": 1.0036139511386282,
             "minimum": 1694100,
             "total": 10207941
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -3636,7 +3636,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 522
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -3665,7 +3665,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 522
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -3694,7 +3694,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 522
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -3723,7 +3723,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 522
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -3752,7 +3752,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 522
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -3787,14 +3787,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 615
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0047010624172534035,
             "maximum": 1470212,
             "maximum_to_mean": 1.0065442348100242,
             "minimum": 1449512,
             "total": 10224572
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -3819,7 +3819,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 615
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -3849,7 +3849,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 615
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -3879,7 +3879,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 615
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -3909,7 +3909,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 615
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -3939,7 +3939,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 615
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -3975,14 +3975,14 @@
             "estimated_size_mb": 23.28708267211914,
             "output_chunks": 696
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0058356633488153495,
             "maximum": 1294125,
             "maximum_to_mean": 1.0116812886355153,
             "minimum": 1267344,
             "total": 10233460
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -4008,7 +4008,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 696
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -4039,7 +4039,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 696
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -4070,7 +4070,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 696
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -4101,7 +4101,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 696
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -4132,7 +4132,7 @@
                 "estimated_size_mb": 23.28708267211914,
                 "output_chunks": 696
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -4167,14 +4167,14 @@
       },
       "polars_count": {
         "t1": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 10164678,
             "maximum_to_mean": 1.0,
             "minimum": 10164678,
             "total": 10164678
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -4189,7 +4189,7 @@
             {
               "ambient_cpu_percent_before": 24.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -4209,7 +4209,7 @@
             {
               "ambient_cpu_percent_before": 11.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -4229,7 +4229,7 @@
             {
               "ambient_cpu_percent_before": 9.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -4249,7 +4249,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -4269,7 +4269,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -4294,14 +4294,14 @@
           "time_seconds_stdev": 0.001626566748002621
         },
         "t2": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008921523815140837,
             "maximum": 5091113,
             "maximum_to_mean": 1.0008921523815142,
             "minimum": 5082037,
             "total": 10173150
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -4317,7 +4317,7 @@
             {
               "ambient_cpu_percent_before": 24.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -4338,7 +4338,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -4359,7 +4359,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -4380,7 +4380,7 @@
             {
               "ambient_cpu_percent_before": 12.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -4401,7 +4401,7 @@
             {
               "ambient_cpu_percent_before": 9.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -4427,14 +4427,14 @@
           "time_seconds_stdev": 0.00018985835201206977
         },
         "t3": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00226206909204912,
             "maximum": 3399528,
             "maximum_to_mean": 1.0016111482620764,
             "minimum": 3383202,
             "total": 10182179
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -4451,7 +4451,7 @@
             {
               "ambient_cpu_percent_before": 16.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -4473,7 +4473,7 @@
             {
               "ambient_cpu_percent_before": 13.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -4495,7 +4495,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -4517,7 +4517,7 @@
             {
               "ambient_cpu_percent_before": 13.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -4539,7 +4539,7 @@
             {
               "ambient_cpu_percent_before": 12.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -4566,14 +4566,14 @@
           "time_seconds_stdev": 0.00010229991809451037
         },
         "t4": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.004781805556484713,
             "maximum": 2564770,
             "maximum_to_mean": 1.0059035952022135,
             "minimum": 2534450,
             "total": 10198870
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -4591,7 +4591,7 @@
             {
               "ambient_cpu_percent_before": 17.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -4614,7 +4614,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -4637,7 +4637,7 @@
             {
               "ambient_cpu_percent_before": 13.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -4660,7 +4660,7 @@
             {
               "ambient_cpu_percent_before": 13.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -4683,7 +4683,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -4711,14 +4711,14 @@
           "time_seconds_stdev": 3.345547852945138e-05
         },
         "t5": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.003666115920060281,
             "maximum": 2053436,
             "maximum_to_mean": 1.005760466283811,
             "minimum": 2034539,
             "total": 10208375
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -4737,7 +4737,7 @@
             {
               "ambient_cpu_percent_before": 13.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -4761,7 +4761,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -4785,7 +4785,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -4809,7 +4809,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -4833,7 +4833,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -4862,14 +4862,14 @@
           "time_seconds_stdev": 0.00010181259811893947
         },
         "t6": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0026136677377154556,
             "maximum": 1707472,
             "maximum_to_mean": 1.0036139511386282,
             "minimum": 1694100,
             "total": 10207941
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -4889,7 +4889,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -4914,7 +4914,7 @@
             {
               "ambient_cpu_percent_before": 13.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -4939,7 +4939,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -4964,7 +4964,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -4989,7 +4989,7 @@
             {
               "ambient_cpu_percent_before": 11.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -5019,14 +5019,14 @@
           "time_seconds_stdev": 0.00018153832764464275
         },
         "t7": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0047010624172534035,
             "maximum": 1470212,
             "maximum_to_mean": 1.0065442348100242,
             "minimum": 1449512,
             "total": 10224572
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -5047,7 +5047,7 @@
             {
               "ambient_cpu_percent_before": 11.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -5073,7 +5073,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -5099,7 +5099,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -5125,7 +5125,7 @@
             {
               "ambient_cpu_percent_before": 22.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -5151,7 +5151,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -5182,14 +5182,14 @@
           "time_seconds_stdev": 5.911288673348659e-05
         },
         "t8": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0058356633488153495,
             "maximum": 1294125,
             "maximum_to_mean": 1.0116812886355153,
             "minimum": 1267344,
             "total": 10233460
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -5211,7 +5211,7 @@
             {
               "ambient_cpu_percent_before": 11.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -5238,7 +5238,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -5265,7 +5265,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -5292,7 +5292,7 @@
             {
               "ambient_cpu_percent_before": 10.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -5319,7 +5319,7 @@
             {
               "ambient_cpu_percent_before": 12.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -5358,14 +5358,14 @@
           "diagnostics_median": {
             "record_batches": 12125
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 454982217,
             "maximum_to_mean": 1.0,
             "minimum": 454982217,
             "total": 454982217
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -5383,7 +5383,7 @@
               "diagnostics": {
                 "record_batches": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -5406,7 +5406,7 @@
               "diagnostics": {
                 "record_batches": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -5429,7 +5429,7 @@
               "diagnostics": {
                 "record_batches": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -5452,7 +5452,7 @@
               "diagnostics": {
                 "record_batches": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -5475,7 +5475,7 @@
               "diagnostics": {
                 "record_batches": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -5504,14 +5504,14 @@
           "diagnostics_median": {
             "record_batches": 12126
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00016237833927109543,
             "maximum": 227530337,
             "maximum_to_mean": 1.000162378339271,
             "minimum": 227456457,
             "total": 454986794
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -5530,7 +5530,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -5554,7 +5554,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -5578,7 +5578,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -5602,7 +5602,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -5626,7 +5626,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -5656,14 +5656,14 @@
           "diagnostics_median": {
             "record_batches": 12127
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 8.896231266602199e-05,
             "maximum": 151674874,
             "maximum_to_mean": 1.0000724958379839,
             "minimum": 151644876,
             "total": 454991637
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -5683,7 +5683,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -5708,7 +5708,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -5733,7 +5733,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -5758,7 +5758,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -5783,7 +5783,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -5814,14 +5814,14 @@
           "diagnostics_median": {
             "record_batches": 12127
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008085310699987426,
             "maximum": 113887389,
             "maximum_to_mean": 1.001215838314168,
             "minimum": 113647767,
             "total": 454996354
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -5842,7 +5842,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -5868,7 +5868,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -5894,7 +5894,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -5920,7 +5920,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -5946,7 +5946,7 @@
               "diagnostics": {
                 "record_batches": 12127
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -5978,14 +5978,14 @@
           "diagnostics_median": {
             "record_batches": 12126
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001044115624319183,
             "maximum": 91166398,
             "maximum_to_mean": 1.0018269245092961,
             "minimum": 90876116,
             "total": 455000738
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -6007,7 +6007,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -6034,7 +6034,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -6061,7 +6061,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -6088,7 +6088,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -6115,7 +6115,7 @@
               "diagnostics": {
                 "record_batches": 12126
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -6148,14 +6148,14 @@
           "diagnostics_median": {
             "record_batches": 12128
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0007045009015865982,
             "maximum": 75911921,
             "maximum_to_mean": 1.0010244273888913,
             "minimum": 75764830,
             "total": 455005406
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -6178,7 +6178,7 @@
               "diagnostics": {
                 "record_batches": 12128
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -6206,7 +6206,7 @@
               "diagnostics": {
                 "record_batches": 12128
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -6234,7 +6234,7 @@
               "diagnostics": {
                 "record_batches": 12128
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -6262,7 +6262,7 @@
               "diagnostics": {
                 "record_batches": 12128
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -6290,7 +6290,7 @@
               "diagnostics": {
                 "record_batches": 12128
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -6324,14 +6324,14 @@
           "diagnostics_median": {
             "record_batches": 12129
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008299254622596868,
             "maximum": 65076052,
             "maximum_to_mean": 1.0011444894830024,
             "minimum": 64916895,
             "total": 455011608
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -6355,7 +6355,7 @@
               "diagnostics": {
                 "record_batches": 12129
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -6384,7 +6384,7 @@
               "diagnostics": {
                 "record_batches": 12129
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -6413,7 +6413,7 @@
               "diagnostics": {
                 "record_batches": 12129
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -6442,7 +6442,7 @@
               "diagnostics": {
                 "record_batches": 12129
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -6471,7 +6471,7 @@
               "diagnostics": {
                 "record_batches": 12129
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -6506,14 +6506,14 @@
           "diagnostics_median": {
             "record_batches": 12131
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001543636705928,
             "maximum": 56987905,
             "maximum_to_mean": 1.0019500746045318,
             "minimum": 56684018,
             "total": 455015925
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -6538,7 +6538,7 @@
               "diagnostics": {
                 "record_batches": 12131
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -6568,7 +6568,7 @@
               "diagnostics": {
                 "record_batches": 12131
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -6598,7 +6598,7 @@
               "diagnostics": {
                 "record_batches": 12131
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -6628,7 +6628,7 @@
               "diagnostics": {
                 "record_batches": 12131
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -6658,7 +6658,7 @@
               "diagnostics": {
                 "record_batches": 12131
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -6693,14 +6693,14 @@
       },
       "polars_aggregate_all": {
         "t1": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 454982217,
             "maximum_to_mean": 1.0,
             "minimum": 454982217,
             "total": 454982217
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -6719,7 +6719,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -6743,7 +6743,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -6767,7 +6767,7 @@
             {
               "ambient_cpu_percent_before": 11.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -6791,7 +6791,7 @@
             {
               "ambient_cpu_percent_before": 16.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -6815,7 +6815,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -6844,14 +6844,14 @@
           "time_seconds_stdev": 0.07947019396851991
         },
         "t2": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00016237833927109543,
             "maximum": 227530337,
             "maximum_to_mean": 1.000162378339271,
             "minimum": 227456457,
             "total": 454986794
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -6871,7 +6871,7 @@
             {
               "ambient_cpu_percent_before": 11.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -6896,7 +6896,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -6921,7 +6921,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -6946,7 +6946,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -6971,7 +6971,7 @@
             {
               "ambient_cpu_percent_before": 12.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -7001,14 +7001,14 @@
           "time_seconds_stdev": 0.00598387897157914
         },
         "t3": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 8.896231266602199e-05,
             "maximum": 151674874,
             "maximum_to_mean": 1.0000724958379839,
             "minimum": 151644876,
             "total": 454991637
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -7029,7 +7029,7 @@
             {
               "ambient_cpu_percent_before": 9.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -7055,7 +7055,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -7081,7 +7081,7 @@
             {
               "ambient_cpu_percent_before": 11.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -7107,7 +7107,7 @@
             {
               "ambient_cpu_percent_before": 14.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -7133,7 +7133,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -7164,14 +7164,14 @@
           "time_seconds_stdev": 0.007011524447373569
         },
         "t4": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008085310699987426,
             "maximum": 113887389,
             "maximum_to_mean": 1.001215838314168,
             "minimum": 113647767,
             "total": 454996354
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -7193,7 +7193,7 @@
             {
               "ambient_cpu_percent_before": 10.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -7220,7 +7220,7 @@
             {
               "ambient_cpu_percent_before": 9.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -7247,7 +7247,7 @@
             {
               "ambient_cpu_percent_before": 13.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -7274,7 +7274,7 @@
             {
               "ambient_cpu_percent_before": 21.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -7301,7 +7301,7 @@
             {
               "ambient_cpu_percent_before": 12.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -7333,14 +7333,14 @@
           "time_seconds_stdev": 0.011348651345631676
         },
         "t5": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001044115624319183,
             "maximum": 91166398,
             "maximum_to_mean": 1.0018269245092961,
             "minimum": 90876116,
             "total": 455000738
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -7363,7 +7363,7 @@
             {
               "ambient_cpu_percent_before": 9.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -7391,7 +7391,7 @@
             {
               "ambient_cpu_percent_before": 13.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -7419,7 +7419,7 @@
             {
               "ambient_cpu_percent_before": 11.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -7447,7 +7447,7 @@
             {
               "ambient_cpu_percent_before": 24.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -7475,7 +7475,7 @@
             {
               "ambient_cpu_percent_before": 11.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -7508,14 +7508,14 @@
           "time_seconds_stdev": 0.004269832487128902
         },
         "t6": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0007045009015865982,
             "maximum": 75911921,
             "maximum_to_mean": 1.0010244273888913,
             "minimum": 75764830,
             "total": 455005406
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -7539,7 +7539,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -7568,7 +7568,7 @@
             {
               "ambient_cpu_percent_before": 9.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -7597,7 +7597,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -7626,7 +7626,7 @@
             {
               "ambient_cpu_percent_before": 24.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -7655,7 +7655,7 @@
             {
               "ambient_cpu_percent_before": 25.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -7689,14 +7689,14 @@
           "time_seconds_stdev": 0.0031168118121384886
         },
         "t7": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008299254622596868,
             "maximum": 65076052,
             "maximum_to_mean": 1.0011444894830024,
             "minimum": 64916895,
             "total": 455011608
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -7721,7 +7721,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -7751,7 +7751,7 @@
             {
               "ambient_cpu_percent_before": 14.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -7781,7 +7781,7 @@
             {
               "ambient_cpu_percent_before": 11.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -7811,7 +7811,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -7841,7 +7841,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -7876,14 +7876,14 @@
           "time_seconds_stdev": 0.0063703425410511685
         },
         "t8": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001543636705928,
             "maximum": 56987905,
             "maximum_to_mean": 1.0019500746045318,
             "minimum": 56684018,
             "total": 455015925
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -7909,7 +7909,7 @@
             {
               "ambient_cpu_percent_before": 11.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -7940,7 +7940,7 @@
             {
               "ambient_cpu_percent_before": 10.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -7971,7 +7971,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -8002,7 +8002,7 @@
             {
               "ambient_cpu_percent_before": 11.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -8033,7 +8033,7 @@
             {
               "ambient_cpu_percent_before": 9.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -8075,14 +8075,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 12125
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 454982217,
             "maximum_to_mean": 1.0,
             "minimum": 454982217,
             "total": 454982217
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -8101,7 +8101,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -8125,7 +8125,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -8149,7 +8149,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -8173,7 +8173,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -8197,7 +8197,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 12125
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -8227,14 +8227,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 24251
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00016237833927109543,
             "maximum": 227530337,
             "maximum_to_mean": 1.000162378339271,
             "minimum": 227456457,
             "total": 454986794
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -8254,7 +8254,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 24251
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -8279,7 +8279,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 24251
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -8304,7 +8304,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 24251
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -8329,7 +8329,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 24251
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -8354,7 +8354,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 24251
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -8385,14 +8385,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 36377
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 8.896231266602199e-05,
             "maximum": 151674874,
             "maximum_to_mean": 1.0000724958379839,
             "minimum": 151644876,
             "total": 454991637
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -8413,7 +8413,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 36377
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -8439,7 +8439,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 36377
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -8465,7 +8465,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 36377
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -8491,7 +8491,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 36377
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -8517,7 +8517,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 36377
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -8549,14 +8549,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 48496
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008085310699987426,
             "maximum": 113887389,
             "maximum_to_mean": 1.001215838314168,
             "minimum": 113647767,
             "total": 454996354
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -8578,7 +8578,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 48496
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -8605,7 +8605,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 48496
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -8632,7 +8632,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 48496
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -8659,7 +8659,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 48496
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -8686,7 +8686,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 48496
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -8719,14 +8719,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 60609
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001044115624319183,
             "maximum": 91166398,
             "maximum_to_mean": 1.0018269245092961,
             "minimum": 90876116,
             "total": 455000738
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -8749,7 +8749,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 60609
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -8777,7 +8777,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 60609
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -8805,7 +8805,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 60609
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -8833,7 +8833,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 60609
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -8861,7 +8861,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 60609
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -8895,14 +8895,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 72738
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0007045009015865982,
             "maximum": 75911921,
             "maximum_to_mean": 1.0010244273888913,
             "minimum": 75764830,
             "total": 455005406
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -8926,7 +8926,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 72738
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -8955,7 +8955,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 72738
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -8984,7 +8984,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 72738
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -9013,7 +9013,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 72738
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -9042,7 +9042,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 72738
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -9077,14 +9077,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 84864
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008299254622596868,
             "maximum": 65076052,
             "maximum_to_mean": 1.0011444894830024,
             "minimum": 64916895,
             "total": 455011608
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -9109,7 +9109,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 84864
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -9139,7 +9139,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 84864
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -9169,7 +9169,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 84864
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -9199,7 +9199,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 84864
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -9229,7 +9229,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 84864
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -9265,14 +9265,14 @@
             "estimated_size_mb": 1542.1517028808594,
             "output_chunks": 96988
           },
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001543636705928,
             "maximum": 56987905,
             "maximum_to_mean": 1.0019500746045318,
             "minimum": 56684018,
             "total": 455015925
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -9298,7 +9298,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 96988
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -9329,7 +9329,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 96988
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -9360,7 +9360,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 96988
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -9391,7 +9391,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 96988
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -9422,7 +9422,7 @@
                 "estimated_size_mb": 1542.1517028808594,
                 "output_chunks": 96988
               },
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -9457,14 +9457,14 @@
       },
       "polars_count": {
         "t1": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0,
             "maximum": 454982217,
             "maximum_to_mean": 1.0,
             "minimum": 454982217,
             "total": 454982217
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -9479,7 +9479,7 @@
             {
               "ambient_cpu_percent_before": 9.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -9499,7 +9499,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -9519,7 +9519,7 @@
             {
               "ambient_cpu_percent_before": 0.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -9539,7 +9539,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -9559,7 +9559,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -9584,14 +9584,14 @@
           "time_seconds_stdev": 0.05990159199368115
         },
         "t2": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.00016237833927109543,
             "maximum": 227530337,
             "maximum_to_mean": 1.000162378339271,
             "minimum": 227456457,
             "total": 454986794
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -9607,7 +9607,7 @@
             {
               "ambient_cpu_percent_before": 9.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -9628,7 +9628,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -9649,7 +9649,7 @@
             {
               "ambient_cpu_percent_before": 9.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -9670,7 +9670,7 @@
             {
               "ambient_cpu_percent_before": 10.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -9691,7 +9691,7 @@
             {
               "ambient_cpu_percent_before": 10.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -9717,14 +9717,14 @@
           "time_seconds_stdev": 0.007720576750005838
         },
         "t3": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 8.896231266602199e-05,
             "maximum": 151674874,
             "maximum_to_mean": 1.0000724958379839,
             "minimum": 151644876,
             "total": 454991637
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -9741,7 +9741,7 @@
             {
               "ambient_cpu_percent_before": 11.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -9763,7 +9763,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -9785,7 +9785,7 @@
             {
               "ambient_cpu_percent_before": 10.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -9807,7 +9807,7 @@
             {
               "ambient_cpu_percent_before": 10.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -9829,7 +9829,7 @@
             {
               "ambient_cpu_percent_before": 12.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -9856,14 +9856,14 @@
           "time_seconds_stdev": 0.040630226990410245
         },
         "t4": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008085310699987426,
             "maximum": 113887389,
             "maximum_to_mean": 1.001215838314168,
             "minimum": 113647767,
             "total": 454996354
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -9881,7 +9881,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -9904,7 +9904,7 @@
             {
               "ambient_cpu_percent_before": 20.0,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -9927,7 +9927,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -9950,7 +9950,7 @@
             {
               "ambient_cpu_percent_before": 10.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -9973,7 +9973,7 @@
             {
               "ambient_cpu_percent_before": 12.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -10001,14 +10001,14 @@
           "time_seconds_stdev": 0.006890892802595328
         },
         "t5": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001044115624319183,
             "maximum": 91166398,
             "maximum_to_mean": 1.0018269245092961,
             "minimum": 90876116,
             "total": 455000738
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -10027,7 +10027,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -10051,7 +10051,7 @@
             {
               "ambient_cpu_percent_before": 14.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -10075,7 +10075,7 @@
             {
               "ambient_cpu_percent_before": 16.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -10099,7 +10099,7 @@
             {
               "ambient_cpu_percent_before": 12.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -10123,7 +10123,7 @@
             {
               "ambient_cpu_percent_before": 12.2,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -10152,14 +10152,14 @@
           "time_seconds_stdev": 0.0025737862258159486
         },
         "t6": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0007045009015865982,
             "maximum": 75911921,
             "maximum_to_mean": 1.0010244273888913,
             "minimum": 75764830,
             "total": 455005406
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -10179,7 +10179,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -10204,7 +10204,7 @@
             {
               "ambient_cpu_percent_before": 9.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -10229,7 +10229,7 @@
             {
               "ambient_cpu_percent_before": 10.5,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -10254,7 +10254,7 @@
             {
               "ambient_cpu_percent_before": 9.8,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -10279,7 +10279,7 @@
             {
               "ambient_cpu_percent_before": 10.4,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -10309,14 +10309,14 @@
           "time_seconds_stdev": 0.005575241076988437
         },
         "t7": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.0008299254622596868,
             "maximum": 65076052,
             "maximum_to_mean": 1.0011444894830024,
             "minimum": 64916895,
             "total": 455011608
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -10337,7 +10337,7 @@
             {
               "ambient_cpu_percent_before": 14.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -10363,7 +10363,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -10389,7 +10389,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -10415,7 +10415,7 @@
             {
               "ambient_cpu_percent_before": 11.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -10441,7 +10441,7 @@
             {
               "ambient_cpu_percent_before": 9.9,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -10472,14 +10472,14 @@
           "time_seconds_stdev": 0.001531081965993202
         },
         "t8": {
-          "estimated_compressed_byte_balance": {
+          "estimated_data_byte_balance": {
             "coefficient_of_variation": 0.001543636705928,
             "maximum": 56987905,
             "maximum_to_mean": 1.0019500746045318,
             "minimum": 56684018,
             "total": 455015925
           },
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -10501,7 +10501,7 @@
             {
               "ambient_cpu_percent_before": 26.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -10528,7 +10528,7 @@
             {
               "ambient_cpu_percent_before": 10.7,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -10555,7 +10555,7 @@
             {
               "ambient_cpu_percent_before": 11.3,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -10582,7 +10582,7 @@
             {
               "ambient_cpu_percent_before": 13.6,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -10609,7 +10609,7 @@
             {
               "ambient_cpu_percent_before": 15.1,
               "diagnostics": {},
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,

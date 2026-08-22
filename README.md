@@ -149,7 +149,7 @@ through eight. Combination order rotates and reverses between rounds to reduce
 cache and thermal bias. Each child also inspects the physical plan after timing
 and records the BBI scan's advertised output partition count, making a serial
 provider distinguishable from a truly partitioned source. When the provider
-reports index-derived compressed-byte estimates, the runner verifies that the
+reports index-derived data-byte estimates, the runner verifies that the
 layout is stable across repetitions and records its coefficient of variation
 and maximum-to-mean ratio for each `t`.
 

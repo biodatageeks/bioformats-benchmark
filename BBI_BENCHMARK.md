@@ -85,7 +85,7 @@ aggregation or DataFrame construction, chunk retention, and final output.
 Provider setup reads the primary cir-tree leaves and balances their compressed
 sizes across source partitions. At `t=8` the assignments are tightly balanced:
 
-| format | serial compressed bytes | t=8 bytes per partition | coefficient of variation | maximum / mean |
+| format | serial data bytes | t=8 bytes per partition | coefficient of variation | maximum / mean |
 |:--|--:|:--|--:|--:|
 | BigWig | 454,982,217 | 56,684,018–56,987,905 | 0.15% | 1.002 |
 | BigBed | 10,164,678 | 1,267,344–1,294,125 | 0.58% | 1.012 |

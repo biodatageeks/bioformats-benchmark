@@ -63,7 +63,7 @@
     "bigbed": {
       "count": {
         "t1": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -76,7 +76,7 @@
           "physical_partition_count": 1,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -94,7 +94,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -112,7 +112,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -130,7 +130,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -148,7 +148,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -173,7 +173,7 @@
           "time_seconds_stdev": 0.028981319454815305
         },
         "t2": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -187,7 +187,7 @@
           "physical_partition_count": 2,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -206,7 +206,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -225,7 +225,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -244,7 +244,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -263,7 +263,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -289,7 +289,7 @@
           "time_seconds_stdev": 0.005920373940321711
         },
         "t3": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -304,7 +304,7 @@
           "physical_partition_count": 3,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -324,7 +324,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -344,7 +344,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -364,7 +364,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -384,7 +384,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -411,7 +411,7 @@
           "time_seconds_stdev": 0.004124981455877231
         },
         "t4": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -427,7 +427,7 @@
           "physical_partition_count": 4,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -448,7 +448,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -469,7 +469,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -490,7 +490,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -511,7 +511,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -539,7 +539,7 @@
           "time_seconds_stdev": 0.001369875468738976
         },
         "t5": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -556,7 +556,7 @@
           "physical_partition_count": 5,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -578,7 +578,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -600,7 +600,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -622,7 +622,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -644,7 +644,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -673,7 +673,7 @@
           "time_seconds_stdev": 0.0017452348098311848
         },
         "t6": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -691,7 +691,7 @@
           "physical_partition_count": 6,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -714,7 +714,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -737,7 +737,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -760,7 +760,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -783,7 +783,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -813,7 +813,7 @@
           "time_seconds_stdev": 0.0011976734683786388
         },
         "t7": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -832,7 +832,7 @@
           "physical_partition_count": 7,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -856,7 +856,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -880,7 +880,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -904,7 +904,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -928,7 +928,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -959,7 +959,7 @@
           "time_seconds_stdev": 0.0006273986961794271
         },
         "t8": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -979,7 +979,7 @@
           "physical_partition_count": 8,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1004,7 +1004,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1029,7 +1029,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1054,7 +1054,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1079,7 +1079,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -1113,7 +1113,7 @@
       },
       "decode": {
         "t1": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             10164678
           ],
           "fingerprint": {
@@ -1129,7 +1129,7 @@
           "physical_partition_count": 1,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1150,7 +1150,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1171,7 +1171,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1192,7 +1192,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1213,7 +1213,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 10164678
               ],
               "fingerprint": {
@@ -1241,7 +1241,7 @@
           "time_seconds_stdev": 0.001913378813413645
         },
         "t2": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             5082037,
             5091113
           ],
@@ -1258,7 +1258,7 @@
           "physical_partition_count": 2,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1280,7 +1280,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1302,7 +1302,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1324,7 +1324,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1346,7 +1346,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 5082037,
                 5091113
               ],
@@ -1375,7 +1375,7 @@
           "time_seconds_stdev": 0.0006065980695075888
         },
         "t3": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             3383202,
             3399449,
             3399528
@@ -1393,7 +1393,7 @@
           "physical_partition_count": 3,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1416,7 +1416,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1439,7 +1439,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1462,7 +1462,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1485,7 +1485,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 3383202,
                 3399449,
                 3399528
@@ -1515,7 +1515,7 @@
           "time_seconds_stdev": 0.0010915552173867415
         },
         "t4": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2534450,
             2564770,
             2541612,
@@ -1534,7 +1534,7 @@
           "physical_partition_count": 4,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1558,7 +1558,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1582,7 +1582,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1606,7 +1606,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1630,7 +1630,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2534450,
                 2564770,
                 2541612,
@@ -1661,7 +1661,7 @@
           "time_seconds_stdev": 0.0011339073406451843
         },
         "t5": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             2034539,
             2037279,
             2047541,
@@ -1681,7 +1681,7 @@
           "physical_partition_count": 5,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -1706,7 +1706,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -1731,7 +1731,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -1756,7 +1756,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -1781,7 +1781,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 2034539,
                 2037279,
                 2047541,
@@ -1813,7 +1813,7 @@
           "time_seconds_stdev": 0.0009312032589939318
         },
         "t6": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1694100,
             1697764,
             1707472,
@@ -1834,7 +1834,7 @@
           "physical_partition_count": 6,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1860,7 +1860,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1886,7 +1886,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1912,7 +1912,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1938,7 +1938,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1694100,
                 1697764,
                 1707472,
@@ -1971,7 +1971,7 @@
           "time_seconds_stdev": 0.0009969267645181423
         },
         "t7": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1449512,
             1456808,
             1469134,
@@ -1993,7 +1993,7 @@
           "physical_partition_count": 7,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2020,7 +2020,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2047,7 +2047,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2074,7 +2074,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2101,7 +2101,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1449512,
                 1456808,
                 1469134,
@@ -2135,7 +2135,7 @@
           "time_seconds_stdev": 0.0013466481895491485
         },
         "t8": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             1267344,
             1276003,
             1294125,
@@ -2158,7 +2158,7 @@
           "physical_partition_count": 8,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2186,7 +2186,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2214,7 +2214,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2242,7 +2242,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2270,7 +2270,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 1267344,
                 1276003,
                 1294125,
@@ -2309,7 +2309,7 @@
     "bigwig": {
       "count": {
         "t1": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -2322,7 +2322,7 @@
           "physical_partition_count": 1,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -2340,7 +2340,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -2358,7 +2358,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -2376,7 +2376,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -2394,7 +2394,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -2419,7 +2419,7 @@
           "time_seconds_stdev": 0.2047987731560394
         },
         "t2": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -2433,7 +2433,7 @@
           "physical_partition_count": 2,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -2452,7 +2452,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -2471,7 +2471,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -2490,7 +2490,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -2509,7 +2509,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -2535,7 +2535,7 @@
           "time_seconds_stdev": 0.1319491114168478
         },
         "t3": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -2550,7 +2550,7 @@
           "physical_partition_count": 3,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -2570,7 +2570,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -2590,7 +2590,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -2610,7 +2610,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -2630,7 +2630,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -2657,7 +2657,7 @@
           "time_seconds_stdev": 0.08861312247559598
         },
         "t4": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -2673,7 +2673,7 @@
           "physical_partition_count": 4,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -2694,7 +2694,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -2715,7 +2715,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -2736,7 +2736,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -2757,7 +2757,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -2785,7 +2785,7 @@
           "time_seconds_stdev": 0.05117099720210634
         },
         "t5": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -2802,7 +2802,7 @@
           "physical_partition_count": 5,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -2824,7 +2824,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -2846,7 +2846,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -2868,7 +2868,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -2890,7 +2890,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -2919,7 +2919,7 @@
           "time_seconds_stdev": 0.026127268441082718
         },
         "t6": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -2937,7 +2937,7 @@
           "physical_partition_count": 6,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -2960,7 +2960,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -2983,7 +2983,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -3006,7 +3006,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -3029,7 +3029,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -3059,7 +3059,7 @@
           "time_seconds_stdev": 0.66842140257069
         },
         "t7": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -3078,7 +3078,7 @@
           "physical_partition_count": 7,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -3102,7 +3102,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -3126,7 +3126,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -3150,7 +3150,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -3174,7 +3174,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -3205,7 +3205,7 @@
           "time_seconds_stdev": 0.17537805053571562
         },
         "t8": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -3225,7 +3225,7 @@
           "physical_partition_count": 8,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -3250,7 +3250,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -3275,7 +3275,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -3300,7 +3300,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -3325,7 +3325,7 @@
               "workload": "count"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -3359,7 +3359,7 @@
       },
       "decode": {
         "t1": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             454982217
           ],
           "fingerprint": {
@@ -3375,7 +3375,7 @@
           "physical_partition_count": 1,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -3396,7 +3396,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -3417,7 +3417,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -3438,7 +3438,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -3459,7 +3459,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 454982217
               ],
               "fingerprint": {
@@ -3487,7 +3487,7 @@
           "time_seconds_stdev": 0.6162905295874122
         },
         "t2": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             227530337,
             227456457
           ],
@@ -3504,7 +3504,7 @@
           "physical_partition_count": 2,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -3526,7 +3526,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -3548,7 +3548,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -3570,7 +3570,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -3592,7 +3592,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 227530337,
                 227456457
               ],
@@ -3621,7 +3621,7 @@
           "time_seconds_stdev": 4.737666745054834
         },
         "t3": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             151644876,
             151674874,
             151671887
@@ -3639,7 +3639,7 @@
           "physical_partition_count": 3,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -3662,7 +3662,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -3685,7 +3685,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -3708,7 +3708,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -3731,7 +3731,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 151644876,
                 151674874,
                 151671887
@@ -3761,7 +3761,7 @@
           "time_seconds_stdev": 0.8732321481835215
         },
         "t4": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             113887389,
             113647767,
             113687258,
@@ -3780,7 +3780,7 @@
           "physical_partition_count": 4,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -3804,7 +3804,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -3828,7 +3828,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -3852,7 +3852,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -3876,7 +3876,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 113887389,
                 113647767,
                 113687258,
@@ -3907,7 +3907,7 @@
           "time_seconds_stdev": 0.5373568616653894
         },
         "t5": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             90990167,
             91011384,
             90956673,
@@ -3927,7 +3927,7 @@
           "physical_partition_count": 5,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -3952,7 +3952,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -3977,7 +3977,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -4002,7 +4002,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -4027,7 +4027,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 90990167,
                 91011384,
                 90956673,
@@ -4059,7 +4059,7 @@
           "time_seconds_stdev": 0.5968056495989614
         },
         "t6": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             75845813,
             75803391,
             75890360,
@@ -4080,7 +4080,7 @@
           "physical_partition_count": 6,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -4106,7 +4106,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -4132,7 +4132,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -4158,7 +4158,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -4184,7 +4184,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 75845813,
                 75803391,
                 75890360,
@@ -4217,7 +4217,7 @@
           "time_seconds_stdev": 0.3817502571644056
         },
         "t7": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             65076052,
             64916895,
             65018131,
@@ -4239,7 +4239,7 @@
           "physical_partition_count": 7,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -4266,7 +4266,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -4293,7 +4293,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -4320,7 +4320,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -4347,7 +4347,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 65076052,
                 64916895,
                 65018131,
@@ -4381,7 +4381,7 @@
           "time_seconds_stdev": 0.6009372357336391
         },
         "t8": {
-          "estimated_compressed_bytes": [
+          "estimated_data_bytes": [
             56904364,
             56987905,
             56684018,
@@ -4404,7 +4404,7 @@
           "physical_partition_count": 8,
           "raw": [
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -4432,7 +4432,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -4460,7 +4460,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -4488,7 +4488,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,
@@ -4516,7 +4516,7 @@
               "workload": "decode"
             },
             {
-              "estimated_compressed_bytes": [
+              "estimated_data_bytes": [
                 56904364,
                 56987905,
                 56684018,

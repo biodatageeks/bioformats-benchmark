@@ -87,18 +87,18 @@ def physical_partition_info() -> dict[str, int | list[int]]:
         raise AssertionError(f"{exec_prefix.removesuffix(':')} not found in plan")
     display = exec_node.display()
     estimate_match = re.search(
-        r"estimated_compressed_bytes=\[([^]]*)\]", display
+        r"estimated_data_bytes=\[([^]]*)\]", display
     )
-    estimated_compressed_bytes = []
+    estimated_data_bytes = []
     if estimate_match:
-        estimated_compressed_bytes = [
+        estimated_data_bytes = [
             int(value.strip())
             for value in estimate_match.group(1).split(",")
             if value.strip()
         ]
     return {
         "physical_partition_count": int(exec_node.partition_count),
-        "estimated_compressed_bytes": estimated_compressed_bytes,
+        "estimated_data_bytes": estimated_data_bytes,
     }
 
 

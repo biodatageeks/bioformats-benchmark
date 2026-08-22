@@ -60,12 +60,12 @@ def run_one(python: str, env: dict[str, str], timeout: int) -> dict:
 def summarize(runs: list[dict]) -> dict:
     times = [run["time_seconds"] for run in runs]
     memories = [run["peak_rss_mb"] for run in runs]
-    estimated_bytes = runs[0].get("estimated_compressed_bytes", [])
+    estimated_bytes = runs[0].get("estimated_data_bytes", [])
     summary = {
         "runs": len(runs),
         "threads": runs[0]["threads"],
         "physical_partition_count": runs[0]["physical_partition_count"],
-        "estimated_compressed_bytes": estimated_bytes,
+        "estimated_data_bytes": estimated_bytes,
         "iterations_per_process": runs[0]["iterations"],
         "time_seconds_median": statistics.median(times),
         "time_seconds_mean": statistics.mean(times),
@@ -78,7 +78,7 @@ def summarize(runs: list[dict]) -> dict:
     }
     if estimated_bytes:
         mean_bytes = statistics.mean(estimated_bytes)
-        summary["estimated_compressed_byte_balance"] = {
+        summary["estimated_data_byte_balance"] = {
             "total": sum(estimated_bytes),
             "minimum": min(estimated_bytes),
             "maximum": max(estimated_bytes),
@@ -148,14 +148,14 @@ def verify_fingerprints(raw: dict[str, list[dict]]) -> dict:
                 physical_partitions[f"t{requested}"] = observed[0]
 
                 estimated_layouts = {
-                    tuple(run.get("estimated_compressed_bytes", []))
+                    tuple(run.get("estimated_data_bytes", []))
                     for run in matching
                     if run["threads"] == requested
                 }
                 if len(estimated_layouts) != 1:
                     raise AssertionError(
                         f"{format_name}/{workload} t={requested} advertised "
-                        f"inconsistent compressed-byte estimates: {estimated_layouts}"
+                        f"inconsistent data-byte estimates: {estimated_layouts}"
                     )
                 estimated_layout = next(iter(estimated_layouts))
                 if estimated_layout and len(estimated_layout) != observed[0]:
