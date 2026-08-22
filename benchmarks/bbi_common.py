@@ -53,6 +53,8 @@ def run_bbi_benchmark(
     threads: int,
     iterations: int,
     physical_partition_info: Callable[[], dict[str, int | list[int]]],
+    content_fingerprint: Callable[[], dict[str, Scalar]],
+    environment_info: Callable[[], dict[str, object]],
 ) -> None:
     """Time repeated scans and emit one machine-readable child result."""
     if iterations < 1:
@@ -73,6 +75,7 @@ def run_bbi_benchmark(
 
     measured_peak_rss_mb = peak_rss_mb()
     partition_info = physical_partition_info()
+    verified_content = content_fingerprint()
     result = {
         "format": format_name,
         "workload": workload,
@@ -83,6 +86,16 @@ def run_bbi_benchmark(
         "total_time_seconds": elapsed,
         "peak_rss_mb": measured_peak_rss_mb,
         "fingerprint": fingerprints[0],
+        "content_fingerprint": verified_content,
         "diagnostics": diagnostics[0],
+        "environment": environment_info(),
+        "thread_limits": {
+            name: int(os.environ[name])
+            for name in (
+                "POLARS_MAX_THREADS",
+                "RAYON_NUM_THREADS",
+                "TOKIO_WORKER_THREADS",
+            )
+        },
     }
     print(f"BBI_RESULT:{json.dumps(result, sort_keys=True)}")

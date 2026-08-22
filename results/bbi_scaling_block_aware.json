@@ -1,5 +1,7 @@
 {
+  "schema_version": 1,
   "metadata": {
+    "generator_ref": "8593465",
     "bigtools_ref": "c18d9a3-local-bbi-block-layout",
     "datafusion_bio_formats_ref": "0d9730c-local-issue-238-block-aware",
     "files": {

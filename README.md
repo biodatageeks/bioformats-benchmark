@@ -110,7 +110,9 @@ python generate_genotype_reader_figures.py \
   --output-dir /path/to/polars-bio/docs/blog/posts/figures/bcf-readers
 
 # 10. Measure every BigWig/BigBed partition count from one through eight
-python run_bbi_benchmarks.py \
+./setup_bbi_benchmark.sh
+.venv-bbi/bin/python run_bbi_benchmarks.py \
+  --python .venv-bbi/bin/python \
   --partitions 1 2 3 4 5 6 7 8 \
   --runs 5 \
   --max-system-cpu-percent 25 \
@@ -135,23 +137,26 @@ DATAFUSION_BIO_FORMATS_REF=<formats-pr-commit> \
 python run_bcf_benchmarks.py
 ```
 
-For an issue-238 before/after comparison, build polars-bio once against the
+For an issue-238 before/after comparison, set `POLARS_BIO_SOURCE` when running
+`setup_bbi_benchmark.sh` and build polars-bio once against the
 released `datafusion-bio-formats` revision and once against the candidate
 revision. Give the runs distinct `--label` and `--output` values, then pass both
-JSON files to `generate_bbi_figures.py`.
+JSON files to `generate_bbi_figures.py`. Use `--physical-partitions serial` for
+the pre-partitioning baseline; candidate runs use the strict default
+`--physical-partitions requested`.
 
 ### BigWig/BigBed scalability correctness
 
 `run_bbi_benchmarks.py` launches every measurement in a fresh child process and
-sets `POLARS_MAX_THREADS`, `RAYON_NUM_THREADS`, and DataFusion
-`target_partitions` to the same `t`. The default sweep is every integer from one
-through eight. Combination order rotates and reverses between rounds to reduce
-cache and thermal bias. Each child also inspects the physical plan after timing
-and records the BBI scan's advertised output partition count, making a serial
-provider distinguishable from a truly partitioned source. When the provider
-reports index-derived data-byte estimates, the runner verifies that the
-layout is stable across repetitions and records its coefficient of variation
-and maximum-to-mean ratio for each `t`.
+sets `POLARS_MAX_THREADS`, `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and
+DataFusion `target_partitions` to the same `t`. The default sweep is every
+integer from one through eight. Combination order rotates and reverses between
+rounds to reduce cache and thermal bias. Each child also inspects the physical
+plan after timing and records the BBI scan's advertised output partition count.
+Candidate sweeps fail unless that count equals `t`. When the provider reports
+index-derived data-byte estimates, the runner verifies that the layout is stable
+across repetitions and records its coefficient of variation and maximum-to-mean
+ratio for each `t`.
 
 The four workloads separate source scalability from downstream materialization:
 
@@ -167,12 +172,15 @@ The four workloads separate source scalability from downstream materialization:
   DataFrame. It records retained chunk count, estimated DataFrame size, and peak
   RSS in addition to wall time.
 
-Every run at every `t` must reproduce the t=1 content fingerprint before results
-are written. BigBed performs ten scans per child by default because the fixture
-is too short for a stable single timing; the JSON records both the iteration
-count and per-scan time. Each raw sample also records ambient CPU use measured
-immediately before launch; optionally set `--max-system-cpu-percent` to abort
-instead of publishing a contended run.
+After the timed workload, every child performs a separate untimed all-column
+validation scan. Two independently seeded, order-independent row-hash sums plus
+row count, coordinate sums, chromosome bytes, and payload aggregates must match
+across all workloads and every `t` before results are written. BigBed performs
+ten timed scans per child by default because the fixture is too short for a
+stable single timing; the JSON records both the iteration count and per-scan
+time. Each raw sample also records ambient CPU use measured immediately before
+launch; optionally set `--max-system-cpu-percent` to abort instead of publishing
+a contended run.
 
 ### BCF fairness and correctness
 
@@ -273,6 +281,7 @@ benchmarks/
 run_benchmarks.py               # Multi-format orchestrator
 run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
 run_bbi_benchmarks.py           # BigWig/BigBed t=1..8 scalability runner
+setup_bbi_benchmark.sh          # Exact Python/package environment for BBI runs
 run_genotype_matrix_benchmarks.py # pysam/PyVCF3/cyvcf2/Oxbow/polars/snputils
 generate_genotype_reader_figures.py # Timing, memory, and scaling plots
 generate_bbi_figures.py         # BBI scalability and before/after plots

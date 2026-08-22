@@ -5,11 +5,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.metadata
 import json
 import math
 import os
-import platform
+import shutil
 import statistics
 import subprocess
 import sys
@@ -18,6 +17,9 @@ from pathlib import Path
 import psutil
 
 from benchmarks.bbi_common import BIGBED_PATH, BIGWIG_PATH, FORMATS, WORKLOADS
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+SCHEMA_VERSION = 2
 
 
 def file_sha256(path: Path) -> str:
@@ -42,6 +44,7 @@ def run_one(python: str, env: dict[str, str], timeout: int) -> dict:
         capture_output=True,
         text=True,
         env=env,
+        cwd=SCRIPT_DIR,
         timeout=timeout,
     )
     print(completed.stdout, end="")
@@ -69,11 +72,12 @@ def summarize(runs: list[dict]) -> dict:
         "iterations_per_process": runs[0]["iterations"],
         "time_seconds_median": statistics.median(times),
         "time_seconds_mean": statistics.mean(times),
-        "time_seconds_stdev": statistics.stdev(times) if len(times) > 1 else 0.0,
+        "time_seconds_stdev": statistics.stdev(times) if len(times) > 1 else None,
         "peak_rss_mb_median": statistics.median(memories),
         "peak_rss_mb_mean": statistics.mean(memories),
-        "peak_rss_mb_stdev": statistics.stdev(memories) if len(memories) > 1 else 0.0,
+        "peak_rss_mb_stdev": statistics.stdev(memories) if len(memories) > 1 else None,
         "fingerprint": runs[0]["fingerprint"],
+        "content_fingerprint": runs[0]["content_fingerprint"],
         "raw": runs,
     }
     if estimated_bytes:
@@ -83,9 +87,7 @@ def summarize(runs: list[dict]) -> dict:
             "minimum": min(estimated_bytes),
             "maximum": max(estimated_bytes),
             "coefficient_of_variation": (
-                statistics.pstdev(estimated_bytes) / mean_bytes
-                if mean_bytes
-                else 0.0
+                statistics.pstdev(estimated_bytes) / mean_bytes if mean_bytes else 0.0
             ),
             "maximum_to_mean": max(estimated_bytes) / mean_bytes if mean_bytes else 0.0,
         }
@@ -105,16 +107,60 @@ def fingerprints_match(left: dict, right: dict) -> bool:
         return False
     for key, value in left.items():
         if key == "value_sum":
-            if not math.isclose(value, right[key], rel_tol=1e-9, abs_tol=1e-4):
+            if not math.isclose(value, right[key], rel_tol=0.0, abs_tol=1e-5):
                 return False
         elif value != right[key]:
             return False
     return True
 
 
-def verify_fingerprints(raw: dict[str, list[dict]]) -> dict:
+def verify_declared_build_refs(
+    environment: dict, declared_refs: dict[str, str | None]
+) -> None:
+    declared = {name: value for name, value in declared_refs.items() if value}
+    if not declared:
+        return
+    source = environment.get("polars_bio_build", {}).get("source")
+    if not source:
+        raise AssertionError(
+            "declared source refs require an editable polars-bio build"
+        )
+
+    polars_ref = declared.get("polars_bio_ref")
+    if polars_ref and not source["git_head"].startswith(polars_ref):
+        raise AssertionError(
+            f"declared polars-bio ref {polars_ref!r} does not match "
+            f"built source head {source['git_head']!r}"
+        )
+
+    cargo_lock = (Path(source["root"]) / "Cargo.lock").read_text(encoding="utf-8")
+    for name in ("datafusion_bio_formats_ref", "bigtools_ref"):
+        value = declared.get(name)
+        if value and value not in cargo_lock:
+            raise AssertionError(f"declared {name} {value!r} is absent from Cargo.lock")
+
+
+def verify_fingerprints(
+    raw: dict[str, list[dict]], physical_partition_expectation: str
+) -> dict:
     verified = {}
     for format_name in FORMATS:
+        format_runs = [
+            run
+            for key, runs in raw.items()
+            if key.startswith(f"{format_name}:")
+            for run in runs
+        ]
+        if not format_runs:
+            continue
+        content_reference = format_runs[0]["content_fingerprint"]
+        for run in format_runs[1:]:
+            if not fingerprints_match(content_reference, run["content_fingerprint"]):
+                raise AssertionError(
+                    f"{format_name} t={run['threads']} produced content digest "
+                    f"{run['content_fingerprint']!r}, expected {content_reference!r}"
+                )
+
         for workload in WORKLOADS:
             matching = [
                 run
@@ -125,6 +171,17 @@ def verify_fingerprints(raw: dict[str, list[dict]]) -> dict:
             if not matching:
                 continue
             reference = matching[0]["fingerprint"]
+            for run in matching:
+                expected_limits = {
+                    "POLARS_MAX_THREADS": run["threads"],
+                    "RAYON_NUM_THREADS": run["threads"],
+                    "TOKIO_WORKER_THREADS": run["threads"],
+                }
+                if run.get("thread_limits") != expected_limits:
+                    raise AssertionError(
+                        f"{format_name}/{workload} t={run['threads']} used thread "
+                        f"limits {run.get('thread_limits')!r}, expected {expected_limits!r}"
+                    )
             for run in matching[1:]:
                 if not fingerprints_match(reference, run["fingerprint"]):
                     raise AssertionError(
@@ -144,6 +201,17 @@ def verify_fingerprints(raw: dict[str, list[dict]]) -> dict:
                     raise AssertionError(
                         f"{format_name}/{workload} t={requested} advertised "
                         f"inconsistent partition counts: {observed}"
+                    )
+                expected_physical = {
+                    "requested": requested,
+                    "serial": 1,
+                    "consistent": observed[0],
+                }[physical_partition_expectation]
+                if observed[0] != expected_physical:
+                    raise AssertionError(
+                        f"{format_name}/{workload} t={requested} advertised "
+                        f"{observed[0]} physical partitions; expectation "
+                        f"{physical_partition_expectation!r} requires {expected_physical}"
                     )
                 physical_partitions[f"t{requested}"] = observed[0]
 
@@ -166,41 +234,13 @@ def verify_fingerprints(raw: dict[str, list[dict]]) -> dict:
 
             verified[f"{format_name}:{workload}"] = {
                 "fingerprint": reference,
+                "content_fingerprint": content_reference,
                 "requested_threads_checked": sorted(
                     {run["threads"] for run in matching}
                 ),
                 "physical_partitions_by_requested": physical_partitions,
             }
     return verified
-
-
-def installed_versions() -> dict[str, str]:
-    versions = {}
-    for distribution in ("polars-bio", "polars", "pyarrow"):
-        try:
-            versions[distribution] = importlib.metadata.version(distribution)
-        except importlib.metadata.PackageNotFoundError:
-            versions[distribution] = "not-installed"
-    return versions
-
-
-def polars_bio_build_fingerprint() -> dict[str, object]:
-    try:
-        import polars_bio
-    except ImportError as error:
-        return {"error": f"import failed: {error}"}
-    package = Path(polars_bio.__file__).parent
-    extensions = sorted(package.glob("*.so"))
-    return {
-        "module_path": str(package),
-        "editable_install": not str(package).endswith("site-packages/polars_bio"),
-        "extensions": [
-            {"name": extension.name, "size_bytes": extension.stat().st_size}
-            for extension in extensions
-        ],
-        "declared_profile": os.environ.get("POLARS_BIO_BUILD_PROFILE"),
-        "declared_rustflags": os.environ.get("POLARS_BIO_RUSTFLAGS"),
-    }
 
 
 def main() -> None:
@@ -213,6 +253,12 @@ def main() -> None:
         help="abort before a sample when ambient aggregate CPU use exceeds this percent",
     )
     parser.add_argument("--python", default=sys.executable)
+    parser.add_argument(
+        "--physical-partitions",
+        choices=("requested", "serial", "consistent"),
+        default="requested",
+        help="required relationship between requested and observed source partitions",
+    )
     parser.add_argument("--partitions", nargs="+", type=int, default=list(range(1, 9)))
     parser.add_argument("--formats", nargs="+", choices=FORMATS, default=list(FORMATS))
     parser.add_argument(
@@ -238,6 +284,15 @@ def main() -> None:
         parser.error("--partitions values must be unique")
     if args.bigwig_iterations < 1 or args.bigbed_iterations < 1:
         parser.error("iteration counts must be positive")
+
+    if os.sep in args.python:
+        # Keep a virtualenv's interpreter symlink intact: resolving it to the
+        # base installation would drop the venv's site-packages.
+        python = str(Path(args.python).expanduser().absolute())
+    else:
+        python = shutil.which(args.python) or ""
+    if not python or not Path(python).is_file():
+        parser.error(f"Python interpreter does not exist: {args.python}")
 
     paths = {
         "bigwig": Path(args.bigwig).expanduser().resolve(),
@@ -297,6 +352,7 @@ def main() -> None:
                     "THREAD_NUM": str(partitions),
                     "POLARS_MAX_THREADS": str(partitions),
                     "RAYON_NUM_THREADS": str(partitions),
+                    "TOKIO_WORKER_THREADS": str(partitions),
                 }
             )
             ambient_cpu_percent = psutil.cpu_percent(interval=0.2)
@@ -308,13 +364,24 @@ def main() -> None:
                     f"ambient CPU use is {ambient_cpu_percent:.1f}%, above "
                     f"--max-system-cpu-percent={args.max_system_cpu_percent:.1f}%"
                 )
-            result = run_one(args.python, env, args.timeout)
+            result = run_one(python, env, args.timeout)
             result["round"] = round_index + 1
             result["order_in_round"] = order_index
             result["ambient_cpu_percent_before"] = ambient_cpu_percent
             raw[f"{format_name}:{workload}:t{partitions}"].append(result)
 
-    verification = verify_fingerprints(raw)
+    verification = verify_fingerprints(raw, args.physical_partitions)
+    all_runs = [run for runs in raw.values() for run in runs]
+    environments = {json.dumps(run["environment"], sort_keys=True) for run in all_runs}
+    if len(environments) != 1:
+        raise AssertionError("child interpreter environment changed during the sweep")
+    child_environment = json.loads(next(iter(environments)))
+    declared_refs = {
+        "polars_bio_ref": os.environ.get("POLARS_BIO_REF"),
+        "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
+        "bigtools_ref": os.environ.get("BIGTOOLS_REF"),
+    }
+    verify_declared_build_refs(child_environment, declared_refs)
     results = {
         format_name: {
             workload: {
@@ -347,11 +414,13 @@ def main() -> None:
                 }
 
     payload = {
+        "schema_version": SCHEMA_VERSION,
         "metadata": {
             "label": args.label,
             "partitions": args.partitions,
             "formats": args.formats,
             "workloads": args.workloads,
+            "physical_partition_expectation": args.physical_partitions,
             "files": {
                 format_name: {
                     "path": str(paths[format_name]),
@@ -360,20 +429,24 @@ def main() -> None:
                 }
                 for format_name in args.formats
             },
-            "python": platform.python_version(),
-            "platform": platform.platform(),
-            "machine": platform.machine(),
+            "python": child_environment["python"],
+            "python_executable": child_environment["python_executable"],
+            "platform": child_environment["platform"],
+            "machine": child_environment["machine"],
             "logical_cpu_count": psutil.cpu_count(logical=True),
             "physical_cpu_count": psutil.cpu_count(logical=False),
             "memory_total_bytes": psutil.virtual_memory().total,
-            "versions": installed_versions(),
-            "polars_bio_build": polars_bio_build_fingerprint(),
-            "polars_bio_ref": os.environ.get("POLARS_BIO_REF"),
-            "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
-            "bigtools_ref": os.environ.get("BIGTOOLS_REF"),
+            "versions": child_environment["versions"],
+            "polars_bio_build": child_environment["polars_bio_build"],
+            **declared_refs,
+            "generator": {
+                "path": str(Path(__file__).resolve()),
+                "sha256": file_sha256(Path(__file__).resolve()),
+            },
             "timing_scope": "lazy scan construction, BBI index/header access, decoding, "
             "and the workload-specific Arrow drain, Polars aggregation, or full DataFrame "
-            "materialization; imports and thread-pool configuration excluded",
+            "materialization; imports, thread-pool configuration, physical-plan inspection, "
+            "and the independent content digest excluded",
         },
         "verification": verification,
         "results": results,

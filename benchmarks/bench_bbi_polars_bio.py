@@ -2,8 +2,14 @@
 
 from __future__ import annotations
 
+import hashlib
+import importlib.metadata
 import os
+import platform
 import re
+import subprocess
+import sys
+from pathlib import Path
 
 import polars as pl
 import polars_bio as pb
@@ -86,9 +92,7 @@ def physical_partition_info() -> dict[str, int | list[int]]:
     if exec_node is None:
         raise AssertionError(f"{exec_prefix.removesuffix(':')} not found in plan")
     display = exec_node.display()
-    estimate_match = re.search(
-        r"estimated_data_bytes=\[([^]]*)\]", display
-    )
+    estimate_match = re.search(r"estimated_data_bytes=\[([^]]*)\]", display)
     estimated_data_bytes = []
     if estimate_match:
         estimated_data_bytes = [
@@ -175,11 +179,7 @@ def benchmark() -> BenchmarkSample:
 
     expressions = [
         pl.len().alias("rows"),
-        pl.col("chrom")
-        .str.len_bytes()
-        .cast(pl.UInt64)
-        .sum()
-        .alias("chrom_bytes"),
+        pl.col("chrom").str.len_bytes().cast(pl.UInt64).sum().alias("chrom_bytes"),
         pl.col("start").cast(pl.UInt64).sum().alias("start_sum"),
         pl.col("end").cast(pl.UInt64).sum().alias("end_sum"),
     ]
@@ -202,6 +202,104 @@ def benchmark() -> BenchmarkSample:
     )
 
 
+def content_fingerprint() -> dict[str, int | float | str]:
+    """Compute an untimed, order-independent digest of every emitted row."""
+    source = scan()
+    row = pl.struct(pl.all())
+    expressions = [
+        pl.len().alias("rows"),
+        row.hash(seed=0, seed_1=1, seed_2=2, seed_3=3).sum().alias("row_hash_sum_1"),
+        row.hash(seed=11, seed_1=13, seed_2=17, seed_3=19)
+        .sum()
+        .alias("row_hash_sum_2"),
+        pl.col("chrom").str.len_bytes().cast(pl.UInt64).sum().alias("chrom_bytes"),
+        pl.col("start").cast(pl.UInt64).sum().alias("start_sum"),
+        pl.col("end").cast(pl.UInt64).sum().alias("end_sum"),
+    ]
+    if FORMAT == "bigwig":
+        expressions.append(pl.col("value").cast(pl.Float64).sum().alias("value_sum"))
+    else:
+        expressions.append(
+            pl.col("rest").str.len_bytes().cast(pl.UInt64).sum().alias("rest_bytes")
+        )
+    result = source.select(expressions).collect(engine="streaming")
+    return {
+        column: float(result.item(0, column))
+        if column == "value_sum"
+        else int(result.item(0, column))
+        for column in result.columns
+    }
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def environment_info() -> dict[str, object]:
+    versions = {
+        distribution: importlib.metadata.version(distribution)
+        for distribution in ("polars-bio", "polars", "pyarrow")
+    }
+    package = Path(pb.__file__).parent
+    extensions = sorted(package.glob("*.so"))
+    source_root = next(
+        (
+            parent
+            for parent in package.parents
+            if (parent / "Cargo.toml").is_file() and (parent / ".git").exists()
+        ),
+        None,
+    )
+    source = None
+    if source_root is not None:
+        git_head = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=source_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        git_diff = subprocess.run(
+            ["git", "diff", "--binary", "HEAD"],
+            cwd=source_root,
+            check=True,
+            capture_output=True,
+        ).stdout
+        source = {
+            "root": str(source_root),
+            "git_head": git_head,
+            "tracked_diff_sha256": hashlib.sha256(git_diff).hexdigest(),
+            "cargo_toml_sha256": file_sha256(source_root / "Cargo.toml"),
+            "cargo_lock_sha256": file_sha256(source_root / "Cargo.lock"),
+        }
+    return {
+        "python": platform.python_version(),
+        "python_executable": sys.executable,
+        "platform": platform.platform(),
+        "machine": platform.machine(),
+        "versions": versions,
+        "polars_bio_build": {
+            "module_path": str(package),
+            "editable_install": source is not None,
+            "source": source,
+            "extensions": [
+                {
+                    "name": extension.name,
+                    "size_bytes": extension.stat().st_size,
+                    "sha256": file_sha256(extension),
+                }
+                for extension in extensions
+            ],
+            "declared_profile": os.environ.get("POLARS_BIO_BUILD_PROFILE"),
+            "declared_rustflags": os.environ.get("POLARS_BIO_RUSTFLAGS"),
+        },
+    }
+
+
 run_bbi_benchmark(
     benchmark,
     format_name=FORMAT,
@@ -209,4 +307,6 @@ run_bbi_benchmark(
     threads=THREADS,
     iterations=ITERATIONS,
     physical_partition_info=physical_partition_info,
+    content_fingerprint=content_fingerprint,
+    environment_info=environment_info,
 )

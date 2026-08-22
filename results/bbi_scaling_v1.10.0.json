@@ -1,5 +1,7 @@
 {
+  "schema_version": 1,
   "metadata": {
+    "generator_ref": "8593465",
     "datafusion_bio_formats_ref": "v1.10.0",
     "files": {
       "bigbed": {

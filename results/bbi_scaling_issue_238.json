@@ -1,5 +1,7 @@
 {
+  "schema_version": 1,
   "metadata": {
+    "generator_ref": "8593465",
     "datafusion_bio_formats_ref": "0d9730c83f3ac936efa1595335caee0b0e538fa1+patch-sha256:49ee945dd82b7a74a783181fe1d4ac8a0a32a0583a6fd30b40c03b79425f9587",
     "files": {
       "bigbed": {

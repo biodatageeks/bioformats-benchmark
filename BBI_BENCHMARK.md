@@ -8,16 +8,17 @@ result in Polars.
 ## Result
 
 The BBI provider scales close to linearly when every column is streamed and
-consumed as Arrow batches: BigWig reaches **6.70x** speedup at `t=8` and BigBed
-reaches **7.45x**. The source partitions are balanced by compressed block size,
+consumed as Arrow batches: BigWig reaches **7.26x** speedup at `t=8` and BigBed
+reaches **6.64x**. The source partitions are balanced by compressed block size,
 and all 320 fresh-process samples produced matching content fingerprints.
 
 Literal all-column Polars collection has a different curve. BigWig improves
-from 4.0892 s at `t=1` to 1.7311 s at `t=2`, then rises to 1.9672 s at `t=8`.
-BigBed is small enough to reach 4.33x at `t=7` before fixed overhead dominates.
+from 4.0952 s at `t=1` to a best 1.6411 s at `t=3`, then rises to 1.8895 s at
+`t=8`. BigBed is small enough to reach 4.43x at `t=7` before fixed overhead
+dominates.
 This gap is downstream of the BBI reader: BigWig's Arrow batch count stays
-essentially constant (12,125 at `t=1`, 12,131 at `t=8`), while the retained
-Polars DataFrame grows from 12,125 to 96,988 chunks and uses about 4.1 GiB RSS.
+essentially constant (12,125 at `t=1`, 12,127 at `t=8`), while the retained
+Polars DataFrame grows from 12,125 to 96,970 chunks and uses about 4.1 GiB RSS.
 
 Each table cell is the median wall time from five fresh processes, followed by
 speedup relative to the same workload at `t=1`. Lower time and higher speedup
@@ -30,14 +31,14 @@ DataFrame when all four columns are retained.
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
-| 1 | 2.7302 s (1.00x) | 2.9591 s (1.00x) | 3.8259 s (1.00x) | 4.0892 s (1.00x) |
-| 2 | 1.4389 s (1.90x) | 1.3442 s (2.20x) | 1.5425 s (2.48x) | 1.7311 s (2.36x) |
-| 3 | 0.9504 s (2.87x) | 1.0986 s (2.69x) | 1.5153 s (2.52x) | 1.7633 s (2.32x) |
-| 4 | 0.7650 s (3.57x) | 1.2146 s (2.44x) | 1.5854 s (2.41x) | 1.8270 s (2.24x) |
-| 5 | 0.5887 s (4.64x) | 1.2402 s (2.39x) | 1.6084 s (2.38x) | 1.8651 s (2.19x) |
-| 6 | 0.5057 s (5.40x) | 1.2554 s (2.36x) | 1.6369 s (2.34x) | 1.8782 s (2.18x) |
-| 7 | 0.4505 s (6.06x) | 1.2579 s (2.35x) | 1.6647 s (2.30x) | 1.9280 s (2.12x) |
-| 8 | 0.4073 s (6.70x) | 1.2696 s (2.33x) | 1.7246 s (2.22x) | 1.9672 s (2.08x) |
+| 1 | 2.7531 s (1.00x) | 3.0133 s (1.00x) | 3.8791 s (1.00x) | 4.0952 s (1.00x) |
+| 2 | 1.4494 s (1.90x) | 1.3375 s (2.25x) | 1.5371 s (2.52x) | 1.6922 s (2.42x) |
+| 3 | 0.9520 s (2.89x) | 1.0577 s (2.85x) | 1.4745 s (2.63x) | 1.6411 s (2.50x) |
+| 4 | 0.7611 s (3.62x) | 1.2067 s (2.50x) | 1.5655 s (2.48x) | 1.7737 s (2.31x) |
+| 5 | 0.5793 s (4.75x) | 1.2219 s (2.47x) | 1.5917 s (2.44x) | 1.7829 s (2.30x) |
+| 6 | 0.4909 s (5.61x) | 1.2375 s (2.43x) | 1.5997 s (2.42x) | 1.8219 s (2.25x) |
+| 7 | 0.4249 s (6.48x) | 1.2433 s (2.42x) | 1.6414 s (2.36x) | 1.8467 s (2.22x) |
+| 8 | 0.3794 s (7.26x) | 1.2477 s (2.42x) | 1.6801 s (2.31x) | 1.8895 s (2.17x) |
 
 `polars_count` is not an empty-projection `count(*)` shortcut. Polars requests
 the first public column (`chrom`) for `pl.len()`, so the provider still reads
@@ -52,14 +53,14 @@ reports the per-scan time because a single scan is too short for stable timing.
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
-| 1 | 0.0824 s (1.00x) | 0.0722 s (1.00x) | 0.0823 s (1.00x) | 0.0830 s (1.00x) |
-| 2 | 0.0377 s (2.19x) | 0.0368 s (1.96x) | 0.0405 s (2.03x) | 0.0415 s (2.00x) |
-| 3 | 0.0259 s (3.18x) | 0.0269 s (2.68x) | 0.0297 s (2.77x) | 0.0308 s (2.70x) |
-| 4 | 0.0203 s (4.06x) | 0.0213 s (3.38x) | 0.0236 s (3.49x) | 0.0246 s (3.37x) |
-| 5 | 0.0164 s (5.01x) | 0.0176 s (4.10x) | 0.0196 s (4.19x) | 0.0209 s (3.98x) |
-| 6 | 0.0143 s (5.77x) | 0.0159 s (4.54x) | 0.0182 s (4.53x) | 0.0193 s (4.30x) |
-| 7 | 0.0123 s (6.69x) | 0.0145 s (4.96x) | 0.0183 s (4.51x) | 0.0191 s (4.33x) |
-| 8 | 0.0111 s (7.45x) | 0.0138 s (5.21x) | 0.0192 s (4.28x) | 0.0202 s (4.11x) |
+| 1 | 0.0704 s (1.00x) | 0.0696 s (1.00x) | 0.0805 s (1.00x) | 0.0811 s (1.00x) |
+| 2 | 0.0366 s (1.93x) | 0.0349 s (2.00x) | 0.0387 s (2.08x) | 0.0398 s (2.04x) |
+| 3 | 0.0250 s (2.82x) | 0.0253 s (2.75x) | 0.0282 s (2.86x) | 0.0292 s (2.78x) |
+| 4 | 0.0195 s (3.61x) | 0.0199 s (3.50x) | 0.0222 s (3.63x) | 0.0233 s (3.49x) |
+| 5 | 0.0157 s (4.48x) | 0.0164 s (4.23x) | 0.0184 s (4.37x) | 0.0196 s (4.14x) |
+| 6 | 0.0138 s (5.12x) | 0.0151 s (4.62x) | 0.0177 s (4.56x) | 0.0184 s (4.40x) |
+| 7 | 0.0119 s (5.93x) | 0.0137 s (5.09x) | 0.0174 s (4.62x) | 0.0183 s (4.43x) |
+| 8 | 0.0106 s (6.64x) | 0.0130 s (5.34x) | 0.0185 s (4.35x) | 0.0194 s (4.18x) |
 
 At `t=8`, the source scan is only 11 ms. Independent file opens, provider
 setup, task scheduling, Polars conversion, and final materialization therefore
@@ -87,8 +88,8 @@ sizes across source partitions. At `t=8` the assignments are tightly balanced:
 
 | format | serial data bytes | t=8 bytes per partition | coefficient of variation | maximum / mean |
 |:--|--:|:--|--:|--:|
-| BigWig | 454,982,217 | 56,684,018–56,987,905 | 0.15% | 1.002 |
-| BigBed | 10,164,678 | 1,267,344–1,294,125 | 0.58% | 1.012 |
+| BigWig | 454,982,217 | 56,875,651–56,886,353 | 0.006% | 1.0001 |
+| BigBed | 10,164,678 | 1,266,538–1,284,303 | 0.406% | 1.0048 |
 
 A compressed block that crosses an ownership boundary can be conservatively
 counted by both independent readers, so the per-partition estimates may sum to
@@ -97,39 +98,41 @@ slow shard as the cause of the Polars plateau.
 
 ## Correctness and memory
 
-Every workload produced the same row count and column set at every `t`.
-All-column aggregation additionally checked coordinate sums, chromosome byte
-counts, the BigBed trailing-field byte count, and the BigWig signal sum (with a
-small tolerance for floating-point aggregation order). The runner refuses to
-write a result file if any fingerprint differs or if the physical partition
-count does not match the requested value.
+Every timed sample is followed by an untimed all-column validation scan. Two
+independently seeded, order-independent row-hash sums verify complete row
+content across workloads and every `t`; row count, coordinate sums, chromosome
+byte counts, the BigBed trailing-field byte count, and the BigWig signal sum are
+also checked. Candidate mode refuses to write a result file if any digest
+differs or if the physical partition count does not match the requested value.
 
 Median peak RSS at `t=1` and `t=8` was:
 
 | format / workload | t=1 | t=8 |
 |:--|--:|--:|
-| BigWig Arrow stream all | 186.7 MiB | 213.4 MiB |
-| BigWig Polars count | 213.9 MiB | 236.6 MiB |
-| BigWig Polars aggregate all | 214.9 MiB | 253.5 MiB |
-| BigWig Polars collect all | 4,069.8 MiB | 4,131.1 MiB |
-| BigBed Arrow stream all | 179.8 MiB | 222.3 MiB |
-| BigBed Polars count | 193.4 MiB | 234.4 MiB |
-| BigBed Polars aggregate all | 195.8 MiB | 261.5 MiB |
-| BigBed Polars collect all | 275.2 MiB | 313.3 MiB |
+| BigWig Arrow stream all | 178.7 MiB | 212.3 MiB |
+| BigWig Polars count | 200.4 MiB | 230.7 MiB |
+| BigWig Polars aggregate all | 202.3 MiB | 245.0 MiB |
+| BigWig Polars collect all | 4,060.5 MiB | 4,124.2 MiB |
+| BigBed Arrow stream all | 175.4 MiB | 220.2 MiB |
+| BigBed Polars count | 188.3 MiB | 228.0 MiB |
+| BigBed Polars aggregate all | 190.7 MiB | 254.2 MiB |
+| BigBed Polars collect all | 243.1 MiB | 300.4 MiB |
 
 ## Method
 
 - Machine: Apple arm64, macOS 15.7.9, 16 physical/logical CPUs, 64 GiB RAM.
 - Python 3.11.13, polars-bio 0.34.0 at `f32af94`, Polars 1.40.1, and PyArrow
   24.0.0.
-- Candidate: `datafusion-bio-formats` `62d1bcc` and BigTools `17e425e`.
+- Candidate: `datafusion-bio-formats` `d0a23b5` and BigTools `0d7a572`.
 - Every timing runs in a fresh process with `POLARS_MAX_THREADS`,
-  `RAYON_NUM_THREADS`, and DataFusion `target_partitions` set to the same `t`.
+  `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and DataFusion
+  `target_partitions` set to the same `t`.
 - Combination order rotates and reverses between rounds to reduce cache and
   thermal bias. Ambient system CPU is checked before each child.
 - Timed scope includes lazy scan construction, BBI header/index access,
   decoding, and the workload-specific Arrow drain, Polars aggregation, or full
-  DataFrame materialization. Imports and thread-pool configuration are excluded.
+  DataFrame materialization. Imports, thread-pool configuration, physical-plan
+  inspection, and the independent content digest are excluded.
 
 The checksum-pinned inputs are:
 
@@ -139,8 +142,11 @@ The checksum-pinned inputs are:
 - BigBed: `ENCFF001JBR.bigBed`, 16,438,476 bytes, SHA-256
   `b36b6b0886e25876ad06e3845a1b68f8f11b7932c23285c9c5f6301a918bc733`.
 
-The complete five-round data, raw samples, correctness verification, physical
+Create the pinned BBI environment with `setup_bbi_benchmark.sh`. The complete
+five-round data, raw samples, correctness verification, physical
 partition diagnostics, and build metadata are tracked in
 `results/bbi_scaling_full_scan.json`. The historical release and earlier
-candidate sweeps remain available for before/after comparisons. Reproduce the
-run with `run_bbi_benchmarks.py` and plot it with `generate_bbi_figures.py`.
+candidate sweeps use result schema version 1 and record their generator commit;
+the four-workload sweep uses schema version 2. Reproduce the run with
+`run_bbi_benchmarks.py` and plot it with `generate_bbi_figures.py`, which rejects
+fixture, hardware, partition-set, or schema incompatibilities.
