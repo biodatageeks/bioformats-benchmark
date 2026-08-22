@@ -1,0 +1,4838 @@
+{
+  "metadata": {
+    "bigtools_ref": "c18d9a3-local-bbi-block-layout",
+    "datafusion_bio_formats_ref": "0d9730c-local-issue-238-block-aware",
+    "files": {
+      "bigbed": {
+        "path": "/Users/mwiewior/research/data/BBI/ENCFF001JBR.bigBed",
+        "sha256": "b36b6b0886e25876ad06e3845a1b68f8f11b7932c23285c9c5f6301a918bc733",
+        "size_bytes": 16438476
+      },
+      "bigwig": {
+        "path": "/Users/mwiewior/research/data/BBI/GSM7256643_ENCFF713VEX_fold_change_over_control_GRCh38.bigWig",
+        "sha256": "dffcf1a854895d0d91b2b1250db72dc3572ee97c2ef936423735a74c9744b04e",
+        "size_bytes": 573021756
+      }
+    },
+    "formats": [
+      "bigwig",
+      "bigbed"
+    ],
+    "label": "block-aware",
+    "logical_cpu_count": 16,
+    "machine": "arm64",
+    "memory_total_bytes": 68719476736,
+    "partitions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "physical_cpu_count": 16,
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "polars_bio_build": {
+      "declared_profile": null,
+      "declared_rustflags": null,
+      "editable_install": true,
+      "extensions": [
+        {
+          "name": "polars_bio.abi3.so",
+          "size_bytes": 227938240
+        }
+      ],
+      "module_path": "/Users/mwiewior/research/git/_codex_worktrees/polars-bio-443-build/polars_bio"
+    },
+    "polars_bio_ref": "f32af94-local-block-aware",
+    "python": "3.12.2",
+    "timing_scope": "lazy scan construction, BBI index/header access, decoding, streaming aggregation, and scalar materialization; imports and thread-pool configuration excluded",
+    "versions": {
+      "polars": "1.42.1",
+      "polars-bio": "0.34.0",
+      "pyarrow": "24.0.0"
+    },
+    "workloads": [
+      "count",
+      "decode"
+    ]
+  },
+  "results": {
+    "bigbed": {
+      "count": {
+        "t1": {
+          "estimated_compressed_bytes": [
+            10164678
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 205.590625,
+          "peak_rss_mb_median": 205.46875,
+          "peak_rss_mb_stdev": 0.9498149490821883,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 206.28125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 0.0851993374999438,
+              "total_time_seconds": 0.851993374999438,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 206.8125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 0.08478812079993077,
+              "total_time_seconds": 0.8478812079993077,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 205.46875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 0.09586939580003673,
+              "total_time_seconds": 0.9586939580003673,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 204.59375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 0.08088674170030571,
+              "total_time_seconds": 0.8088674170030572,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 204.796875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 0.15028512499993668,
+              "total_time_seconds": 1.5028512499993667,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 0.09940574416003074,
+          "time_seconds_median": 0.0851993374999438,
+          "time_seconds_stdev": 0.028981319454815305
+        },
+        "t2": {
+          "estimated_compressed_bytes": [
+            5082037,
+            5091113
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 216.428125,
+          "peak_rss_mb_median": 216.453125,
+          "peak_rss_mb_stdev": 1.2869822229492915,
+          "physical_partition_count": 2,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 216.453125,
+              "physical_partition_count": 2,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 0.0402648584000417,
+              "total_time_seconds": 0.40264858400041703,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 217.9375,
+              "physical_partition_count": 2,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 0.039815695799916284,
+              "total_time_seconds": 0.39815695799916284,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 214.484375,
+              "physical_partition_count": 2,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 0.04221516249999695,
+              "total_time_seconds": 0.4221516249999695,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 217.125,
+              "physical_partition_count": 2,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 0.03971764159978193,
+              "total_time_seconds": 0.3971764159978193,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 216.140625,
+              "physical_partition_count": 2,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 0.05354777920001652,
+              "total_time_seconds": 0.5354777920001652,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 0.043112227499950674,
+          "time_seconds_median": 0.0402648584000417,
+          "time_seconds_stdev": 0.005920373940321711
+        },
+        "t3": {
+          "estimated_compressed_bytes": [
+            3383202,
+            3399449,
+            3399528
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 220.50625,
+          "peak_rss_mb_median": 220.671875,
+          "peak_rss_mb_stdev": 1.354904646667986,
+          "physical_partition_count": 3,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 220.28125,
+              "physical_partition_count": 3,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 0.02870352919999277,
+              "total_time_seconds": 0.2870352919999277,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 222.328125,
+              "physical_partition_count": 3,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 0.028359583300334633,
+              "total_time_seconds": 0.28359583300334634,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 220.71875,
+              "physical_partition_count": 3,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 0.03043458329993882,
+              "total_time_seconds": 0.3043458329993882,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 218.53125,
+              "physical_partition_count": 3,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 0.028435966599863603,
+              "total_time_seconds": 0.28435966599863605,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 220.671875,
+              "physical_partition_count": 3,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 0.038010375000158095,
+              "total_time_seconds": 0.3801037500015809,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 0.030788807480057585,
+          "time_seconds_median": 0.02870352919999277,
+          "time_seconds_stdev": 0.004124981455877231
+        },
+        "t4": {
+          "estimated_compressed_bytes": [
+            2534450,
+            2564770,
+            2541612,
+            2558038
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 225.590625,
+          "peak_rss_mb_median": 225.671875,
+          "peak_rss_mb_stdev": 1.1987236864943063,
+          "physical_partition_count": 4,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 225.671875,
+              "physical_partition_count": 4,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 0.02241549579994171,
+              "total_time_seconds": 0.2241549579994171,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 226.6875,
+              "physical_partition_count": 4,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 0.02294984590007516,
+              "total_time_seconds": 0.2294984590007516,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 226.328125,
+              "physical_partition_count": 4,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 0.025048291699931724,
+              "total_time_seconds": 0.25048291699931724,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 225.671875,
+              "physical_partition_count": 4,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 0.021952199999941514,
+              "total_time_seconds": 0.21952199999941513,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 223.59375,
+              "physical_partition_count": 4,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 0.024633433299823083,
+              "total_time_seconds": 0.24633433299823082,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 0.023399853339942638,
+          "time_seconds_median": 0.02294984590007516,
+          "time_seconds_stdev": 0.001369875468738976
+        },
+        "t5": {
+          "estimated_compressed_bytes": [
+            2034539,
+            2037279,
+            2047541,
+            2053436,
+            2035580
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 231.06875,
+          "peak_rss_mb_median": 231.328125,
+          "peak_rss_mb_stdev": 2.212237360823879,
+          "physical_partition_count": 5,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 233.265625,
+              "physical_partition_count": 5,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 0.019676904100197134,
+              "total_time_seconds": 0.19676904100197135,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 233.15625,
+              "physical_partition_count": 5,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 0.01910724580011447,
+              "total_time_seconds": 0.1910724580011447,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 228.765625,
+              "physical_partition_count": 5,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 0.021091241700196404,
+              "total_time_seconds": 0.21091241700196406,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 228.828125,
+              "physical_partition_count": 5,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 0.019035258299845738,
+              "total_time_seconds": 0.19035258299845736,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 231.328125,
+              "physical_partition_count": 5,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 0.02316588749999937,
+              "total_time_seconds": 0.2316588749999937,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 0.020415307480070623,
+          "time_seconds_median": 0.019676904100197134,
+          "time_seconds_stdev": 0.0017452348098311848
+        },
+        "t6": {
+          "estimated_compressed_bytes": [
+            1694100,
+            1697764,
+            1707472,
+            1700449,
+            1704230,
+            1703926
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 236.14375,
+          "peak_rss_mb_median": 236.625,
+          "peak_rss_mb_stdev": 1.1427847703089151,
+          "physical_partition_count": 6,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 235.703125,
+              "physical_partition_count": 6,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 0.016745595900283662,
+              "total_time_seconds": 0.1674559590028366,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 12,
+              "peak_rss_mb": 234.390625,
+              "physical_partition_count": 6,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 0.01612402499995369,
+              "total_time_seconds": 0.1612402499995369,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 236.640625,
+              "physical_partition_count": 6,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 0.019232116700004555,
+              "total_time_seconds": 0.19232116700004553,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 237.359375,
+              "physical_partition_count": 6,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 0.01676834999998391,
+              "total_time_seconds": 0.16768349999983911,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 236.625,
+              "physical_partition_count": 6,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 0.01748883750005916,
+              "total_time_seconds": 0.17488837500059162,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 0.017271785020056996,
+          "time_seconds_median": 0.01676834999998391,
+          "time_seconds_stdev": 0.0011976734683786388
+        },
+        "t7": {
+          "estimated_compressed_bytes": [
+            1449512,
+            1456808,
+            1469134,
+            1457939,
+            1457288,
+            1463679,
+            1470212
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 239.690625,
+          "peak_rss_mb_median": 238.90625,
+          "peak_rss_mb_stdev": 2.770462753257567,
+          "physical_partition_count": 7,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 241.34375,
+              "physical_partition_count": 7,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 0.016326325000045473,
+              "total_time_seconds": 0.16326325000045472,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 11,
+              "peak_rss_mb": 238.140625,
+              "physical_partition_count": 7,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 0.014920516699930886,
+              "total_time_seconds": 0.14920516699930886,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 236.515625,
+              "physical_partition_count": 7,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 0.015871208300086436,
+              "total_time_seconds": 0.15871208300086437,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 243.546875,
+              "physical_partition_count": 7,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 0.015434670799731976,
+              "total_time_seconds": 0.15434670799731975,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 238.90625,
+              "physical_partition_count": 7,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 0.016420975000073668,
+              "total_time_seconds": 0.16420975000073668,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 0.01579473915997369,
+          "time_seconds_median": 0.015871208300086436,
+          "time_seconds_stdev": 0.0006273986961794271
+        },
+        "t8": {
+          "estimated_compressed_bytes": [
+            1267344,
+            1276003,
+            1294125,
+            1279184,
+            1277220,
+            1273184,
+            1282932,
+            1283468
+          ],
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 249.9625,
+          "peak_rss_mb_median": 250.03125,
+          "peak_rss_mb_stdev": 1.471763862576976,
+          "physical_partition_count": 8,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 250.03125,
+              "physical_partition_count": 8,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 0.020372370800032513,
+              "total_time_seconds": 0.20372370800032513,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 10,
+              "peak_rss_mb": 251.09375,
+              "physical_partition_count": 8,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 0.016110029099945678,
+              "total_time_seconds": 0.16110029099945677,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 247.515625,
+              "physical_partition_count": 8,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 0.014417437500014785,
+              "total_time_seconds": 0.14417437500014785,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 12,
+              "peak_rss_mb": 251.140625,
+              "physical_partition_count": 8,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 0.014363595800023176,
+              "total_time_seconds": 0.14363595800023177,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 250.03125,
+              "physical_partition_count": 8,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 0.015442983300090418,
+              "total_time_seconds": 0.15442983300090418,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 0.016141283300021313,
+          "time_seconds_median": 0.015442983300090418,
+          "time_seconds_stdev": 0.002476010820731942
+        }
+      },
+      "decode": {
+        "t1": {
+          "estimated_compressed_bytes": [
+            10164678
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 212.96875,
+          "peak_rss_mb_median": 209.8125,
+          "peak_rss_mb_stdev": 4.971242987014163,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 218.578125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 0.08457994169984887,
+              "total_time_seconds": 0.8457994169984886,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 9,
+              "peak_rss_mb": 208.515625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 0.08446764170003007,
+              "total_time_seconds": 0.8446764170003007,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 218.1875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 0.08800773750008375,
+              "total_time_seconds": 0.8800773750008375,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 11,
+              "peak_rss_mb": 209.8125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 0.0866361374999542,
+              "total_time_seconds": 0.866361374999542,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                10164678
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 209.75,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 0.08863107090000995,
+              "total_time_seconds": 0.8863107090000995,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 0.08646450585998537,
+          "time_seconds_median": 0.0866361374999542,
+          "time_seconds_stdev": 0.001913378813413645
+        },
+        "t2": {
+          "estimated_compressed_bytes": [
+            5082037,
+            5091113
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 220.28125,
+          "peak_rss_mb_median": 220.5625,
+          "peak_rss_mb_stdev": 1.5190441458981698,
+          "physical_partition_count": 2,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 220.3125,
+              "physical_partition_count": 2,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 0.041839291699943715,
+              "total_time_seconds": 0.41839291699943715,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 8,
+              "peak_rss_mb": 220.5625,
+              "physical_partition_count": 2,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 0.042201174999718205,
+              "total_time_seconds": 0.42201174999718205,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 217.734375,
+              "physical_partition_count": 2,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 0.042736937500012576,
+              "total_time_seconds": 0.42736937500012573,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 10,
+              "peak_rss_mb": 221.6875,
+              "physical_partition_count": 2,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 0.04206449999983306,
+              "total_time_seconds": 0.4206449999983306,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                5082037,
+                5091113
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 221.109375,
+              "physical_partition_count": 2,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 0.04334818749994156,
+              "total_time_seconds": 0.4334818749994156,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 0.042438018339889826,
+          "time_seconds_median": 0.042201174999718205,
+          "time_seconds_stdev": 0.0006065980695075888
+        },
+        "t3": {
+          "estimated_compressed_bytes": [
+            3383202,
+            3399449,
+            3399528
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 228.70625,
+          "peak_rss_mb_median": 228.9375,
+          "peak_rss_mb_stdev": 1.2470375050745266,
+          "physical_partition_count": 3,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 229.25,
+              "physical_partition_count": 3,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 0.029308879200107184,
+              "total_time_seconds": 0.29308879200107185,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 7,
+              "peak_rss_mb": 230.390625,
+              "physical_partition_count": 3,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 0.029099362499982816,
+              "total_time_seconds": 0.29099362499982817,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 227.40625,
+              "physical_partition_count": 3,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 0.029673016700326117,
+              "total_time_seconds": 0.29673016700326116,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 9,
+              "peak_rss_mb": 227.546875,
+              "physical_partition_count": 3,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 0.029305208299774677,
+              "total_time_seconds": 0.29305208299774677,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                3383202,
+                3399449,
+                3399528
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 228.9375,
+              "physical_partition_count": 3,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 0.031743270800143365,
+              "total_time_seconds": 0.31743270800143364,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 0.02982594750006683,
+          "time_seconds_median": 0.029308879200107184,
+          "time_seconds_stdev": 0.0010915552173867415
+        },
+        "t4": {
+          "estimated_compressed_bytes": [
+            2534450,
+            2564770,
+            2541612,
+            2558038
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 236.171875,
+          "peak_rss_mb_median": 235.453125,
+          "peak_rss_mb_stdev": 1.2890388255401775,
+          "physical_partition_count": 4,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 237.78125,
+              "physical_partition_count": 4,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 0.023633479099953548,
+              "total_time_seconds": 0.23633479099953547,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 6,
+              "peak_rss_mb": 235.0,
+              "physical_partition_count": 4,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 0.023602154099717155,
+              "total_time_seconds": 0.23602154099717154,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 235.28125,
+              "physical_partition_count": 4,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 0.025209237500166636,
+              "total_time_seconds": 0.25209237500166637,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 8,
+              "peak_rss_mb": 235.453125,
+              "physical_partition_count": 4,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 0.022898912500022562,
+              "total_time_seconds": 0.2289891250002256,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2534450,
+                2564770,
+                2541612,
+                2558038
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 237.34375,
+              "physical_partition_count": 4,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 0.02552538749987434,
+              "total_time_seconds": 0.2552538749987434,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 0.024173834139946847,
+          "time_seconds_median": 0.023633479099953548,
+          "time_seconds_stdev": 0.0011339073406451843
+        },
+        "t5": {
+          "estimated_compressed_bytes": [
+            2034539,
+            2037279,
+            2047541,
+            2053436,
+            2035580
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 244.45625,
+          "peak_rss_mb_median": 243.34375,
+          "peak_rss_mb_stdev": 2.7467221231633534,
+          "physical_partition_count": 5,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 29,
+              "peak_rss_mb": 249.359375,
+              "physical_partition_count": 5,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 0.021177445799912674,
+              "total_time_seconds": 0.21177445799912675,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 5,
+              "peak_rss_mb": 243.34375,
+              "physical_partition_count": 5,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 0.01989618750012596,
+              "total_time_seconds": 0.1989618750012596,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 242.953125,
+              "physical_partition_count": 5,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 0.02115922920020239,
+              "total_time_seconds": 0.2115922920020239,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 7,
+              "peak_rss_mb": 243.203125,
+              "physical_partition_count": 5,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 0.01933846669999184,
+              "total_time_seconds": 0.1933846669999184,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                2034539,
+                2037279,
+                2047541,
+                2053436,
+                2035580
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 243.421875,
+              "physical_partition_count": 5,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 0.021457745799853,
+              "total_time_seconds": 0.21457745799853,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 0.020605815000017173,
+          "time_seconds_median": 0.02115922920020239,
+          "time_seconds_stdev": 0.0009312032589939318
+        },
+        "t6": {
+          "estimated_compressed_bytes": [
+            1694100,
+            1697764,
+            1707472,
+            1700449,
+            1704230,
+            1703926
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 255.096875,
+          "peak_rss_mb_median": 254.875,
+          "peak_rss_mb_stdev": 4.153405981841891,
+          "physical_partition_count": 6,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 30,
+              "peak_rss_mb": 256.765625,
+              "physical_partition_count": 6,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 0.018163454200112027,
+              "total_time_seconds": 0.18163454200112028,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 4,
+              "peak_rss_mb": 251.46875,
+              "physical_partition_count": 6,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 0.017455362499822512,
+              "total_time_seconds": 0.17455362499822513,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 254.875,
+              "physical_partition_count": 6,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 0.01939359579992015,
+              "total_time_seconds": 0.1939359579992015,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 6,
+              "peak_rss_mb": 261.21875,
+              "physical_partition_count": 6,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 0.016761545900226337,
+              "total_time_seconds": 0.16761545900226338,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1694100,
+                1697764,
+                1707472,
+                1700449,
+                1704230,
+                1703926
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 251.15625,
+              "physical_partition_count": 6,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 0.01842954579988145,
+              "total_time_seconds": 0.18429545799881453,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 0.018040700839992495,
+          "time_seconds_median": 0.018163454200112027,
+          "time_seconds_stdev": 0.0009969267645181423
+        },
+        "t7": {
+          "estimated_compressed_bytes": [
+            1449512,
+            1456808,
+            1469134,
+            1457939,
+            1457288,
+            1463679,
+            1470212
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 260.2625,
+          "peak_rss_mb_median": 260.015625,
+          "peak_rss_mb_stdev": 3.0251912710707236,
+          "physical_partition_count": 7,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 31,
+              "peak_rss_mb": 260.015625,
+              "physical_partition_count": 7,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 0.016342250000161585,
+              "total_time_seconds": 0.16342250000161584,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 3,
+              "peak_rss_mb": 257.46875,
+              "physical_partition_count": 7,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 0.01569939170003636,
+              "total_time_seconds": 0.15699391700036358,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 29,
+              "peak_rss_mb": 257.21875,
+              "physical_partition_count": 7,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 0.015921166699990864,
+              "total_time_seconds": 0.15921166699990863,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 5,
+              "peak_rss_mb": 264.0,
+              "physical_partition_count": 7,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 0.015254395900046801,
+              "total_time_seconds": 0.15254395900046802,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1449512,
+                1456808,
+                1469134,
+                1457939,
+                1457288,
+                1463679,
+                1470212
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 262.609375,
+              "physical_partition_count": 7,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 0.01868470840017835,
+              "total_time_seconds": 0.18684708400178351,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 0.016380382540082793,
+          "time_seconds_median": 0.015921166699990864,
+          "time_seconds_stdev": 0.0013466481895491485
+        },
+        "t8": {
+          "estimated_compressed_bytes": [
+            1267344,
+            1276003,
+            1294125,
+            1279184,
+            1277220,
+            1273184,
+            1282932,
+            1283468
+          ],
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 267.825,
+          "peak_rss_mb_median": 266.046875,
+          "peak_rss_mb_stdev": 3.4041421230245366,
+          "physical_partition_count": 8,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 32,
+              "peak_rss_mb": 272.140625,
+              "physical_partition_count": 8,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 0.01579598749995057,
+              "total_time_seconds": 0.1579598749995057,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 2,
+              "peak_rss_mb": 266.046875,
+              "physical_partition_count": 8,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 0.01475958749979327,
+              "total_time_seconds": 0.1475958749979327,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 30,
+              "peak_rss_mb": 265.140625,
+              "physical_partition_count": 8,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 0.015550579099726746,
+              "total_time_seconds": 0.15550579099726747,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 4,
+              "peak_rss_mb": 264.953125,
+              "physical_partition_count": 8,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 0.022393129100237275,
+              "total_time_seconds": 0.22393129100237275,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                1267344,
+                1276003,
+                1294125,
+                1279184,
+                1277220,
+                1273184,
+                1282932,
+                1283468
+              ],
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 270.84375,
+              "physical_partition_count": 8,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 0.01632614590016601,
+              "total_time_seconds": 0.16326145900166011,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 0.016965085819974773,
+          "time_seconds_median": 0.01579598749995057,
+          "time_seconds_stdev": 0.0030864113893550303
+        }
+      }
+    },
+    "bigwig": {
+      "count": {
+        "t1": {
+          "estimated_compressed_bytes": [
+            454982217
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 229.8125,
+          "peak_rss_mb_median": 231.265625,
+          "peak_rss_mb_stdev": 3.5515525324321193,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 232.6875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 3.941851374998805,
+              "total_time_seconds": 3.941851374998805,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 224.046875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 4.182801457998721,
+              "total_time_seconds": 4.182801457998721,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 228.828125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 4.508276582997496,
+              "total_time_seconds": 4.508276582997496,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 232.234375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 4.282752708000771,
+              "total_time_seconds": 4.282752708000771,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 231.265625,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 4.1753391250022105,
+              "total_time_seconds": 4.1753391250022105,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 4.218204249799601,
+          "time_seconds_median": 4.182801457998721,
+          "time_seconds_stdev": 0.2047987731560394
+        },
+        "t2": {
+          "estimated_compressed_bytes": [
+            227530337,
+            227456457
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 237.45625,
+          "peak_rss_mb_median": 237.453125,
+          "peak_rss_mb_stdev": 2.011848448488976,
+          "physical_partition_count": 2,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 236.015625,
+              "physical_partition_count": 2,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 1.470920040999772,
+              "total_time_seconds": 1.470920040999772,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 235.59375,
+              "physical_partition_count": 2,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 1.5402685000008205,
+              "total_time_seconds": 1.5402685000008205,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 240.71875,
+              "physical_partition_count": 2,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 1.7552601670031436,
+              "total_time_seconds": 1.7552601670031436,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 237.5,
+              "physical_partition_count": 2,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 1.77244279200022,
+              "total_time_seconds": 1.77244279200022,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 237.453125,
+              "physical_partition_count": 2,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 1.6125513750012033,
+              "total_time_seconds": 1.6125513750012033,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 1.6302885750010319,
+          "time_seconds_median": 1.6125513750012033,
+          "time_seconds_stdev": 0.1319491114168478
+        },
+        "t3": {
+          "estimated_compressed_bytes": [
+            151644876,
+            151674874,
+            151671887
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 242.009375,
+          "peak_rss_mb_median": 242.03125,
+          "peak_rss_mb_stdev": 1.4601058796154134,
+          "physical_partition_count": 3,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 240.578125,
+              "physical_partition_count": 3,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 1.0847569170000497,
+              "total_time_seconds": 1.0847569170000497,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 240.53125,
+              "physical_partition_count": 3,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 1.0763464590017975,
+              "total_time_seconds": 1.0763464590017975,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 243.203125,
+              "physical_partition_count": 3,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 1.076226917000895,
+              "total_time_seconds": 1.076226917000895,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 242.03125,
+              "physical_partition_count": 3,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 1.2834599999987404,
+              "total_time_seconds": 1.2834599999987404,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 243.703125,
+              "physical_partition_count": 3,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 1.1374555830007012,
+              "total_time_seconds": 1.1374555830007012,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 1.1316491752004367,
+          "time_seconds_median": 1.0847569170000497,
+          "time_seconds_stdev": 0.08861312247559598
+        },
+        "t4": {
+          "estimated_compressed_bytes": [
+            113887389,
+            113647767,
+            113687258,
+            113773940
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 245.28125,
+          "peak_rss_mb_median": 244.515625,
+          "peak_rss_mb_stdev": 1.4492556009465687,
+          "physical_partition_count": 4,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 243.828125,
+              "physical_partition_count": 4,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 1.1210244159992726,
+              "total_time_seconds": 1.1210244159992726,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 244.390625,
+              "physical_partition_count": 4,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 1.1992050420012674,
+              "total_time_seconds": 1.1992050420012674,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 247.03125,
+              "physical_partition_count": 4,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 1.1183303750003688,
+              "total_time_seconds": 1.1183303750003688,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 244.515625,
+              "physical_partition_count": 4,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 1.0639367090007,
+              "total_time_seconds": 1.0639367090007,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 246.640625,
+              "physical_partition_count": 4,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 1.1640305000000808,
+              "total_time_seconds": 1.1640305000000808,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 1.133305408400338,
+          "time_seconds_median": 1.1210244159992726,
+          "time_seconds_stdev": 0.05117099720210634
+        },
+        "t5": {
+          "estimated_compressed_bytes": [
+            90990167,
+            91011384,
+            90956673,
+            91166398,
+            90876116
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 247.075,
+          "peak_rss_mb_median": 247.171875,
+          "peak_rss_mb_stdev": 1.0914261026290328,
+          "physical_partition_count": 5,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 246.34375,
+              "physical_partition_count": 5,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 1.1373912909984938,
+              "total_time_seconds": 1.1373912909984938,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 245.671875,
+              "physical_partition_count": 5,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 1.0977316249991418,
+              "total_time_seconds": 1.0977316249991418,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 247.796875,
+              "physical_partition_count": 5,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 1.1382824590000382,
+              "total_time_seconds": 1.1382824590000382,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 248.390625,
+              "physical_partition_count": 5,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 1.1138619170014863,
+              "total_time_seconds": 1.1138619170014863,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 247.171875,
+              "physical_partition_count": 5,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 1.0774676670007466,
+              "total_time_seconds": 1.0774676670007466,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 1.1129469917999812,
+          "time_seconds_median": 1.1138619170014863,
+          "time_seconds_stdev": 0.026127268441082718
+        },
+        "t6": {
+          "estimated_compressed_bytes": [
+            75845813,
+            75803391,
+            75890360,
+            75789091,
+            75764830,
+            75911921
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 250.590625,
+          "peak_rss_mb_median": 250.078125,
+          "peak_rss_mb_stdev": 0.8669692856079159,
+          "physical_partition_count": 6,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 251.375,
+              "physical_partition_count": 6,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 2.6085557080004946,
+              "total_time_seconds": 2.6085557080004946,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 28,
+              "peak_rss_mb": 250.0625,
+              "physical_partition_count": 6,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 1.0708867499997723,
+              "total_time_seconds": 1.0708867499997723,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 251.671875,
+              "physical_partition_count": 6,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 1.221677292000095,
+              "total_time_seconds": 1.221677292000095,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 249.765625,
+              "physical_partition_count": 6,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 1.0927296669979114,
+              "total_time_seconds": 1.0927296669979114,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 250.078125,
+              "physical_partition_count": 6,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 1.0941240829997696,
+              "total_time_seconds": 1.0941240829997696,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 1.4175946999996085,
+          "time_seconds_median": 1.0941240829997696,
+          "time_seconds_stdev": 0.66842140257069
+        },
+        "t7": {
+          "estimated_compressed_bytes": [
+            65076052,
+            64916895,
+            65018131,
+            64963950,
+            65073191,
+            64976948,
+            64986441
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 250.5125,
+          "peak_rss_mb_median": 250.171875,
+          "peak_rss_mb_stdev": 0.8944817808373741,
+          "physical_partition_count": 7,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 252.09375,
+              "physical_partition_count": 7,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 1.5057297919993289,
+              "total_time_seconds": 1.5057297919993289,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 27,
+              "peak_rss_mb": 250.296875,
+              "physical_partition_count": 7,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 1.204549040998245,
+              "total_time_seconds": 1.204549040998245,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 250.171875,
+              "physical_partition_count": 7,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 1.1021785420016386,
+              "total_time_seconds": 1.1021785420016386,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 250.078125,
+              "physical_partition_count": 7,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 1.0770549580010993,
+              "total_time_seconds": 1.0770549580010993,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 249.921875,
+              "physical_partition_count": 7,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 1.1297967919999792,
+              "total_time_seconds": 1.1297967919999792,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 1.2038618250000581,
+          "time_seconds_median": 1.1297967919999792,
+          "time_seconds_stdev": 0.17537805053571562
+        },
+        "t8": {
+          "estimated_compressed_bytes": [
+            56904364,
+            56987905,
+            56684018,
+            56968844,
+            56833942,
+            56858105,
+            56903930,
+            56874817
+          ],
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 255.146875,
+          "peak_rss_mb_median": 255.03125,
+          "peak_rss_mb_stdev": 2.2905578520171677,
+          "physical_partition_count": 8,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 258.140625,
+              "physical_partition_count": 8,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 1.443306166002003,
+              "total_time_seconds": 1.443306166002003,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 26,
+              "peak_rss_mb": 254.859375,
+              "physical_partition_count": 8,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 1.1146371659997385,
+              "total_time_seconds": 1.1146371659997385,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 255.921875,
+              "physical_partition_count": 8,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 1.128383292001672,
+              "total_time_seconds": 1.128383292001672,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 28,
+              "peak_rss_mb": 251.78125,
+              "physical_partition_count": 8,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 1.0674062500002037,
+              "total_time_seconds": 1.0674062500002037,
+              "workload": "count"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 255.03125,
+              "physical_partition_count": 8,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 1.1767265000016778,
+              "total_time_seconds": 1.1767265000016778,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 1.186091874801059,
+          "time_seconds_median": 1.128383292001672,
+          "time_seconds_stdev": 0.14897083214181686
+        }
+      },
+      "decode": {
+        "t1": {
+          "estimated_compressed_bytes": [
+            454982217
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130344
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 228.321875,
+          "peak_rss_mb_median": 230.125,
+          "peak_rss_mb_stdev": 3.395294883180252,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 231.96875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 3.8367476250023174,
+              "total_time_seconds": 3.8367476250023174,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 25,
+              "peak_rss_mb": 230.125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 3.2213073749990144,
+              "total_time_seconds": 3.2213073749990144,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 224.640625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 3.0853763749983045,
+              "total_time_seconds": 3.0853763749983045,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 27,
+              "peak_rss_mb": 224.75,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 3.0370163330007927,
+              "total_time_seconds": 3.0370163330007927,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                454982217
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 230.125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 4.472947542002657,
+              "total_time_seconds": 4.472947542002657,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 3.530679050000617,
+          "time_seconds_median": 3.2213073749990144,
+          "time_seconds_stdev": 0.6162905295874122
+        },
+        "t2": {
+          "estimated_compressed_bytes": [
+            227530337,
+            227456457
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 234.021875,
+          "peak_rss_mb_median": 236.078125,
+          "peak_rss_mb_stdev": 3.8895988857705497,
+          "physical_partition_count": 2,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 237.625,
+              "physical_partition_count": 2,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 1.468648750000284,
+              "total_time_seconds": 1.468648750000284,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 24,
+              "peak_rss_mb": 236.078125,
+              "physical_partition_count": 2,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 1.3375435840025602,
+              "total_time_seconds": 1.3375435840025602,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130336
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 236.1875,
+              "physical_partition_count": 2,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 1.3544845830001577,
+              "total_time_seconds": 1.3544845830001577,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 26,
+              "peak_rss_mb": 232.109375,
+              "physical_partition_count": 2,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 1.3082282909999776,
+              "total_time_seconds": 1.3082282909999776,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                227530337,
+                227456457
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 228.109375,
+              "physical_partition_count": 2,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 11.960097375002078,
+              "total_time_seconds": 11.960097375002078,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 3.4858005166010115,
+          "time_seconds_median": 1.3544845830001577,
+          "time_seconds_stdev": 4.737666745054834
+        },
+        "t3": {
+          "estimated_compressed_bytes": [
+            151644876,
+            151674874,
+            151671887
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 239.925,
+          "peak_rss_mb_median": 240.125,
+          "peak_rss_mb_stdev": 1.7205033670230059,
+          "physical_partition_count": 3,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 242.0,
+              "physical_partition_count": 3,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 1.0229177080000227,
+              "total_time_seconds": 1.0229177080000227,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 23,
+              "peak_rss_mb": 240.125,
+              "physical_partition_count": 3,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 0.8920849580026697,
+              "total_time_seconds": 0.8920849580026697,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 240.921875,
+              "physical_partition_count": 3,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 0.913895917001355,
+              "total_time_seconds": 0.913895917001355,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 25,
+              "peak_rss_mb": 239.046875,
+              "physical_partition_count": 3,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 0.8995022090020939,
+              "total_time_seconds": 0.8995022090020939,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                151644876,
+                151674874,
+                151671887
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 237.53125,
+              "physical_partition_count": 3,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 2.881104583000706,
+              "total_time_seconds": 2.881104583000706,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 1.3219010750013696,
+          "time_seconds_median": 0.913895917001355,
+          "time_seconds_stdev": 0.8732321481835215
+        },
+        "t4": {
+          "estimated_compressed_bytes": [
+            113887389,
+            113647767,
+            113687258,
+            113773940
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130332
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 244.88125,
+          "peak_rss_mb_median": 244.359375,
+          "peak_rss_mb_stdev": 1.7287916887598112,
+          "physical_partition_count": 4,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 244.359375,
+              "physical_partition_count": 4,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 0.8876422909997927,
+              "total_time_seconds": 0.8876422909997927,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 22,
+              "peak_rss_mb": 247.40625,
+              "physical_partition_count": 4,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 0.8740140000008978,
+              "total_time_seconds": 0.8740140000008978,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 245.828125,
+              "physical_partition_count": 4,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 0.8079767920025915,
+              "total_time_seconds": 0.8079767920025915,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 24,
+              "peak_rss_mb": 243.234375,
+              "physical_partition_count": 4,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 0.782258584000374,
+              "total_time_seconds": 0.782258584000374,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                113887389,
+                113647767,
+                113687258,
+                113773940
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 243.578125,
+              "physical_partition_count": 4,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 2.0354910409987497,
+              "total_time_seconds": 2.0354910409987497,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 1.0774765416004812,
+          "time_seconds_median": 0.8740140000008978,
+          "time_seconds_stdev": 0.5373568616653894
+        },
+        "t5": {
+          "estimated_compressed_bytes": [
+            90990167,
+            91011384,
+            90956673,
+            91166398,
+            90876116
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130333
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 248.375,
+          "peak_rss_mb_median": 248.9375,
+          "peak_rss_mb_stdev": 1.2086419774637567,
+          "physical_partition_count": 5,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 13,
+              "peak_rss_mb": 248.9375,
+              "physical_partition_count": 5,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 0.9407488329998159,
+              "total_time_seconds": 0.9407488329998159,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 21,
+              "peak_rss_mb": 249.125,
+              "physical_partition_count": 5,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 0.8250873749966559,
+              "total_time_seconds": 0.8250873749966559,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 248.078125,
+              "physical_partition_count": 5,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 0.8325987499993062,
+              "total_time_seconds": 0.8325987499993062,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 23,
+              "peak_rss_mb": 246.390625,
+              "physical_partition_count": 5,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 0.8273194590001367,
+              "total_time_seconds": 0.8273194590001367,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                90990167,
+                91011384,
+                90956673,
+                91166398,
+                90876116
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 249.34375,
+              "physical_partition_count": 5,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 2.1864764589990955,
+              "total_time_seconds": 2.1864764589990955,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 1.122446175199002,
+          "time_seconds_median": 0.8325987499993062,
+          "time_seconds_stdev": 0.5968056495989614
+        },
+        "t6": {
+          "estimated_compressed_bytes": [
+            75845813,
+            75803391,
+            75890360,
+            75789091,
+            75764830,
+            75911921
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 249.615625,
+          "peak_rss_mb_median": 248.625,
+          "peak_rss_mb_stdev": 1.88456544435647,
+          "physical_partition_count": 6,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 14,
+              "peak_rss_mb": 252.578125,
+              "physical_partition_count": 6,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 0.9739969589973043,
+              "total_time_seconds": 0.9739969589973043,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 20,
+              "peak_rss_mb": 248.296875,
+              "physical_partition_count": 6,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 0.8368661669992434,
+              "total_time_seconds": 0.8368661669992434,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 248.171875,
+              "physical_partition_count": 6,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 0.8301441660005366,
+              "total_time_seconds": 0.8301441660005366,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 22,
+              "peak_rss_mb": 248.625,
+              "physical_partition_count": 6,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 0.8061480000033043,
+              "total_time_seconds": 0.8061480000033043,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                75845813,
+                75803391,
+                75890360,
+                75789091,
+                75764830,
+                75911921
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 250.40625,
+              "physical_partition_count": 6,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 1.7026395419998153,
+              "total_time_seconds": 1.7026395419998153,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 1.0299589668000408,
+          "time_seconds_median": 0.8368661669992434,
+          "time_seconds_stdev": 0.3817502571644056
+        },
+        "t7": {
+          "estimated_compressed_bytes": [
+            65076052,
+            64916895,
+            65018131,
+            64963950,
+            65073191,
+            64976948,
+            64986441
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 253.709375,
+          "peak_rss_mb_median": 253.84375,
+          "peak_rss_mb_stdev": 2.40915510507574,
+          "physical_partition_count": 7,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 15,
+              "peak_rss_mb": 254.296875,
+              "physical_partition_count": 7,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 0.8132829579990357,
+              "total_time_seconds": 0.8132829579990357,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 19,
+              "peak_rss_mb": 253.84375,
+              "physical_partition_count": 7,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 0.8346261250007956,
+              "total_time_seconds": 0.8346261250007956,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 13,
+              "peak_rss_mb": 250.078125,
+              "physical_partition_count": 7,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 0.8002740829979302,
+              "total_time_seconds": 0.8002740829979302,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 21,
+              "peak_rss_mb": 256.8125,
+              "physical_partition_count": 7,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 0.8065199159973417,
+              "total_time_seconds": 0.8065199159973417,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                65076052,
+                64916895,
+                65018131,
+                64963950,
+                65073191,
+                64976948,
+                64986441
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 253.515625,
+              "physical_partition_count": 7,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 2.1571006669983035,
+              "total_time_seconds": 2.1571006669983035,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 1.0823607497986814,
+          "time_seconds_median": 0.8132829579990357,
+          "time_seconds_stdev": 0.6009372357336391
+        },
+        "t8": {
+          "estimated_compressed_bytes": [
+            56904364,
+            56987905,
+            56684018,
+            56968844,
+            56833942,
+            56858105,
+            56903930,
+            56874817
+          ],
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130333
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 258.153125,
+          "peak_rss_mb_median": 257.203125,
+          "peak_rss_mb_stdev": 4.9116883672712275,
+          "physical_partition_count": 8,
+          "raw": [
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 16,
+              "peak_rss_mb": 265.53125,
+              "physical_partition_count": 8,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 0.8891602499970759,
+              "total_time_seconds": 0.8891602499970759,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 18,
+              "peak_rss_mb": 253.546875,
+              "physical_partition_count": 8,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 0.9435889999986102,
+              "total_time_seconds": 0.9435889999986102,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 14,
+              "peak_rss_mb": 260.265625,
+              "physical_partition_count": 8,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 1.1468341660001897,
+              "total_time_seconds": 1.1468341660001897,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 20,
+              "peak_rss_mb": 257.203125,
+              "physical_partition_count": 8,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 0.8808622500000638,
+              "total_time_seconds": 0.8808622500000638,
+              "workload": "decode"
+            },
+            {
+              "estimated_compressed_bytes": [
+                56904364,
+                56987905,
+                56684018,
+                56968844,
+                56833942,
+                56858105,
+                56903930,
+                56874817
+              ],
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 254.21875,
+              "physical_partition_count": 8,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 0.8428350409994891,
+              "total_time_seconds": 0.8428350409994891,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 0.9406561413990857,
+          "time_seconds_median": 0.8891602499970759,
+          "time_seconds_stdev": 0.12074154571986792
+        }
+      }
+    }
+  },
+  "scaling": {
+    "bigbed": {
+      "count": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 7071193.481996235,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 1.0579863047507396,
+          "rows_per_second": 14962451.724389425,
+          "speedup_vs_t1": 2.1159726095014793
+        },
+        "t3": {
+          "parallel_efficiency": 0.9894176764387246,
+          "rows_per_second": 20989091.473816108,
+          "speedup_vs_t1": 2.9682530293161737
+        },
+        "t4": {
+          "parallel_efficiency": 0.9281035902256839,
+          "rows_per_second": 26251200.231284644,
+          "speedup_vs_t1": 3.7124143609027356
+        },
+        "t5": {
+          "parallel_efficiency": 0.8659831553388546,
+          "rows_per_second": 30617672.21775321,
+          "speedup_vs_t1": 4.329915776694273
+        },
+        "t6": {
+          "parallel_efficiency": 0.846826884179874,
+          "rows_per_second": 35928460.46275144,
+          "speedup_vs_t1": 5.080961305079244
+        },
+        "t7": {
+          "parallel_efficiency": 0.7668813677215184,
+          "rows_per_second": 37959365.70227731,
+          "speedup_vs_t1": 5.368169574050628
+        },
+        "t8": {
+          "parallel_efficiency": 0.6896282266542774,
+          "rows_per_second": 39011956.97054679,
+          "speedup_vs_t1": 5.517025813234219
+        }
+      },
+      "decode": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 6953922.663049452,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 1.026465939639509,
+          "rows_per_second": 14275929.521015063,
+          "speedup_vs_t1": 2.052931879279018
+        },
+        "t3": {
+          "parallel_efficiency": 0.9853229904430848,
+          "rows_per_second": 20555579.620997474,
+          "speedup_vs_t1": 2.9559689713292543
+        },
+        "t4": {
+          "parallel_efficiency": 0.9164556045001061,
+          "rows_per_second": 25491845.59124789,
+          "speedup_vs_t1": 3.6658224180004244
+        },
+        "t5": {
+          "parallel_efficiency": 0.8188969142517302,
+          "rows_per_second": 28472729.053581845,
+          "speedup_vs_t1": 4.094484571258651
+        },
+        "t6": {
+          "parallel_efficiency": 0.7949675260503759,
+          "rows_per_second": 33168856.174740385,
+          "speedup_vs_t1": 4.769805156302255
+        },
+        "t7": {
+          "parallel_efficiency": 0.7773670927915811,
+          "rows_per_second": 37840254.508505695,
+          "speedup_vs_t1": 5.4415696495410675
+        },
+        "t8": {
+          "parallel_efficiency": 0.6855865888427781,
+          "rows_per_second": 38140128.94109249,
+          "speedup_vs_t1": 5.484692710742225
+        }
+      }
+    },
+    "bigwig": {
+      "count": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 23522758.60759492,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 1.2969513786795166,
+          "rows_per_second": 61015748.41293139,
+          "speedup_vs_t1": 2.593902757359033
+        },
+        "t3": {
+          "parallel_efficiency": 1.2853268145292467,
+          "rows_per_second": 90703297.1701212,
+          "speedup_vs_t1": 3.85598044358774
+        },
+        "t4": {
+          "parallel_efficiency": 0.9328078403783481,
+          "rows_per_second": 87768854.62596726,
+          "speedup_vs_t1": 3.7312313615133923
+        },
+        "t5": {
+          "parallel_efficiency": 0.7510448816238934,
+          "rows_per_second": 88333237.26954272,
+          "speedup_vs_t1": 3.755224408119467
+        },
+        "t6": {
+          "parallel_efficiency": 0.6371613486669473,
+          "rows_per_second": 89926755.59269334,
+          "speedup_vs_t1": 3.822968092001684
+        },
+        "t7": {
+          "parallel_efficiency": 0.5288942840513923,
+          "rows_per_second": 87087368.00874348,
+          "speedup_vs_t1": 3.702259988359746
+        },
+        "t8": {
+          "parallel_efficiency": 0.4633622156194292,
+          "rows_per_second": 87196460.36716945,
+          "speedup_vs_t1": 3.7068977249554336
+        }
+      },
+      "decode": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 30543818.874170646,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 1.1891266299480057,
+          "rows_per_second": 72640936.80716966,
+          "speedup_vs_t1": 2.3782532598960113
+        },
+        "t3": {
+          "parallel_efficiency": 1.174935903557691,
+          "rows_per_second": 107661088.28107843,
+          "speedup_vs_t1": 3.524807710673073
+        },
+        "t4": {
+          "parallel_efficiency": 0.9214118352210907,
+          "rows_per_second": 112573744.81404066,
+          "speedup_vs_t1": 3.685647340884363
+        },
+        "t5": {
+          "parallel_efficiency": 0.7737958710607478,
+          "rows_per_second": 118173404.65630293,
+          "speedup_vs_t1": 3.868979355303739
+        },
+        "t6": {
+          "parallel_efficiency": 0.6415417227642818,
+          "rows_per_second": 117570805.08201373,
+          "speedup_vs_t1": 3.8492503365856905
+        },
+        "t7": {
+          "parallel_efficiency": 0.5658384493746489,
+          "rows_per_second": 120980069.76818597,
+          "speedup_vs_t1": 3.960869145622542
+        },
+        "t8": {
+          "parallel_efficiency": 0.45285810052372566,
+          "rows_per_second": 110656126.3847811,
+          "speedup_vs_t1": 3.6228648041898053
+        }
+      }
+    }
+  },
+  "verification": {
+    "bigbed:count": {
+      "fingerprint": {
+        "rows": 602461
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 2,
+        "t3": 3,
+        "t4": 4,
+        "t5": 5,
+        "t6": 6,
+        "t7": 7,
+        "t8": 8
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigbed:decode": {
+      "fingerprint": {
+        "end_sum": 44833319325145,
+        "rest_bytes": 16936017,
+        "rows": 602461,
+        "start_sum": 44832879770125
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 2,
+        "t3": 3,
+        "t4": 4,
+        "t5": 5,
+        "t6": 6,
+        "t7": 7,
+        "t8": 8
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigwig:count": {
+      "fingerprint": {
+        "rows": 98391029
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 2,
+        "t3": 3,
+        "t4": 4,
+        "t5": 5,
+        "t6": 6,
+        "t7": 7,
+        "t8": 8
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigwig:decode": {
+      "fingerprint": {
+        "end_sum": 7728679106691577,
+        "rows": 98391029,
+        "start_sum": 7728676009727317,
+        "value_sum": 104752471.34130344
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 2,
+        "t3": 3,
+        "t4": 4,
+        "t5": 5,
+        "t6": 6,
+        "t7": 7,
+        "t8": 8
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  }
+}

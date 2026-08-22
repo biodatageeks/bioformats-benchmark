@@ -1,0 +1,3589 @@
+{
+  "metadata": {
+    "datafusion_bio_formats_ref": "v1.10.0",
+    "files": {
+      "bigbed": {
+        "path": "/Users/mwiewior/research/data/BBI/ENCFF001JBR.bigBed",
+        "sha256": "b36b6b0886e25876ad06e3845a1b68f8f11b7932c23285c9c5f6301a918bc733",
+        "size_bytes": 16438476
+      },
+      "bigwig": {
+        "path": "/Users/mwiewior/research/data/BBI/GSM7256643_ENCFF713VEX_fold_change_over_control_GRCh38.bigWig",
+        "sha256": "dffcf1a854895d0d91b2b1250db72dc3572ee97c2ef936423735a74c9744b04e",
+        "size_bytes": 573021756
+      }
+    },
+    "formats": [
+      "bigwig",
+      "bigbed"
+    ],
+    "label": "v1.10.0-baseline",
+    "logical_cpu_count": 16,
+    "machine": "arm64",
+    "memory_total_bytes": 68719476736,
+    "partitions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "physical_cpu_count": 16,
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "polars_bio_build": {
+      "declared_profile": "release",
+      "declared_rustflags": "-C target-cpu=native",
+      "editable_install": true,
+      "extensions": [
+        {
+          "name": "polars_bio.abi3.so",
+          "size_bytes": 227975920
+        }
+      ],
+      "module_path": "/Users/mwiewior/research/git/polars-bio/polars_bio"
+    },
+    "polars_bio_ref": "f32af94",
+    "python": "3.12.2",
+    "timing_scope": "lazy scan construction, BBI index/header access, decoding, streaming aggregation, and scalar materialization; imports and thread-pool configuration excluded",
+    "versions": {
+      "polars": "1.42.1",
+      "polars-bio": "0.34.0",
+      "pyarrow": "24.0.0"
+    },
+    "workloads": [
+      "count",
+      "decode"
+    ]
+  },
+  "results": {
+    "bigbed": {
+      "count": {
+        "t1": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 204.015625,
+          "peak_rss_mb_median": 204.265625,
+          "peak_rss_mb_stdev": 1.8455036681249106,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 206.359375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 0.07506479580006271,
+              "total_time_seconds": 0.7506479580006271,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 204.265625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 0.07553149160012254,
+              "total_time_seconds": 0.7553149160012254,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 204.65625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 0.08142941249989236,
+              "total_time_seconds": 0.8142941249989235,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 201.296875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 0.07703692079994653,
+              "total_time_seconds": 0.7703692079994653,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 203.5,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 0.07535393750004005,
+              "total_time_seconds": 0.7535393750004005,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 0.07688331164001284,
+          "time_seconds_median": 0.07553149160012254,
+          "time_seconds_stdev": 0.0026534897466651748
+        },
+        "t2": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 204.25,
+          "peak_rss_mb_median": 203.53125,
+          "peak_rss_mb_stdev": 1.7279936093812673,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 202.921875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 0.07570047919998615,
+              "total_time_seconds": 0.7570047919998615,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 204.25,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 0.0773520999999164,
+              "total_time_seconds": 0.7735209999991639,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 207.21875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 0.08570856250007637,
+              "total_time_seconds": 0.8570856250007637,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 203.328125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 0.07766932920003455,
+              "total_time_seconds": 0.7766932920003455,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 203.53125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 0.07586028750010883,
+              "total_time_seconds": 0.7586028750010883,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 0.07845815168002446,
+          "time_seconds_median": 0.0773520999999164,
+          "time_seconds_stdev": 0.004146314751920749
+        },
+        "t3": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 205.246875,
+          "peak_rss_mb_median": 204.921875,
+          "peak_rss_mb_stdev": 2.191441761075913,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 202.40625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 0.07544878339995194,
+              "total_time_seconds": 0.7544878339995194,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 206.09375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 0.07626065829990694,
+              "total_time_seconds": 0.7626065829990694,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 208.359375,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 0.08130142919999343,
+              "total_time_seconds": 0.8130142919999344,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 204.453125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 0.0781034040999657,
+              "total_time_seconds": 0.781034040999657,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 204.921875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 0.07632335420003074,
+              "total_time_seconds": 0.7632335420003074,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 0.07748752583996975,
+          "time_seconds_median": 0.07632335420003074,
+          "time_seconds_stdev": 0.0023421216437006114
+        },
+        "t4": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 205.721875,
+          "peak_rss_mb_median": 205.984375,
+          "peak_rss_mb_stdev": 0.5236590016413353,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 206.171875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 0.07494344170008845,
+              "total_time_seconds": 0.7494344170008844,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 206.109375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 0.07696395830007532,
+              "total_time_seconds": 0.7696395830007532,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 205.984375,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 0.07985279579988855,
+              "total_time_seconds": 0.7985279579988855,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 205.359375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 0.07752954579991637,
+              "total_time_seconds": 0.7752954579991638,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 16,
+              "peak_rss_mb": 204.984375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 0.07608326670015231,
+              "total_time_seconds": 0.7608326670015231,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 0.0770746016600242,
+          "time_seconds_median": 0.07696395830007532,
+          "time_seconds_stdev": 0.0018345412628091246
+        },
+        "t5": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 206.884375,
+          "peak_rss_mb_median": 206.765625,
+          "peak_rss_mb_stdev": 1.4835359470703768,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 205.71875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 0.0803445333000127,
+              "total_time_seconds": 0.803445333000127,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 209.375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 0.07907799580007122,
+              "total_time_seconds": 0.7907799580007122,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 206.78125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 0.0806141540999306,
+              "total_time_seconds": 0.806141540999306,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 15,
+              "peak_rss_mb": 206.765625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 0.07771476670004632,
+              "total_time_seconds": 0.7771476670004631,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 17,
+              "peak_rss_mb": 205.78125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 0.07708118749997084,
+              "total_time_seconds": 0.7708118749997084,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 0.07896652748000633,
+          "time_seconds_median": 0.07907799580007122,
+          "time_seconds_stdev": 0.0015610421675597789
+        },
+        "t6": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 207.984375,
+          "peak_rss_mb_median": 207.59375,
+          "peak_rss_mb_stdev": 1.5892629851404392,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 208.921875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 0.0760592958999041,
+              "total_time_seconds": 0.760592958999041,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 12,
+              "peak_rss_mb": 207.140625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 0.07473084169996583,
+              "total_time_seconds": 0.7473084169996582,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 210.171875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 0.08338894999997137,
+              "total_time_seconds": 0.8338894999997137,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 14,
+              "peak_rss_mb": 207.59375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 0.07989439579996542,
+              "total_time_seconds": 0.7989439579996542,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 18,
+              "peak_rss_mb": 206.09375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 0.07601164580009936,
+              "total_time_seconds": 0.7601164580009936,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 0.07801702583998121,
+          "time_seconds_median": 0.0760592958999041,
+          "time_seconds_stdev": 0.0035719514614583102
+        },
+        "t7": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 209.134375,
+          "peak_rss_mb_median": 208.96875,
+          "peak_rss_mb_stdev": 1.6185871057036134,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 207.34375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 0.07446512089991301,
+              "total_time_seconds": 0.7446512089991302,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 11,
+              "peak_rss_mb": 209.25,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 0.07550294590000703,
+              "total_time_seconds": 0.7550294590000703,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 211.71875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 0.08207795839989558,
+              "total_time_seconds": 0.8207795839989558,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 13,
+              "peak_rss_mb": 208.390625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 0.0784414708999975,
+              "total_time_seconds": 0.7844147089999751,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 19,
+              "peak_rss_mb": 208.96875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 0.07547714170013933,
+              "total_time_seconds": 0.7547714170013933,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 0.07719292755999049,
+          "time_seconds_median": 0.07550294590000703,
+          "time_seconds_stdev": 0.0031089899919993463
+        },
+        "t8": {
+          "fingerprint": {
+            "rows": 602461
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 208.85625,
+          "peak_rss_mb_median": 208.984375,
+          "peak_rss_mb_stdev": 0.9400616045305222,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 207.890625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 0.07453577090000181,
+              "total_time_seconds": 0.7453577090000181,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 10,
+              "peak_rss_mb": 210.28125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 0.07595088329999271,
+              "total_time_seconds": 0.7595088329999271,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 209.0,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 0.08237548750003043,
+              "total_time_seconds": 0.8237548750003043,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 12,
+              "peak_rss_mb": 208.984375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 0.07792269159999705,
+              "total_time_seconds": 0.7792269159999705,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 602461
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 20,
+              "peak_rss_mb": 208.125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 0.07455912080004054,
+              "total_time_seconds": 0.7455912080004055,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 0.07706879082001251,
+          "time_seconds_median": 0.07595088329999271,
+          "time_seconds_stdev": 0.003273168455159518
+        }
+      },
+      "decode": {
+        "t1": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 207.334375,
+          "peak_rss_mb_median": 206.09375,
+          "peak_rss_mb_stdev": 2.3947472628912223,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 205.484375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 0.07809059169994725,
+              "total_time_seconds": 0.7809059169994725,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 9,
+              "peak_rss_mb": 211.125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 0.07871616250013176,
+              "total_time_seconds": 0.7871616250013176,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 208.28125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 0.08134402910000063,
+              "total_time_seconds": 0.8134402910000063,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 11,
+              "peak_rss_mb": 205.6875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 0.08071001250009431,
+              "total_time_seconds": 0.8071001250009431,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 21,
+              "peak_rss_mb": 206.09375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 0.07882930409996333,
+              "total_time_seconds": 0.7882930409996334,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 0.07953801998002746,
+          "time_seconds_median": 0.07882930409996333,
+          "time_seconds_stdev": 0.0014060593826729403
+        },
+        "t2": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 209.653125,
+          "peak_rss_mb_median": 210.078125,
+          "peak_rss_mb_stdev": 1.148379037627603,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 210.859375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 0.07793492909986525,
+              "total_time_seconds": 0.7793492909986526,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 8,
+              "peak_rss_mb": 207.96875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 0.07754563749986118,
+              "total_time_seconds": 0.7754563749986119,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 210.078125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 0.08190540420000617,
+              "total_time_seconds": 0.8190540420000616,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 10,
+              "peak_rss_mb": 210.3125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 0.08123628749999626,
+              "total_time_seconds": 0.8123628749999625,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 22,
+              "peak_rss_mb": 209.046875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 0.07665232920007839,
+              "total_time_seconds": 0.7665232920007838,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 0.07905491749996145,
+          "time_seconds_median": 0.07793492909986525,
+          "time_seconds_stdev": 0.002355227174710082
+        },
+        "t3": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 210.171875,
+          "peak_rss_mb_median": 210.046875,
+          "peak_rss_mb_stdev": 0.8655319218910993,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 210.859375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 0.07616921669996372,
+              "total_time_seconds": 0.7616921669996373,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 7,
+              "peak_rss_mb": 209.34375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 0.07751564999998664,
+              "total_time_seconds": 0.7751564999998664,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 211.25,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 0.08166717919993971,
+              "total_time_seconds": 0.8166717919993971,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 9,
+              "peak_rss_mb": 209.359375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 0.08324315840000054,
+              "total_time_seconds": 0.8324315840000054,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 23,
+              "peak_rss_mb": 210.046875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 0.07592829170007462,
+              "total_time_seconds": 0.7592829170007462,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 0.07890469919999304,
+          "time_seconds_median": 0.07751564999998664,
+          "time_seconds_stdev": 0.0033438319251201457
+        },
+        "t4": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 211.621875,
+          "peak_rss_mb_median": 212.1875,
+          "peak_rss_mb_stdev": 1.205577856776575,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 212.34375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 0.07744826250000188,
+              "total_time_seconds": 0.7744826250000187,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 6,
+              "peak_rss_mb": 212.890625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 0.07783893340001669,
+              "total_time_seconds": 0.7783893340001669,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 212.1875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 0.08144047919995501,
+              "total_time_seconds": 0.8144047919995501,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 8,
+              "peak_rss_mb": 210.5625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 0.08015568330010865,
+              "total_time_seconds": 0.8015568330010865,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 24,
+              "peak_rss_mb": 210.125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 0.0761655125001198,
+              "total_time_seconds": 0.761655125001198,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 0.0786097741800404,
+          "time_seconds_median": 0.07783893340001669,
+          "time_seconds_stdev": 0.0021401195041528473
+        },
+        "t5": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 212.85625,
+          "peak_rss_mb_median": 212.609375,
+          "peak_rss_mb_stdev": 1.3687000561664342,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 29,
+              "peak_rss_mb": 212.609375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 0.07699957080003514,
+              "total_time_seconds": 0.7699957080003514,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 5,
+              "peak_rss_mb": 214.25,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 0.07647292090005067,
+              "total_time_seconds": 0.7647292090005067,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 214.265625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 0.0820784208999612,
+              "total_time_seconds": 0.820784208999612,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 7,
+              "peak_rss_mb": 211.921875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 0.08047171669986711,
+              "total_time_seconds": 0.804717166998671,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 25,
+              "peak_rss_mb": 211.234375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 0.0760964334000164,
+              "total_time_seconds": 0.7609643340001639,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 0.0784238125399861,
+          "time_seconds_median": 0.07699957080003514,
+          "time_seconds_stdev": 0.002683337944548376
+        },
+        "t6": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 214.975,
+          "peak_rss_mb_median": 214.875,
+          "peak_rss_mb_stdev": 0.8629612670551906,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 30,
+              "peak_rss_mb": 215.03125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 0.07645722079996631,
+              "total_time_seconds": 0.7645722079996631,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 4,
+              "peak_rss_mb": 214.875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 0.07653009160003421,
+              "total_time_seconds": 0.7653009160003421,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 216.390625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 0.08448582920009358,
+              "total_time_seconds": 0.8448582920009358,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 6,
+              "peak_rss_mb": 214.390625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 0.08118744170005812,
+              "total_time_seconds": 0.8118744170005812,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 26,
+              "peak_rss_mb": 214.1875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 0.07656868750000285,
+              "total_time_seconds": 0.7656868750000285,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 0.07904585416003101,
+          "time_seconds_median": 0.07656868750000285,
+          "time_seconds_stdev": 0.0036519229256920145
+        },
+        "t7": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 215.840625,
+          "peak_rss_mb_median": 215.921875,
+          "peak_rss_mb_stdev": 1.8013327856583026,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 31,
+              "peak_rss_mb": 216.328125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 0.07636647920007818,
+              "total_time_seconds": 0.7636647920007817,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 3,
+              "peak_rss_mb": 215.28125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 0.07579735409999558,
+              "total_time_seconds": 0.7579735409999557,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 29,
+              "peak_rss_mb": 218.328125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 0.08209922080004617,
+              "total_time_seconds": 0.8209922080004617,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 5,
+              "peak_rss_mb": 215.921875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 0.08052370829991559,
+              "total_time_seconds": 0.805237082999156,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 27,
+              "peak_rss_mb": 213.34375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 0.07642239999986486,
+              "total_time_seconds": 0.7642239999986487,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 0.07824183247998008,
+          "time_seconds_median": 0.07642239999986486,
+          "time_seconds_stdev": 0.0028674536148705766
+        },
+        "t8": {
+          "fingerprint": {
+            "end_sum": 44833319325145,
+            "rest_bytes": 16936017,
+            "rows": 602461,
+            "start_sum": 44832879770125
+          },
+          "iterations_per_process": 10,
+          "peak_rss_mb_mean": 217.43125,
+          "peak_rss_mb_median": 217.5,
+          "peak_rss_mb_stdev": 1.3403663794836096,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 32,
+              "peak_rss_mb": 216.1875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 0.07778388340011588,
+              "total_time_seconds": 0.7778388340011588,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 2,
+              "peak_rss_mb": 218.65625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 0.07686697499993897,
+              "total_time_seconds": 0.7686697499993898,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 30,
+              "peak_rss_mb": 218.84375,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 0.08242599580007663,
+              "total_time_seconds": 0.8242599580007663,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 4,
+              "peak_rss_mb": 217.5,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 0.0808712458001537,
+              "total_time_seconds": 0.808712458001537,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 44833319325145,
+                "rest_bytes": 16936017,
+                "rows": 602461,
+                "start_sum": 44832879770125
+              },
+              "format": "bigbed",
+              "iterations": 10,
+              "order_in_round": 28,
+              "peak_rss_mb": 215.96875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 0.0759247833999325,
+              "total_time_seconds": 0.7592478339993249,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 0.07877457668004353,
+          "time_seconds_median": 0.07778388340011588,
+          "time_seconds_stdev": 0.0027600100576612215
+        }
+      }
+    },
+    "bigwig": {
+      "count": {
+        "t1": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 202.365625,
+          "peak_rss_mb_median": 202.421875,
+          "peak_rss_mb_stdev": 1.6438806982259997,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 199.75,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 3.4105463750001945,
+              "total_time_seconds": 3.4105463750001945,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 204.21875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 3.556163875000493,
+              "total_time_seconds": 3.556163875000493,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 202.421875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 3.7235815419990104,
+              "total_time_seconds": 3.7235815419990104,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 202.34375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 3.702365541999825,
+              "total_time_seconds": 3.702365541999825,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 203.09375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 3.505857375001142,
+              "total_time_seconds": 3.505857375001142,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 3.579702941800133,
+          "time_seconds_median": 3.556163875000493,
+          "time_seconds_stdev": 0.13263518064237526
+        },
+        "t2": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 201.775,
+          "peak_rss_mb_median": 201.46875,
+          "peak_rss_mb_stdev": 0.7494789856960634,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 201.46875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 3.438433666999117,
+              "total_time_seconds": 3.438433666999117,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 201.21875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 3.647455207999883,
+              "total_time_seconds": 3.647455207999883,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 202.78125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 3.71553833300095,
+              "total_time_seconds": 3.71553833300095,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 202.34375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 3.7480692919998546,
+              "total_time_seconds": 3.7480692919998546,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 201.0625,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 3.5422219579995726,
+              "total_time_seconds": 3.5422219579995726,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 3.6183436915998755,
+          "time_seconds_median": 3.647455207999883,
+          "time_seconds_stdev": 0.1277547899116579
+        },
+        "t3": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 202.65,
+          "peak_rss_mb_median": 202.453125,
+          "peak_rss_mb_stdev": 2.323259387086922,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 199.1875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 3.4501402089990734,
+              "total_time_seconds": 3.4501402089990734,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 202.453125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 3.6249945420004224,
+              "total_time_seconds": 3.6249945420004224,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 205.5625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 4.151132041999517,
+              "total_time_seconds": 4.151132041999517,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 203.65625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 3.842853791999005,
+              "total_time_seconds": 3.842853791999005,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 202.390625,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 3.5476505829992675,
+              "total_time_seconds": 3.5476505829992675,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 3.723354233599457,
+          "time_seconds_median": 3.6249945420004224,
+          "time_seconds_stdev": 0.2794934269447474
+        },
+        "t4": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 203.209375,
+          "peak_rss_mb_median": 203.96875,
+          "peak_rss_mb_stdev": 1.8828157416984541,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 200.046875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 3.4851760000001377,
+              "total_time_seconds": 3.4851760000001377,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 204.53125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 3.675334416999249,
+              "total_time_seconds": 3.675334416999249,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 204.546875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 3.7701254170005996,
+              "total_time_seconds": 3.7701254170005996,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 202.953125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 3.602550458999758,
+              "total_time_seconds": 3.602550458999758,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 32,
+              "peak_rss_mb": 203.96875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 3.565767957999924,
+              "total_time_seconds": 3.565767957999924,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 3.6197908501999336,
+          "time_seconds_median": 3.602550458999758,
+          "time_seconds_stdev": 0.10842328123221082
+        },
+        "t5": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 203.609375,
+          "peak_rss_mb_median": 203.046875,
+          "peak_rss_mb_stdev": 1.9122919106565557,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 201.890625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 3.529611042000397,
+              "total_time_seconds": 3.529611042000397,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 202.375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 3.6688968340004067,
+              "total_time_seconds": 3.6688968340004067,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 206.71875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 3.7384157500000583,
+              "total_time_seconds": 3.7384157500000583,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 31,
+              "peak_rss_mb": 204.015625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 3.558644374999858,
+              "total_time_seconds": 3.558644374999858,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 1,
+              "peak_rss_mb": 203.046875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 3.5536632080002164,
+              "total_time_seconds": 3.5536632080002164,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 3.609846241800187,
+          "time_seconds_median": 3.558644374999858,
+          "time_seconds_stdev": 0.08976767599708835
+        },
+        "t6": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 205.45625,
+          "peak_rss_mb_median": 204.140625,
+          "peak_rss_mb_stdev": 2.546189516647867,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 209.40625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 3.8290834999988874,
+              "total_time_seconds": 3.8290834999988874,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 28,
+              "peak_rss_mb": 204.140625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 3.619773542000985,
+              "total_time_seconds": 3.619773542000985,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 206.625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 3.728308207999362,
+              "total_time_seconds": 3.728308207999362,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 30,
+              "peak_rss_mb": 203.53125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 3.5761942500012083,
+              "total_time_seconds": 3.5761942500012083,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 2,
+              "peak_rss_mb": 203.578125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 3.5390989999996236,
+              "total_time_seconds": 3.5390989999996236,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 3.6584917000000132,
+          "time_seconds_median": 3.619773542000985,
+          "time_seconds_stdev": 0.11885126194597763
+        },
+        "t7": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 204.74375,
+          "peak_rss_mb_median": 204.546875,
+          "peak_rss_mb_stdev": 1.1586019154297562,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 205.671875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 3.571025749999535,
+              "total_time_seconds": 3.571025749999535,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 27,
+              "peak_rss_mb": 203.96875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 3.6092750000007072,
+              "total_time_seconds": 3.6092750000007072,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 206.15625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 3.6891113750007207,
+              "total_time_seconds": 3.6891113750007207,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 29,
+              "peak_rss_mb": 204.546875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 3.5689815000005183,
+              "total_time_seconds": 3.5689815000005183,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 3,
+              "peak_rss_mb": 203.375,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 3.5513859580005374,
+              "total_time_seconds": 3.5513859580005374,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 3.597955916600404,
+          "time_seconds_median": 3.571025749999535,
+          "time_seconds_stdev": 0.055161016532607694
+        },
+        "t8": {
+          "fingerprint": {
+            "rows": 98391029
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 206.315625,
+          "peak_rss_mb_median": 205.984375,
+          "peak_rss_mb_stdev": 0.7554651143914588,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 205.90625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 3.605767916998957,
+              "total_time_seconds": 3.605767916998957,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 26,
+              "peak_rss_mb": 205.640625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 3.777754875000028,
+              "total_time_seconds": 3.777754875000028,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 205.984375,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 3.766204125000513,
+              "total_time_seconds": 3.766204125000513,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 28,
+              "peak_rss_mb": 206.5,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 3.57060037500014,
+              "total_time_seconds": 3.57060037500014,
+              "workload": "count"
+            },
+            {
+              "fingerprint": {
+                "rows": 98391029
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 4,
+              "peak_rss_mb": 207.546875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 3.53923366699928,
+              "total_time_seconds": 3.53923366699928,
+              "workload": "count"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 3.6519121917997834,
+          "time_seconds_median": 3.605767916998957,
+          "time_seconds_stdev": 0.11217885552675216
+        }
+      },
+      "decode": {
+        "t1": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130344
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 201.75625,
+          "peak_rss_mb_median": 200.515625,
+          "peak_rss_mb_stdev": 2.2227516730395234,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 199.859375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 1,
+              "time_seconds": 2.822275708000234,
+              "total_time_seconds": 2.822275708000234,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 25,
+              "peak_rss_mb": 200.171875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 1,
+              "time_seconds": 3.013498750000508,
+              "total_time_seconds": 3.013498750000508,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 204.8125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 1,
+              "time_seconds": 3.396327749998818,
+              "total_time_seconds": 3.396327749998818,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 27,
+              "peak_rss_mb": 200.515625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 1,
+              "time_seconds": 2.932954334000897,
+              "total_time_seconds": 2.932954334000897,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130344
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 5,
+              "peak_rss_mb": 203.421875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 1,
+              "time_seconds": 2.8494814160003443,
+              "total_time_seconds": 2.8494814160003443,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 1,
+          "time_seconds_mean": 3.0029075916001604,
+          "time_seconds_median": 2.932954334000897,
+          "time_seconds_stdev": 0.2323534595457307
+        },
+        "t2": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130332
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 202.346875,
+          "peak_rss_mb_median": 202.25,
+          "peak_rss_mb_stdev": 1.9370085062087363,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 200.53125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 2,
+              "time_seconds": 2.8432260830013547,
+              "total_time_seconds": 2.8432260830013547,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 24,
+              "peak_rss_mb": 205.25,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 2,
+              "time_seconds": 3.1068861250005284,
+              "total_time_seconds": 3.1068861250005284,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 203.03125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 2,
+              "time_seconds": 3.0106346669999766,
+              "total_time_seconds": 3.0106346669999766,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 26,
+              "peak_rss_mb": 202.25,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 2,
+              "time_seconds": 2.9736324999994395,
+              "total_time_seconds": 2.9736324999994395,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 6,
+              "peak_rss_mb": 200.671875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 2,
+              "time_seconds": 2.8497392079989368,
+              "total_time_seconds": 2.8497392079989368,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 2,
+          "time_seconds_mean": 2.9568237166000473,
+          "time_seconds_median": 2.9736324999994395,
+          "time_seconds_stdev": 0.11187983993869074
+        },
+        "t3": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 202.4125,
+          "peak_rss_mb_median": 202.1875,
+          "peak_rss_mb_stdev": 0.9928086146445849,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 201.515625,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 3,
+              "time_seconds": 2.8393332089999603,
+              "total_time_seconds": 2.8393332089999603,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 23,
+              "peak_rss_mb": 204.0625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 3,
+              "time_seconds": 3.0835325830012152,
+              "total_time_seconds": 3.0835325830012152,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 202.484375,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 3,
+              "time_seconds": 2.9446272080003837,
+              "total_time_seconds": 2.9446272080003837,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 25,
+              "peak_rss_mb": 201.8125,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 3,
+              "time_seconds": 2.872284416000184,
+              "total_time_seconds": 2.872284416000184,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 7,
+              "peak_rss_mb": 202.1875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 3,
+              "time_seconds": 2.8506010419987433,
+              "total_time_seconds": 2.8506010419987433,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 3,
+          "time_seconds_mean": 2.918075691600097,
+          "time_seconds_median": 2.872284416000184,
+          "time_seconds_stdev": 0.10115707311058578
+        },
+        "t4": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130333
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 203.28125,
+          "peak_rss_mb_median": 202.90625,
+          "peak_rss_mb_stdev": 1.7189275476478059,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 202.078125,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 4,
+              "time_seconds": 2.883801375000985,
+              "total_time_seconds": 2.883801375000985,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 22,
+              "peak_rss_mb": 206.234375,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 4,
+              "time_seconds": 3.1402302920014336,
+              "total_time_seconds": 3.1402302920014336,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 203.125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 4,
+              "time_seconds": 2.9387520830005087,
+              "total_time_seconds": 2.9387520830005087,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 24,
+              "peak_rss_mb": 202.90625,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 4,
+              "time_seconds": 2.898042709000947,
+              "total_time_seconds": 2.898042709000947,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 8,
+              "peak_rss_mb": 202.0625,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 4,
+              "time_seconds": 2.8791016249997483,
+              "total_time_seconds": 2.8791016249997483,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 4,
+          "time_seconds_mean": 2.9479856168007244,
+          "time_seconds_median": 2.898042709000947,
+          "time_seconds_stdev": 0.11000248696144022
+        },
+        "t5": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130333
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 204.840625,
+          "peak_rss_mb_median": 204.15625,
+          "peak_rss_mb_stdev": 2.1212455343942387,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 13,
+              "peak_rss_mb": 206.734375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 5,
+              "time_seconds": 2.8515907499986497,
+              "total_time_seconds": 2.8515907499986497,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 21,
+              "peak_rss_mb": 207.40625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 5,
+              "time_seconds": 3.2514646670006186,
+              "total_time_seconds": 3.2514646670006186,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 204.15625,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 5,
+              "time_seconds": 2.91542095800105,
+              "total_time_seconds": 2.91542095800105,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 23,
+              "peak_rss_mb": 202.609375,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 5,
+              "time_seconds": 2.872100499998851,
+              "total_time_seconds": 2.872100499998851,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 9,
+              "peak_rss_mb": 203.296875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 5,
+              "time_seconds": 2.9205270830007066,
+              "total_time_seconds": 2.9205270830007066,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 5,
+          "time_seconds_mean": 2.962220791599975,
+          "time_seconds_median": 2.91542095800105,
+          "time_seconds_stdev": 0.16427970224697072
+        },
+        "t6": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130333
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 206.678125,
+          "peak_rss_mb_median": 205.703125,
+          "peak_rss_mb_stdev": 3.2046604551516062,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 14,
+              "peak_rss_mb": 206.546875,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 6,
+              "time_seconds": 2.868097917000341,
+              "total_time_seconds": 2.868097917000341,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 20,
+              "peak_rss_mb": 212.1875,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 6,
+              "time_seconds": 3.156140458000664,
+              "total_time_seconds": 3.156140458000664,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 205.703125,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 6,
+              "time_seconds": 3.051140583000233,
+              "total_time_seconds": 3.051140583000233,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 22,
+              "peak_rss_mb": 204.296875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 6,
+              "time_seconds": 2.9726095419991907,
+              "total_time_seconds": 2.9726095419991907,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130333
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 10,
+              "peak_rss_mb": 204.65625,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 6,
+              "time_seconds": 2.8837087499996414,
+              "total_time_seconds": 2.8837087499996414,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 6,
+          "time_seconds_mean": 2.986339450000014,
+          "time_seconds_median": 2.9726095419991907,
+          "time_seconds_stdev": 0.12013971058577916
+        },
+        "t7": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130332
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 205.7625,
+          "peak_rss_mb_median": 205.421875,
+          "peak_rss_mb_stdev": 0.9159902215294113,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 15,
+              "peak_rss_mb": 204.859375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 7,
+              "time_seconds": 2.864112582999951,
+              "total_time_seconds": 2.864112582999951,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 19,
+              "peak_rss_mb": 206.03125,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 7,
+              "time_seconds": 2.900488999999652,
+              "total_time_seconds": 2.900488999999652,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 13,
+              "peak_rss_mb": 207.21875,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 7,
+              "time_seconds": 2.9381503330005216,
+              "total_time_seconds": 2.9381503330005216,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 21,
+              "peak_rss_mb": 205.421875,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 7,
+              "time_seconds": 2.922167291999358,
+              "total_time_seconds": 2.922167291999358,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130332
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 11,
+              "peak_rss_mb": 205.28125,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 7,
+              "time_seconds": 2.867914208000002,
+              "total_time_seconds": 2.867914208000002,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 7,
+          "time_seconds_mean": 2.898566683199897,
+          "time_seconds_median": 2.900488999999652,
+          "time_seconds_stdev": 0.03261214737482955
+        },
+        "t8": {
+          "fingerprint": {
+            "end_sum": 7728679106691577,
+            "rows": 98391029,
+            "start_sum": 7728676009727317,
+            "value_sum": 104752471.34130335
+          },
+          "iterations_per_process": 1,
+          "peak_rss_mb_mean": 206.8,
+          "peak_rss_mb_median": 206.734375,
+          "peak_rss_mb_stdev": 1.326533973485979,
+          "physical_partition_count": 1,
+          "raw": [
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 16,
+              "peak_rss_mb": 206.734375,
+              "physical_partition_count": 1,
+              "round": 1,
+              "threads": 8,
+              "time_seconds": 2.980144625000321,
+              "total_time_seconds": 2.980144625000321,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 18,
+              "peak_rss_mb": 207.390625,
+              "physical_partition_count": 1,
+              "round": 2,
+              "threads": 8,
+              "time_seconds": 2.8912823749997187,
+              "total_time_seconds": 2.8912823749997187,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 14,
+              "peak_rss_mb": 206.5,
+              "physical_partition_count": 1,
+              "round": 3,
+              "threads": 8,
+              "time_seconds": 2.9316667080001935,
+              "total_time_seconds": 2.9316667080001935,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 20,
+              "peak_rss_mb": 208.5,
+              "physical_partition_count": 1,
+              "round": 4,
+              "threads": 8,
+              "time_seconds": 2.912488416999622,
+              "total_time_seconds": 2.912488416999622,
+              "workload": "decode"
+            },
+            {
+              "fingerprint": {
+                "end_sum": 7728679106691577,
+                "rows": 98391029,
+                "start_sum": 7728676009727317,
+                "value_sum": 104752471.34130335
+              },
+              "format": "bigwig",
+              "iterations": 1,
+              "order_in_round": 12,
+              "peak_rss_mb": 204.875,
+              "physical_partition_count": 1,
+              "round": 5,
+              "threads": 8,
+              "time_seconds": 2.855958374999318,
+              "total_time_seconds": 2.855958374999318,
+              "workload": "decode"
+            }
+          ],
+          "runs": 5,
+          "threads": 8,
+          "time_seconds_mean": 2.9143080999998348,
+          "time_seconds_median": 2.912488416999622,
+          "time_seconds_stdev": 0.04629782651887645
+        }
+      }
+    }
+  },
+  "scaling": {
+    "bigbed": {
+      "count": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 7976288.925810417,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 0.4882316808477351,
+          "rows_per_second": 7788553.898351192,
+          "speedup_vs_t1": 0.9764633616954702
+        },
+        "t3": {
+          "parallel_efficiency": 0.32987496593404925,
+          "rows_per_second": 7893534.113045537,
+          "speedup_vs_t1": 0.9896248978021477
+        },
+        "t4": {
+          "parallel_efficiency": 0.24534695612208599,
+          "rows_per_second": 7827832.836391555,
+          "speedup_vs_t1": 0.9813878244883439
+        },
+        "t5": {
+          "parallel_efficiency": 0.19103036397403111,
+          "rows_per_second": 7618566.883297988,
+          "speedup_vs_t1": 0.9551518198701556
+        },
+        "t6": {
+          "parallel_efficiency": 0.1655101034582366,
+          "rows_per_second": 7920938.431942014,
+          "speedup_vs_t1": 0.9930606207494196
+        },
+        "t7": {
+          "parallel_efficiency": 0.14291115342733648,
+          "rows_per_second": 7979304.553200803,
+          "speedup_vs_t1": 1.0003780739913555
+        },
+        "t8": {
+          "parallel_efficiency": 0.12430976494010339,
+          "rows_per_second": 7932244.811694742,
+          "speedup_vs_t1": 0.9944781195208271
+        }
+      },
+      "decode": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 7642602.0358624505,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 0.5057379599264922,
+          "rows_per_second": 7730307.924294264,
+          "speedup_vs_t1": 1.0114759198529844
+        },
+        "t3": {
+          "parallel_efficiency": 0.33898231776411997,
+          "rows_per_second": 7772120.855596307,
+          "speedup_vs_t1": 1.0169469532923598
+        },
+        "t4": {
+          "parallel_efficiency": 0.25318083334613894,
+          "rows_per_second": 7739841.409490214,
+          "speedup_vs_t1": 1.0127233333845558
+        },
+        "t5": {
+          "parallel_efficiency": 0.2047525805167926,
+          "rows_per_second": 7824212.443528648,
+          "speedup_vs_t1": 1.023762902583963
+        },
+        "t6": {
+          "parallel_efficiency": 0.17158733914556648,
+          "rows_per_second": 7868242.484892764,
+          "speedup_vs_t1": 1.029524034873399
+        },
+        "t7": {
+          "parallel_efficiency": 0.1473563923294418,
+          "rows_per_second": 7883303.848100365,
+          "speedup_vs_t1": 1.0314947463060926
+        },
+        "t8": {
+          "parallel_efficiency": 0.12668000852835712,
+          "rows_per_second": 7745319.128655159,
+          "speedup_vs_t1": 1.013440068226857
+        }
+      }
+    },
+    "bigwig": {
+      "count": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 27667743.236378934,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 0.48748561287344083,
+          "rows_per_second": 26975253.536822364,
+          "speedup_vs_t1": 0.9749712257468817
+        },
+        "t3": {
+          "parallel_efficiency": 0.32700406706801594,
+          "rows_per_second": 27142393.6946685,
+          "speedup_vs_t1": 0.9810122012040478
+        },
+        "t4": {
+          "parallel_efficiency": 0.2467809899870116,
+          "rows_per_second": 27311492.26632015,
+          "speedup_vs_t1": 0.9871239599480464
+        },
+        "t5": {
+          "parallel_efficiency": 0.1998605929821597,
+          "rows_per_second": 27648457.84850416,
+          "speedup_vs_t1": 0.9993029649107984
+        },
+        "t6": {
+          "parallel_efficiency": 0.16373786157879697,
+          "rows_per_second": 27181542.67341546,
+          "speedup_vs_t1": 0.9824271694727817
+        },
+        "t7": {
+          "parallel_efficiency": 0.14226260079878233,
+          "rows_per_second": 27552595.777281307,
+          "speedup_vs_t1": 0.9958382055914764
+        },
+        "t8": {
+          "parallel_efficiency": 0.12328039258417703,
+          "rows_per_second": 27287121.98479203,
+          "speedup_vs_t1": 0.9862431406734162
+        }
+      },
+      "decode": {
+        "t1": {
+          "parallel_efficiency": 1.0,
+          "rows_per_second": 33546730.632448338,
+          "speedup_vs_t1": 1.0
+        },
+        "t2": {
+          "parallel_efficiency": 0.4931601894318564,
+          "rows_per_second": 33087824.067035366,
+          "speedup_vs_t1": 0.9863203788637128
+        },
+        "t3": {
+          "parallel_efficiency": 0.3403741771604915,
+          "rows_per_second": 34255322.50633278,
+          "speedup_vs_t1": 1.0211225314814745
+        },
+        "t4": {
+          "parallel_efficiency": 0.25301165549523463,
+          "rows_per_second": 33950855.41507382,
+          "speedup_vs_t1": 1.0120466219809385
+        },
+        "t5": {
+          "parallel_efficiency": 0.2012028023570132,
+          "rows_per_second": 33748481.06582232,
+          "speedup_vs_t1": 1.006014011785066
+        },
+        "t6": {
+          "parallel_efficiency": 0.16444329987743,
+          "rows_per_second": 33099210.511794418,
+          "speedup_vs_t1": 0.98665979926458
+        },
+        "t7": {
+          "parallel_efficiency": 0.14445615076833343,
+          "rows_per_second": 33922221.046179384,
+          "speedup_vs_t1": 1.011193055378334
+        },
+        "t8": {
+          "parallel_efficiency": 0.12587836902980537,
+          "rows_per_second": 33782461.906358466,
+          "speedup_vs_t1": 1.007026952238443
+        }
+      }
+    }
+  },
+  "verification": {
+    "bigbed:count": {
+      "fingerprint": {
+        "rows": 602461
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 1,
+        "t3": 1,
+        "t4": 1,
+        "t5": 1,
+        "t6": 1,
+        "t7": 1,
+        "t8": 1
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigbed:decode": {
+      "fingerprint": {
+        "end_sum": 44833319325145,
+        "rest_bytes": 16936017,
+        "rows": 602461,
+        "start_sum": 44832879770125
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 1,
+        "t3": 1,
+        "t4": 1,
+        "t5": 1,
+        "t6": 1,
+        "t7": 1,
+        "t8": 1
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigwig:count": {
+      "fingerprint": {
+        "rows": 98391029
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 1,
+        "t3": 1,
+        "t4": 1,
+        "t5": 1,
+        "t6": 1,
+        "t7": 1,
+        "t8": 1
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "bigwig:decode": {
+      "fingerprint": {
+        "end_sum": 7728679106691577,
+        "rows": 98391029,
+        "start_sum": 7728676009727317,
+        "value_sum": 104752471.34130344
+      },
+      "physical_partitions_by_requested": {
+        "t1": 1,
+        "t2": 1,
+        "t3": 1,
+        "t4": 1,
+        "t5": 1,
+        "t6": 1,
+        "t7": 1,
+        "t8": 1
+      },
+      "requested_threads_checked": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  }
+}
