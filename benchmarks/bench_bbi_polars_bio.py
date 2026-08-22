@@ -106,8 +106,8 @@ def physical_partition_info() -> dict[str, int | list[int]]:
     }
 
 
-def datafusion_arrow_stream() -> BenchmarkSample:
-    """Stream every projected Arrow column without retaining the whole file."""
+def datafusion_arrow_batches():
+    """Yield every projected batch through the direct DataFusion Arrow path."""
     from polars_bio.context import ctx
     from polars_bio.polars_bio import (
         BigBedReadOptions,
@@ -137,11 +137,16 @@ def datafusion_arrow_stream() -> BenchmarkSample:
         input_format,
         read_options,
     )
+    for record_batch in py_read_table(ctx, table.name).execute_stream():
+        yield record_batch.to_pyarrow()
+
+
+def datafusion_arrow_stream() -> BenchmarkSample:
+    """Stream every projected Arrow column without retaining the whole file."""
     rows = 0
     record_batches = 0
     columns = None
-    for record_batch in py_read_table(ctx, table.name).execute_stream():
-        batch = record_batch.to_pyarrow()
+    for batch in datafusion_arrow_batches():
         rows += batch.num_rows
         record_batches += 1
         names = tuple(batch.schema.names)
@@ -154,6 +159,59 @@ def datafusion_arrow_stream() -> BenchmarkSample:
         {"rows": rows, "columns": ",".join(columns or ())},
         {"record_batches": record_batches},
     )
+
+
+def content_expressions() -> list[pl.Expr]:
+    """Build the order-independent all-column content fingerprint."""
+    row = pl.struct(pl.all())
+    expressions = [
+        pl.len().alias("rows"),
+        row.hash(seed=0, seed_1=1, seed_2=2, seed_3=3).sum().alias("row_hash_sum_1"),
+        row.hash(seed=11, seed_1=13, seed_2=17, seed_3=19)
+        .sum()
+        .alias("row_hash_sum_2"),
+        pl.col("chrom").str.len_bytes().cast(pl.UInt64).sum().alias("chrom_bytes"),
+        pl.col("start").cast(pl.UInt64).sum().alias("start_sum"),
+        pl.col("end").cast(pl.UInt64).sum().alias("end_sum"),
+    ]
+    if FORMAT == "bigwig":
+        expressions.append(pl.col("value").cast(pl.Float64).sum().alias("value_sum"))
+    else:
+        expressions.append(
+            pl.col("rest").str.len_bytes().cast(pl.UInt64).sum().alias("rest_bytes")
+        )
+    return expressions
+
+
+def extract_content_fingerprint(result: pl.DataFrame) -> dict[str, int | float | str]:
+    return {
+        column: float(result.item(0, column))
+        if column == "value_sum"
+        else int(result.item(0, column))
+        for column in result.columns
+    }
+
+
+def frame_content_fingerprint(frame: pl.DataFrame) -> dict[str, int | float | str]:
+    return extract_content_fingerprint(frame.select(content_expressions()))
+
+
+def arrow_content_fingerprint() -> dict[str, int | float | str]:
+    """Replay the direct Arrow path and digest every emitted value, untimed."""
+    combined: dict[str, int | float | str] = {}
+    hash_fields = {"row_hash_sum_1", "row_hash_sum_2"}
+    for batch in datafusion_arrow_batches():
+        current = frame_content_fingerprint(pl.from_arrow(batch, rechunk=False))
+        for key, value in current.items():
+            if key == "value_sum":
+                combined[key] = float(combined.get(key, 0.0)) + float(value)
+            elif key in hash_fields:
+                combined[key] = (int(combined.get(key, 0)) + int(value)) % (1 << 64)
+            else:
+                combined[key] = int(combined.get(key, 0)) + int(value)
+    if not combined:
+        raise AssertionError("direct Arrow validation scan emitted no rows")
+    return combined
 
 
 def benchmark() -> BenchmarkSample:
@@ -203,32 +261,16 @@ def benchmark() -> BenchmarkSample:
 
 
 def content_fingerprint() -> dict[str, int | float | str]:
-    """Compute an untimed, order-independent digest of every emitted row."""
+    """Replay this workload's data path and digest every emitted row, untimed."""
+    if WORKLOAD == "arrow_stream_all":
+        return arrow_content_fingerprint()
+
     source = scan()
-    row = pl.struct(pl.all())
-    expressions = [
-        pl.len().alias("rows"),
-        row.hash(seed=0, seed_1=1, seed_2=2, seed_3=3).sum().alias("row_hash_sum_1"),
-        row.hash(seed=11, seed_1=13, seed_2=17, seed_3=19)
-        .sum()
-        .alias("row_hash_sum_2"),
-        pl.col("chrom").str.len_bytes().cast(pl.UInt64).sum().alias("chrom_bytes"),
-        pl.col("start").cast(pl.UInt64).sum().alias("start_sum"),
-        pl.col("end").cast(pl.UInt64).sum().alias("end_sum"),
-    ]
-    if FORMAT == "bigwig":
-        expressions.append(pl.col("value").cast(pl.Float64).sum().alias("value_sum"))
-    else:
-        expressions.append(
-            pl.col("rest").str.len_bytes().cast(pl.UInt64).sum().alias("rest_bytes")
-        )
-    result = source.select(expressions).collect(engine="streaming")
-    return {
-        column: float(result.item(0, column))
-        if column == "value_sum"
-        else int(result.item(0, column))
-        for column in result.columns
-    }
+    if WORKLOAD == "polars_collect_all":
+        return frame_content_fingerprint(source.collect(engine="streaming"))
+    return extract_content_fingerprint(
+        source.select(content_expressions()).collect(engine="streaming")
+    )
 
 
 def file_sha256(path: Path) -> str:
@@ -269,10 +311,30 @@ def environment_info() -> dict[str, object]:
             check=True,
             capture_output=True,
         ).stdout
+        untracked_paths = subprocess.run(
+            ["git", "ls-files", "--others", "--exclude-standard"],
+            cwd=source_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        declared_patch = None
+        if patch_value := os.environ.get("POLARS_BIO_PATCH"):
+            patch_path = Path(patch_value).expanduser().resolve()
+            if not patch_path.is_file():
+                raise FileNotFoundError(
+                    f"declared polars-bio patch is missing: {patch_path}"
+                )
+            declared_patch = {
+                "path": str(patch_path),
+                "sha256": file_sha256(patch_path),
+            }
         source = {
             "root": str(source_root),
             "git_head": git_head,
             "tracked_diff_sha256": hashlib.sha256(git_diff).hexdigest(),
+            "untracked_paths": untracked_paths,
+            "declared_patch": declared_patch,
             "cargo_toml_sha256": file_sha256(source_root / "Cargo.toml"),
             "cargo_lock_sha256": file_sha256(source_root / "Cargo.lock"),
         }

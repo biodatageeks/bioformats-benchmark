@@ -10,7 +10,7 @@ from unittest import mock
 
 import generate_bbi_figures
 import run_bbi_benchmarks
-from benchmarks.bbi_common import run_bbi_benchmark
+from benchmarks.bbi_common import fingerprints_match, run_bbi_benchmark
 
 
 def sample(*, threads: int = 1, physical_partitions: int = 1) -> dict:
@@ -101,6 +101,14 @@ class CommonRunnerTests(unittest.TestCase):
                 environment_info=lambda: {},
             )
 
+    def test_float_drift_beyond_tolerance_is_rejected(self) -> None:
+        self.assertFalse(
+            fingerprints_match(
+                {"rows": 3, "value_sum": 1.0},
+                {"rows": 3, "value_sum": 1.00002},
+            )
+        )
+
 
 class RunnerTests(unittest.TestCase):
     def test_single_sample_summary_marks_stdev_unavailable(self) -> None:
@@ -108,6 +116,23 @@ class RunnerTests(unittest.TestCase):
 
         self.assertIsNone(summary["time_seconds_stdev"])
         self.assertIsNone(summary["peak_rss_mb_stdev"])
+
+    def test_summary_records_balance_and_diagnostic_medians(self) -> None:
+        first = sample(threads=2, physical_partitions=2)
+        second = copy.deepcopy(first)
+        first["estimated_data_bytes"] = [90, 110]
+        second["estimated_data_bytes"] = [90, 110]
+        first["diagnostics"] = {"record_batches": 10}
+        second["diagnostics"] = {"record_batches": 12}
+
+        summary = run_bbi_benchmarks.summarize([first, second])
+
+        self.assertEqual(summary["estimated_data_byte_balance"]["total"], 200)
+        self.assertAlmostEqual(
+            summary["estimated_data_byte_balance"]["coefficient_of_variation"],
+            0.1,
+        )
+        self.assertEqual(summary["diagnostics_median"]["record_batches"], 11)
 
     def test_requested_partition_and_thread_limits_are_verified(self) -> None:
         raw = {
@@ -169,7 +194,13 @@ class RunnerTests(unittest.TestCase):
             )
             environment = {
                 "polars_bio_build": {
-                    "source": {"root": directory, "git_head": "f32af9416139"}
+                    "source": {
+                        "root": directory,
+                        "git_head": "f32af9416139",
+                        "tracked_diff_sha256": run_bbi_benchmarks.EMPTY_SHA256,
+                        "untracked_paths": [],
+                        "declared_patch": None,
+                    }
                 }
             }
 
@@ -185,6 +216,14 @@ class RunnerTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "does not match"):
                 run_bbi_benchmarks.verify_declared_build_refs(
                     environment, {"polars_bio_ref": "wrong"}
+                )
+
+            environment["polars_bio_build"]["source"]["tracked_diff_sha256"] = (
+                "unrecorded"
+            )
+            with self.assertRaisesRegex(AssertionError, "declared patch"):
+                run_bbi_benchmarks.verify_declared_build_refs(
+                    environment, {"polars_bio_ref": "f32af94"}
                 )
 
     @mock.patch("run_bbi_benchmarks.subprocess.run")
@@ -257,6 +296,41 @@ class FigureValidationTests(unittest.TestCase):
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],
             )
+
+    def test_later_payload_format_mismatch_is_rejected(self) -> None:
+        first = payload(label="first")
+        second = payload(label="second")
+        third = payload(label="third")
+        for item in (second, third):
+            item["metadata"]["files"] = {
+                "bigbed": {"sha256": "bigbed-digest", "size_bytes": 456}
+            }
+            item["verification"] = {"bigbed:decode": {"fingerprint": {"rows": 5}}}
+        third["verification"]["bigbed:decode"]["fingerprint"]["rows"] = 6
+
+        with self.assertRaisesRegex(ValueError, "different bigbed content"):
+            generate_bbi_figures.validate_payloads(
+                [first, second, third],
+                [Path("first.json"), Path("second.json"), Path("third.json")],
+            )
+
+    def test_missing_partition_or_file_metadata_is_rejected(self) -> None:
+        for field in ("partitions", "files"):
+            changed = payload(label="candidate")
+            del changed["metadata"][field]
+            with (
+                self.subTest(field=field),
+                self.assertRaisesRegex(ValueError, "missing environment metadata"),
+            ):
+                generate_bbi_figures.validate_payloads(
+                    [changed], [Path("candidate.json")]
+                )
+
+    def test_plot_partitions_are_sorted(self) -> None:
+        changed = payload()
+        changed["metadata"]["partitions"] = [1, 8, 2, 4]
+
+        self.assertEqual(generate_bbi_figures.plot_partitions(changed), [1, 2, 4, 8])
 
 
 if __name__ == "__main__":

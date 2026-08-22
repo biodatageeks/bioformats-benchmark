@@ -25,6 +25,7 @@ from benchmarks.bbi_common import (
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_VERSION = 2
+EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 
 
 def file_sha256(path: Path) -> str:
@@ -126,6 +127,21 @@ def verify_declared_build_refs(
     if not source:
         raise AssertionError(
             "declared source refs require an editable polars-bio build"
+        )
+    if source.get("untracked_paths"):
+        raise AssertionError(
+            f"polars-bio source contains untracked files: {source['untracked_paths']!r}"
+        )
+
+    tracked_diff_sha256 = source.get("tracked_diff_sha256")
+    declared_patch = source.get("declared_patch")
+    expected_diff_sha256 = (
+        declared_patch.get("sha256") if declared_patch else EMPTY_SHA256
+    )
+    if tracked_diff_sha256 != expected_diff_sha256:
+        raise AssertionError(
+            "polars-bio tracked diff is neither clean nor identical to its declared "
+            f"patch: {tracked_diff_sha256!r} != {expected_diff_sha256!r}"
         )
 
     polars_ref = declared.get("polars_bio_ref")
@@ -345,6 +361,11 @@ def main() -> None:
             "TQDM_DISABLE": "1",
         }
     )
+    if patch_value := os.environ.get("POLARS_BIO_PATCH"):
+        patch_path = Path(patch_value).expanduser().resolve()
+        if not patch_path.is_file():
+            parser.error(f"POLARS_BIO_PATCH does not exist: {patch_path}")
+        base_env["POLARS_BIO_PATCH"] = str(patch_path)
 
     for round_index in range(args.runs):
         shift = round_index % len(combinations)
@@ -467,7 +488,7 @@ def main() -> None:
             "timing_scope": "lazy scan construction, BBI index/header access, decoding, "
             "and the workload-specific Arrow drain, Polars aggregation, or full DataFrame "
             "materialization; imports, thread-pool configuration, physical-plan inspection, "
-            "and the independent content digest excluded",
+            "and the untimed workload-path content replay excluded",
         },
         "verification": verification,
         "results": results,

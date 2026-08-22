@@ -110,6 +110,13 @@ python generate_genotype_reader_figures.py \
   --output-dir /path/to/polars-bio/docs/blog/posts/figures/bcf-readers
 
 # 10. Measure every BigWig/BigBed partition count from one through eight
+export POLARS_BIO_SOURCE=/path/to/polars-bio-at-f32af941
+export POLARS_BIO_REF=f32af9416139a8bc9f1565b61b13bad3af738a39
+export DATAFUSION_BIO_FORMATS_REF=d0a23b59271e697c78f421c70a2e48a43cb89a73
+export BIGTOOLS_REF=0d7a5728eb39ee97fddef59cd3da469186bec90d
+export POLARS_BIO_PATCH=benchmarks/polars_bio_issue_443.patch
+export POLARS_BIO_BUILD_PROFILE=release
+export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
 ./setup_bbi_benchmark.sh
 .venv-bbi/bin/python run_bbi_benchmarks.py \
   --python .venv-bbi/bin/python \
@@ -142,10 +149,11 @@ python run_bcf_benchmarks.py
 For an issue-238 before/after comparison, set `POLARS_BIO_SOURCE` when running
 `setup_bbi_benchmark.sh` and build polars-bio once against the
 released `datafusion-bio-formats` revision and once against the candidate
-revision. Give the runs distinct `--label` and `--output` values, then pass both
-JSON files to `generate_bbi_figures.py`. Use `--physical-partitions serial` for
-the pre-partitioning baseline; candidate runs use the strict default
-`--physical-partitions requested`.
+revision. Set `POLARS_BIO_PATCH=` for the clean release build and point it at a
+tracked patch for the candidate. Give the runs distinct `--label` and `--output`
+values, then pass both JSON files to `generate_bbi_figures.py`. Use
+`--physical-partitions serial` for the pre-partitioning baseline; candidate runs
+use the strict default `--physical-partitions requested`.
 
 ### BigWig/BigBed scalability correctness
 
@@ -174,15 +182,26 @@ The four workloads separate source scalability from downstream materialization:
   DataFrame. It records retained chunk count, estimated DataFrame size, and peak
   RSS in addition to wall time.
 
-After the timed workload, every child performs a separate untimed all-column
-validation scan. Two independently seeded, order-independent row-hash sums plus
-row count, coordinate sums, chromosome bytes, and payload aggregates must match
-across all workloads and every `t` before results are written. BigBed performs
-ten timed scans per child by default because the fixture is too short for a
-stable single timing; the JSON records both the iteration count and per-scan
-time. Each raw sample also records ambient CPU use measured immediately before
-launch. The configured `--max-system-cpu-percent` value (or `null` when the
-optional abort gate is disabled) is recorded in result metadata.
+After the timed workload, every child replays its own data path in an untimed
+all-column validation scan. Arrow-stream validation hashes the drained Arrow
+batches, collect validation hashes the materialized DataFrame, and the count and
+aggregate workloads validate through their Polars scan. Two independently
+seeded, order-independent row-hash sums plus row count, coordinate sums,
+chromosome bytes, and payload aggregates must match across all workloads and
+every `t` before results are written. The timed result is also cross-checked on
+every field it exposes. BigBed performs ten timed scans per child by default
+because the fixture is too short for a stable single timing; the JSON records
+both the iteration count and per-scan time. Each raw sample also records ambient
+CPU use measured immediately before launch. The configured
+`--max-system-cpu-percent` value (or `null` when the optional abort gate is
+disabled) is recorded in result metadata.
+
+The candidate setup applies the tracked
+`benchmarks/polars_bio_issue_443.patch` to a clean `f32af941` checkout, or
+verifies an already-applied exact copy, and refuses any other tracked or
+untracked source changes. The runner then verifies that the live Git diff
+SHA-256 equals the declared patch SHA-256 before writing results, in addition
+to checking the exact DataFusion and BigTools revisions in `Cargo.lock`.
 
 ### BCF fairness and correctness
 

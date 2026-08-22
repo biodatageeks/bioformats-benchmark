@@ -3,9 +3,6 @@
 .venv-baseline/
 .venv-*/
 results/*
-!results/bbi_scaling_v1.10.0.json
-!results/bbi_scaling_issue_238.json
-!results/bbi_scaling_block_aware.json
 !results/bbi_scaling_full_scan.json
 __pycache__/
 *.pyc

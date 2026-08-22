@@ -49,6 +49,8 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
 
     reference = payloads[0]["metadata"]
     required_environment = (
+        "partitions",
+        "files",
         "platform",
         "machine",
         "logical_cpu_count",
@@ -56,6 +58,14 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
         "memory_total_bytes",
         "python",
         "versions",
+    )
+    comparable_environment = (
+        "platform",
+        "machine",
+        "logical_cpu_count",
+        "physical_cpu_count",
+        "memory_total_bytes",
+        "python",
     )
     for payload, path in zip(payloads, paths):
         schema_version = payload.get("schema_version")
@@ -69,7 +79,7 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
             raise ValueError(f"{path} is missing environment metadata: {missing}")
         if metadata["partitions"] != reference["partitions"]:
             raise ValueError(f"{path} uses a different partition sweep")
-        for field in required_environment[:-1]:
+        for field in comparable_environment:
             if metadata[field] != reference[field]:
                 raise ValueError(f"{path} uses different benchmark hardware: {field}")
         for dependency in ("polars", "pyarrow"):
@@ -80,30 +90,41 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                     f"{path} uses a different {dependency} runtime version"
                 )
 
-        for format_name in set(reference["files"]) & set(metadata["files"]):
-            expected = reference["files"][format_name]
-            actual = metadata["files"][format_name]
-            for field in ("sha256", "size_bytes"):
-                if actual.get(field) != expected.get(field):
-                    raise ValueError(
-                        f"{path} uses a different {format_name} fixture: {field}"
-                    )
+    for left_index, left_payload in enumerate(payloads):
+        left_metadata = left_payload["metadata"]
+        for right_index in range(left_index + 1, len(payloads)):
+            right_payload = payloads[right_index]
+            right_metadata = right_payload["metadata"]
+            right_path = paths[right_index]
+            common_formats = set(left_metadata["files"]) & set(right_metadata["files"])
+            for format_name in common_formats:
+                expected = left_metadata["files"][format_name]
+                actual = right_metadata["files"][format_name]
+                for field in ("sha256", "size_bytes"):
+                    if actual.get(field) != expected.get(field):
+                        raise ValueError(
+                            f"{right_path} uses a different {format_name} fixture: "
+                            f"{field}"
+                        )
 
-        if payload is payloads[0]:
-            continue
-        common_formats = set(reference["files"]) & set(metadata["files"])
-        for format_name in common_formats:
-            expected = strongest_format_fingerprint(payloads[0], format_name)
-            actual = strongest_format_fingerprint(payload, format_name)
-            common_fields = expected.keys() & actual.keys()
-            if not common_fields:
-                raise ValueError(
-                    f"{path} has no comparable {format_name} content fingerprint"
+                expected_content = strongest_format_fingerprint(
+                    left_payload, format_name
                 )
-            expected_common = {key: expected[key] for key in common_fields}
-            actual_common = {key: actual[key] for key in common_fields}
-            if not fingerprints_match(expected_common, actual_common):
-                raise ValueError(f"{path} contains different {format_name} content")
+                actual_content = strongest_format_fingerprint(
+                    right_payload, format_name
+                )
+                common_fields = expected_content.keys() & actual_content.keys()
+                if not common_fields:
+                    raise ValueError(
+                        f"{right_path} has no comparable {format_name} content "
+                        "fingerprint"
+                    )
+                expected_common = {key: expected_content[key] for key in common_fields}
+                actual_common = {key: actual_content[key] for key in common_fields}
+                if not fingerprints_match(expected_common, actual_common):
+                    raise ValueError(
+                        f"{right_path} contains different {format_name} content"
+                    )
 
 
 def strongest_format_fingerprint(payload: dict, format_name: str) -> dict:
@@ -126,6 +147,11 @@ def strongest_format_fingerprint(payload: dict, format_name: str) -> dict:
     return max(candidates, key=len)
 
 
+def plot_partitions(payload: dict) -> list[int]:
+    """Return monotonically increasing partition counts for connected curves."""
+    return sorted(payload["metadata"]["partitions"])
+
+
 def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
     figure, axes = plt.subplots(2, 2, figsize=(10, 7), constrained_layout=True)
     metrics = (
@@ -137,7 +163,7 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
 
     for payload_index, payload in enumerate(payloads):
         label = payload["metadata"].get("label", "run")
-        partitions = payload["metadata"]["partitions"]
+        partitions = plot_partitions(payload)
         workloads = payload["results"].get(format_name, {})
         for workload, summaries in workloads.items():
             scaling = payload["scaling"][format_name][workload]
