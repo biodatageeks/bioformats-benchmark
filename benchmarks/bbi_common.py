@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import resource
 import sys
@@ -28,6 +29,21 @@ WORKLOADS = (
     "polars_aggregate_all",
     "polars_collect_all",
 )
+
+
+def fingerprints_match(left: dict[str, Scalar], right: dict[str, Scalar]) -> bool:
+    """Compare fingerprints while tolerating parallel float reduction order."""
+    if left.keys() != right.keys():
+        return False
+    for key, value in left.items():
+        if key == "value_sum":
+            if not math.isclose(
+                float(value), float(right[key]), rel_tol=0.0, abs_tol=1e-5
+            ):
+                return False
+        elif value != right[key]:
+            return False
+    return True
 
 
 def input_path(format_name: str) -> str:
@@ -67,7 +83,9 @@ def run_bbi_benchmark(
     elapsed = time.perf_counter() - started
 
     fingerprints = [fingerprint for fingerprint, _ in samples]
-    if any(result != fingerprints[0] for result in fingerprints[1:]):
+    if any(
+        not fingerprints_match(result, fingerprints[0]) for result in fingerprints[1:]
+    ):
         raise AssertionError("repeated BBI scans produced different fingerprints")
     diagnostics = [diagnostic for _, diagnostic in samples]
     if any(result != diagnostics[0] for result in diagnostics[1:]):
@@ -76,6 +94,16 @@ def run_bbi_benchmark(
     measured_peak_rss_mb = peak_rss_mb()
     partition_info = physical_partition_info()
     verified_content = content_fingerprint()
+    common_fields = fingerprints[0].keys() & verified_content.keys()
+    if not common_fields:
+        raise AssertionError("timed and validation fingerprints share no fields")
+    timed_common = {key: fingerprints[0][key] for key in common_fields}
+    verified_common = {key: verified_content[key] for key in common_fields}
+    if not fingerprints_match(timed_common, verified_common):
+        raise AssertionError(
+            "timed workload fingerprint does not match validation scan: "
+            f"{timed_common!r} != {verified_common!r}"
+        )
     result = {
         "format": format_name,
         "workload": workload,

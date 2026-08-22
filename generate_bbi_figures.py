@@ -12,6 +12,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from benchmarks.bbi_common import fingerprints_match
+
 COLORS = {
     "count": "#f58518",
     "decode": "#54a24b",
@@ -52,6 +54,7 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
         "logical_cpu_count",
         "physical_cpu_count",
         "memory_total_bytes",
+        "python",
         "versions",
     )
     for payload, path in zip(payloads, paths):
@@ -69,6 +72,13 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
         for field in required_environment[:-1]:
             if metadata[field] != reference[field]:
                 raise ValueError(f"{path} uses different benchmark hardware: {field}")
+        for dependency in ("polars", "pyarrow"):
+            if metadata["versions"].get(dependency) != reference["versions"].get(
+                dependency
+            ):
+                raise ValueError(
+                    f"{path} uses a different {dependency} runtime version"
+                )
 
         for format_name in set(reference["files"]) & set(metadata["files"]):
             expected = reference["files"][format_name]
@@ -78,6 +88,42 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                     raise ValueError(
                         f"{path} uses a different {format_name} fixture: {field}"
                     )
+
+        if payload is payloads[0]:
+            continue
+        common_formats = set(reference["files"]) & set(metadata["files"])
+        for format_name in common_formats:
+            expected = strongest_format_fingerprint(payloads[0], format_name)
+            actual = strongest_format_fingerprint(payload, format_name)
+            common_fields = expected.keys() & actual.keys()
+            if not common_fields:
+                raise ValueError(
+                    f"{path} has no comparable {format_name} content fingerprint"
+                )
+            expected_common = {key: expected[key] for key in common_fields}
+            actual_common = {key: actual[key] for key in common_fields}
+            if not fingerprints_match(expected_common, actual_common):
+                raise ValueError(f"{path} contains different {format_name} content")
+
+
+def strongest_format_fingerprint(payload: dict, format_name: str) -> dict:
+    """Return the strongest recorded correctness fingerprint for one format."""
+    checks = [
+        check
+        for key, check in payload.get("verification", {}).items()
+        if key.startswith(f"{format_name}:")
+    ]
+    content_fingerprints = [
+        check["content_fingerprint"]
+        for check in checks
+        if check.get("content_fingerprint")
+    ]
+    candidates = content_fingerprints or [
+        check["fingerprint"] for check in checks if check.get("fingerprint")
+    ]
+    if not candidates:
+        raise ValueError(f"missing {format_name} correctness fingerprint")
+    return max(candidates, key=len)
 
 
 def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:

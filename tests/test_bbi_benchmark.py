@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import copy
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from unittest import mock
 
 import generate_bbi_figures
 import run_bbi_benchmarks
+from benchmarks.bbi_common import run_bbi_benchmark
 
 
 def sample(*, threads: int = 1, physical_partitions: int = 1) -> dict:
@@ -45,12 +48,58 @@ def payload(*, label: str = "candidate") -> dict:
             "logical_cpu_count": 8,
             "physical_cpu_count": 4,
             "memory_total_bytes": 1024,
-            "versions": {"polars-bio": "0.0.0"},
+            "python": "3.11.13",
+            "versions": {
+                "polars-bio": "0.0.0",
+                "polars": "1.0.0",
+                "pyarrow": "2.0.0",
+            },
             "files": {"bigwig": {"sha256": "fixture-digest", "size_bytes": 123}},
+        },
+        "verification": {
+            "bigwig:decode": {"fingerprint": {"rows": 3, "value_sum": 1.25}}
         },
         "results": {},
         "scaling": {},
     }
+
+
+class CommonRunnerTests(unittest.TestCase):
+    def test_parallel_float_reduction_order_is_tolerated_between_iterations(
+        self,
+    ) -> None:
+        values = iter((104752471.3413033, 104752471.34130344))
+
+        def operation():
+            return {"rows": 3, "value_sum": next(values)}, {}
+
+        with (
+            mock.patch.dict(
+                "os.environ",
+                {
+                    "POLARS_MAX_THREADS": "2",
+                    "RAYON_NUM_THREADS": "2",
+                    "TOKIO_WORKER_THREADS": "2",
+                },
+            ),
+            redirect_stdout(io.StringIO()),
+        ):
+            run_bbi_benchmark(
+                operation,
+                format_name="bigwig",
+                workload="polars_aggregate_all",
+                threads=2,
+                iterations=2,
+                physical_partition_info=lambda: {
+                    "physical_partition_count": 2,
+                    "estimated_data_bytes": [100, 100],
+                },
+                content_fingerprint=lambda: {
+                    "rows": 3,
+                    "value_sum": 104752471.34130338,
+                },
+                environment_info=lambda: {},
+            )
 
 
 class RunnerTests(unittest.TestCase):
@@ -84,6 +133,15 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "content digest"):
             run_bbi_benchmarks.verify_fingerprints(raw, "requested")
 
+    def test_timed_fingerprint_must_match_independent_content_scan(self) -> None:
+        changed = sample()
+        changed["fingerprint"]["rows"] = 2
+
+        with self.assertRaisesRegex(AssertionError, "independent content scan"):
+            run_bbi_benchmarks.verify_fingerprints(
+                {"bigwig:polars_count:t1": [changed]}, "requested"
+            )
+
     def test_wrong_physical_partition_count_is_rejected(self) -> None:
         raw = {"bigwig:polars_count:t2": [sample(threads=2, physical_partitions=1)]}
 
@@ -98,6 +156,10 @@ class RunnerTests(unittest.TestCase):
             run_bbi_benchmarks.verify_fingerprints(
                 {"bigwig:polars_count:t1": [changed]}, "requested"
             )
+
+    def test_partition_sweep_requires_t1_baseline(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must include 1"):
+            run_bbi_benchmarks.validate_partition_sweep([2, 4, 8])
 
     def test_declared_build_refs_must_match_source_and_lock(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -161,6 +223,36 @@ class FigureValidationTests(unittest.TestCase):
         changed["metadata"]["physical_cpu_count"] = 16
 
         with self.assertRaisesRegex(ValueError, "different benchmark hardware"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_runtime_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["metadata"]["python"] = "3.13.0"
+
+        with self.assertRaisesRegex(ValueError, "different benchmark hardware"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_dependency_version_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["metadata"]["versions"]["polars"] = "different"
+
+        with self.assertRaisesRegex(ValueError, "different polars runtime"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_content_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["verification"]["bigwig:decode"]["fingerprint"]["rows"] = 2
+
+        with self.assertRaisesRegex(ValueError, "different bigwig content"):
             generate_bbi_figures.validate_payloads(
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],

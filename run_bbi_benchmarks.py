@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import os
 import shutil
 import statistics
@@ -16,7 +15,13 @@ from pathlib import Path
 
 import psutil
 
-from benchmarks.bbi_common import BIGBED_PATH, BIGWIG_PATH, FORMATS, WORKLOADS
+from benchmarks.bbi_common import (
+    BIGBED_PATH,
+    BIGWIG_PATH,
+    FORMATS,
+    WORKLOADS,
+    fingerprints_match,
+)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_VERSION = 2
@@ -102,16 +107,13 @@ def summarize(runs: list[dict]) -> dict:
     return summary
 
 
-def fingerprints_match(left: dict, right: dict) -> bool:
-    if left.keys() != right.keys():
-        return False
-    for key, value in left.items():
-        if key == "value_sum":
-            if not math.isclose(value, right[key], rel_tol=0.0, abs_tol=1e-5):
-                return False
-        elif value != right[key]:
-            return False
-    return True
+def validate_partition_sweep(partitions: list[int]) -> None:
+    if any(value < 1 for value in partitions):
+        raise ValueError("--partitions values must be positive")
+    if len(set(partitions)) != len(partitions):
+        raise ValueError("--partitions values must be unique")
+    if 1 not in partitions:
+        raise ValueError("--partitions must include 1 as the scaling baseline")
 
 
 def verify_declared_build_refs(
@@ -181,6 +183,24 @@ def verify_fingerprints(
                     raise AssertionError(
                         f"{format_name}/{workload} t={run['threads']} used thread "
                         f"limits {run.get('thread_limits')!r}, expected {expected_limits!r}"
+                    )
+                common_fields = (
+                    run["fingerprint"].keys() & run["content_fingerprint"].keys()
+                )
+                if not common_fields:
+                    raise AssertionError(
+                        f"{format_name}/{workload} timed and content fingerprints "
+                        "share no fields"
+                    )
+                timed_common = {key: run["fingerprint"][key] for key in common_fields}
+                content_common = {
+                    key: run["content_fingerprint"][key] for key in common_fields
+                }
+                if not fingerprints_match(timed_common, content_common):
+                    raise AssertionError(
+                        f"{format_name}/{workload} t={run['threads']} timed "
+                        f"fingerprint {timed_common!r} does not match the independent "
+                        f"content scan {content_common!r}"
                     )
             for run in matching[1:]:
                 if not fingerprints_match(reference, run["fingerprint"]):
@@ -278,10 +298,10 @@ def main() -> None:
         0 < args.max_system_cpu_percent <= 100
     ):
         parser.error("--max-system-cpu-percent must be in (0, 100]")
-    if any(value < 1 for value in args.partitions):
-        parser.error("--partitions values must be positive")
-    if len(set(args.partitions)) != len(args.partitions):
-        parser.error("--partitions values must be unique")
+    try:
+        validate_partition_sweep(args.partitions)
+    except ValueError as error:
+        parser.error(str(error))
     if args.bigwig_iterations < 1 or args.bigbed_iterations < 1:
         parser.error("iteration counts must be positive")
 
@@ -421,6 +441,7 @@ def main() -> None:
             "formats": args.formats,
             "workloads": args.workloads,
             "physical_partition_expectation": args.physical_partitions,
+            "max_system_cpu_percent": args.max_system_cpu_percent,
             "files": {
                 format_name: {
                     "path": str(paths[format_name]),

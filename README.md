@@ -65,8 +65,8 @@ element-wise check against pgenlib, PLINK 2's reference reader, and a self-test
 proving that check can fail.
 
 The BigWig/BigBed sweep compares every partition count from one through eight.
-See [BBI_BENCHMARK.md](BBI_BENCHMARK.md) for the issue 238 before/after results,
-correctness fingerprints, and memory tradeoff.
+See [BBI_BENCHMARK.md](BBI_BENCHMARK.md) for the issue 238 candidate's
+whole-file scaling results, correctness fingerprints, and memory tradeoff.
 
 The cross-reader VCF/BCF matrix uses rows in
 `chr22:10516173-16717478` from that same callset: exactly 25,000 variants,
@@ -115,7 +115,6 @@ python generate_genotype_reader_figures.py \
   --python .venv-bbi/bin/python \
   --partitions 1 2 3 4 5 6 7 8 \
   --runs 5 \
-  --max-system-cpu-percent 25 \
   --label candidate \
   --output results/bbi_scaling_candidate.json
 
@@ -123,6 +122,9 @@ python generate_genotype_reader_figures.py \
 python generate_bbi_figures.py \
   --input results/bbi_scaling_candidate.json \
   --output-dir results/bbi-figures
+
+# 12. Validate the BBI benchmark harness
+.venv-bbi/bin/pytest tests/test_bbi_benchmark.py
 ```
 
 To benchmark an unreleased polars-bio checkout, point setup at the checkout.
@@ -179,8 +181,8 @@ across all workloads and every `t` before results are written. BigBed performs
 ten timed scans per child by default because the fixture is too short for a
 stable single timing; the JSON records both the iteration count and per-scan
 time. Each raw sample also records ambient CPU use measured immediately before
-launch; optionally set `--max-system-cpu-percent` to abort instead of publishing
-a contended run.
+launch. The configured `--max-system-cpu-percent` value (or `null` when the
+optional abort gate is disabled) is recorded in result metadata.
 
 ### BCF fairness and correctness
 
@@ -282,6 +284,7 @@ run_benchmarks.py               # Multi-format orchestrator
 run_bcf_benchmarks.py           # Isolated BCF correctness/timing/RSS runner
 run_bbi_benchmarks.py           # BigWig/BigBed t=1..8 scalability runner
 setup_bbi_benchmark.sh          # Exact Python/package environment for BBI runs
+tests/test_bbi_benchmark.py     # BBI runner and plotting validation tests
 run_genotype_matrix_benchmarks.py # pysam/PyVCF3/cyvcf2/Oxbow/polars/snputils
 generate_genotype_reader_figures.py # Timing, memory, and scaling plots
 generate_bbi_figures.py         # BBI scalability and before/after plots

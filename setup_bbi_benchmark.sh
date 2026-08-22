@@ -16,7 +16,7 @@ echo "=== Creating BBI benchmark venv ($BBI_VENV, Python $BBI_PYTHON) ==="
 uv venv --python "$BBI_PYTHON" "$BBI_VENV_DIR"
 uv pip install --python "$BBI_VENV_DIR/bin/python" \
     polars-bio==0.34.0 polars==1.40.1 pyarrow==24.0.0 \
-    psutil==7.2.2 matplotlib==3.10.9 maturin==1.13.3
+    psutil==7.2.2 matplotlib==3.10.9 maturin==1.13.3 pytest==8.4.2
 
 # Replace the release wheel with an unreleased checkout for candidate runs.
 if [ -n "${POLARS_BIO_SOURCE:-}" ]; then
