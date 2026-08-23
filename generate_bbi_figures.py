@@ -221,7 +221,7 @@ def plot_partitions(payload: dict) -> list[int]:
 
 
 def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
-    figure, axes = plt.subplots(2, 2, figsize=(10, 7), constrained_layout=True)
+    figure, axes = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
     metrics = (
         ("time", "Median wall time", "seconds"),
         ("throughput", "Throughput", "rows / second"),
@@ -277,14 +277,19 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
         axis.set_xticks(all_partitions)
         axis.grid(alpha=0.22)
         axis.spines[["top", "right"]].set_visible(False)
-        axis.legend(
-            frameon=True,
-            framealpha=0.9,
-            facecolor="white",
-            edgecolor="none",
-            fontsize=8,
-        )
 
+    handles, labels = axes[1, 0].get_legend_handles_labels()
+    figure.legend(
+        handles,
+        labels,
+        loc="outside lower center",
+        ncol=len(labels),
+        frameon=True,
+        framealpha=0.9,
+        facecolor="white",
+        edgecolor="none",
+        fontsize=8,
+    )
     figure.suptitle(f"polars-bio {format_name} scalability", fontsize=14)
     output.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(output, dpi=180)
