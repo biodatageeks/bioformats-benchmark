@@ -108,8 +108,10 @@ BigBed trailing-field byte count, and the BigWig signal sum are also checked.
 Fields shared by the timed and replay fingerprints are cross-checked directly:
 all aggregate fields for the aggregate workload, and row count for count, Arrow
 streaming, and collection. Candidate mode refuses to write a result file if any
-digest differs or if the physical partition count does not match the requested
-value.
+digest differs or if an equivalently configured direct DataFusion source-plan
+probe does not advertise the requested partition count. The probe matches the
+timed Arrow construction and is a source-level proxy for the three Polars
+plugin workloads; it does not introspect the exact Polars plugin plan.
 
 Median peak RSS at `t=1` and `t=8` was:
 
@@ -140,12 +142,15 @@ Median peak RSS at `t=1` and `t=8` was:
   preflight, then verifies them after preflight, after every child, and before
   writing output; a mixed-harness sweep is rejected.
 - Round starts are evenly spaced over the full combination list and alternate
-  direction to reduce cache and thermal bias. Ambient system CPU is recorded
-  before each child; this run did not configure the optional abort threshold.
+  direction to reduce cache and thermal bias. Before each child, three
+  consecutive 200 ms aggregate-CPU observations must be at or below 20%; the
+  maximum of that quiet window is recorded, and a 300-second timeout aborts the
+  sweep if the machine does not settle.
 - Timed scope includes lazy scan construction, BBI header/index access,
   decoding, and the workload-specific Arrow drain, Polars aggregation, or full
-  DataFrame materialization. Imports, thread-pool configuration, physical-plan
-  inspection, and the untimed content replay are excluded.
+  DataFrame materialization. Collection diagnostics and DataFrame teardown,
+  imports, thread-pool configuration, source-plan probing, and the untimed
+  content replay are excluded.
 
 The checksum-pinned inputs are:
 

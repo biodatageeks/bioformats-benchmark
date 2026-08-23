@@ -11,6 +11,7 @@ import shutil
 import statistics
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import psutil
@@ -19,6 +20,7 @@ from benchmarks.bbi_common import (
     BIGBED_PATH,
     BIGWIG_PATH,
     FORMATS,
+    PARTITION_PROBE_KIND,
     WORKLOADS,
     file_sha256,
     fingerprints_match,
@@ -26,6 +28,7 @@ from benchmarks.bbi_common import (
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_VERSION = 2
+CPU_QUIET_SAMPLES = 3
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
 HARNESS_PATHS = {
     "runner": Path(__file__).resolve(),
@@ -128,6 +131,29 @@ def verify_harness_unchanged(expected: dict[str, dict[str, str]]) -> None:
         raise AssertionError(
             "benchmark harness changed during the sweep: " + ", ".join(changed)
         )
+
+
+def wait_for_quiet_cpu(maximum: float | None, settle_timeout: float) -> float:
+    """Return ambient CPU after a stable quiet window, or fail on timeout."""
+    if maximum is None:
+        return psutil.cpu_percent(interval=0.2)
+
+    deadline = time.monotonic() + settle_timeout
+    quiet_observations: list[float] = []
+    while True:
+        observed = psutil.cpu_percent(interval=0.2)
+        if observed <= maximum:
+            quiet_observations.append(observed)
+            if len(quiet_observations) == CPU_QUIET_SAMPLES:
+                return max(quiet_observations)
+        else:
+            quiet_observations.clear()
+        if time.monotonic() >= deadline:
+            raise RuntimeError(
+                f"ambient CPU did not remain at or below {maximum:.1f}% for "
+                f"{CPU_QUIET_SAMPLES} consecutive observations within "
+                f"{settle_timeout:.1f} seconds"
+            )
 
 
 def summarize(runs: list[dict]) -> dict:
@@ -257,6 +283,11 @@ def verify_fingerprints(
                 continue
             reference = matching[0]["fingerprint"]
             for run in matching:
+                if run.get("physical_partition_probe") != PARTITION_PROBE_KIND:
+                    raise AssertionError(
+                        f"{format_name}/{workload} t={run['threads']} has unknown "
+                        f"partition probe {run.get('physical_partition_probe')!r}"
+                    )
                 expected_limits = {
                     "POLARS_MAX_THREADS": run["threads"],
                     "RAYON_NUM_THREADS": run["threads"],
@@ -341,6 +372,7 @@ def verify_fingerprints(
                     {run["threads"] for run in matching}
                 ),
                 "physical_partitions_by_requested": physical_partitions,
+                "physical_partition_probe": PARTITION_PROBE_KIND,
             }
     return verified
 
@@ -352,7 +384,13 @@ def main() -> None:
     parser.add_argument(
         "--max-system-cpu-percent",
         type=float,
-        help="abort before a sample when ambient aggregate CPU use exceeds this percent",
+        help="wait for ambient aggregate CPU use at or below this percent",
+    )
+    parser.add_argument(
+        "--cpu-settle-timeout",
+        type=float,
+        default=300.0,
+        help="seconds to wait for three quiet CPU observations before aborting",
     )
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument(
@@ -374,8 +412,8 @@ def main() -> None:
     parser.add_argument("--output", default="results/bbi_scaling.json")
     args = parser.parse_args()
 
-    if args.runs < 1 or args.timeout < 1:
-        parser.error("--runs and --timeout must be positive")
+    if args.runs < 1 or args.timeout < 1 or args.cpu_settle_timeout <= 0:
+        parser.error("--runs, --timeout, and --cpu-settle-timeout must be positive")
     if args.max_system_cpu_percent is not None and not (
         0 < args.max_system_cpu_percent <= 100
     ):
@@ -482,15 +520,9 @@ def main() -> None:
                     "TOKIO_WORKER_THREADS": str(partitions),
                 }
             )
-            ambient_cpu_percent = psutil.cpu_percent(interval=0.2)
-            if (
-                args.max_system_cpu_percent is not None
-                and ambient_cpu_percent > args.max_system_cpu_percent
-            ):
-                raise RuntimeError(
-                    f"ambient CPU use is {ambient_cpu_percent:.1f}%, above "
-                    f"--max-system-cpu-percent={args.max_system_cpu_percent:.1f}%"
-                )
+            ambient_cpu_percent = wait_for_quiet_cpu(
+                args.max_system_cpu_percent, args.cpu_settle_timeout
+            )
             result = run_one(python, env, args.timeout)
             verify_harness_unchanged(provenance)
             sample_environment = result.pop("environment")
@@ -500,7 +532,7 @@ def main() -> None:
                 )
             result["round"] = round_index + 1
             result["order_in_round"] = order_index
-            result["ambient_cpu_percent_before"] = ambient_cpu_percent
+            result["ambient_cpu_percent_quiet_window_max"] = ambient_cpu_percent
             raw[f"{format_name}:{workload}:t{partitions}"].append(result)
 
     verification = verify_fingerprints(raw, args.physical_partitions)
@@ -544,7 +576,12 @@ def main() -> None:
             "formats": args.formats,
             "workloads": args.workloads,
             "physical_partition_expectation": args.physical_partitions,
+            "physical_partition_probe": PARTITION_PROBE_KIND,
             "max_system_cpu_percent": args.max_system_cpu_percent,
+            "cpu_quiet_samples": (
+                CPU_QUIET_SAMPLES if args.max_system_cpu_percent is not None else 1
+            ),
+            "cpu_settle_timeout_seconds": args.cpu_settle_timeout,
             "files": {
                 format_name: {
                     "path": str(paths[format_name]),
@@ -567,8 +604,9 @@ def main() -> None:
             "harness": provenance,
             "timing_scope": "lazy scan construction, BBI index/header access, decoding, "
             "and the workload-specific Arrow drain, Polars aggregation, or full DataFrame "
-            "materialization; imports, thread-pool configuration, physical-plan inspection, "
-            "and the untimed workload-path content replay excluded",
+            "materialization; collection diagnostics and DataFrame teardown, imports, "
+            "thread-pool configuration, source-plan probing, and the untimed workload-path "
+            "content replay excluded",
         },
         "verification": verification,
         "results": results,

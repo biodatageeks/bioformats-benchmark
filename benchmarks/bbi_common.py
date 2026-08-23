@@ -13,7 +13,9 @@ from collections.abc import Callable
 from pathlib import Path
 
 Scalar = int | float | str
-BenchmarkSample = tuple[dict[str, Scalar], dict[str, int | float]]
+Diagnostics = dict[str, int | float]
+DeferredDiagnostics = Callable[[], Diagnostics]
+BenchmarkSample = tuple[dict[str, Scalar], Diagnostics | DeferredDiagnostics]
 
 BIGWIG_PATH = os.environ.get(
     "BIGWIG_PATH",
@@ -31,6 +33,7 @@ WORKLOADS = (
     "polars_aggregate_all",
     "polars_collect_all",
 )
+PARTITION_PROBE_KIND = "equivalently_configured_source_scan"
 FLOAT_FINGERPRINT_FIELDS = frozenset({"value_sum"})
 
 
@@ -80,7 +83,7 @@ def run_bbi_benchmark(
     workload: str,
     threads: int,
     iterations: int,
-    physical_partition_info: Callable[[], dict[str, int | list[int]]],
+    partition_probe_info: Callable[[], dict[str, int | str | list[int]]],
     content_fingerprint: Callable[[], dict[str, Scalar]],
     environment_info: Callable[[], dict[str, object]],
 ) -> None:
@@ -88,11 +91,19 @@ def run_bbi_benchmark(
     if iterations < 1:
         raise ValueError("BBI_ITERATIONS must be positive")
 
-    samples = []
-    started = time.perf_counter()
+    samples: list[tuple[dict[str, Scalar], Diagnostics]] = []
+    elapsed = 0.0
     for _ in range(iterations):
-        samples.append(operation())
-    elapsed = time.perf_counter() - started
+        started = time.perf_counter()
+        fingerprint, diagnostics_source = operation()
+        elapsed += time.perf_counter() - started
+        diagnostics = (
+            diagnostics_source() if callable(diagnostics_source) else diagnostics_source
+        )
+        samples.append((fingerprint, diagnostics))
+        # A deferred callback may retain a materialized DataFrame. Release it
+        # only after timing and diagnostics, before the next iteration.
+        del diagnostics_source
 
     fingerprints = [fingerprint for fingerprint, _ in samples]
     if any(
@@ -104,7 +115,7 @@ def run_bbi_benchmark(
         raise AssertionError("repeated BBI scans produced different diagnostics")
 
     measured_peak_rss_mb = peak_rss_mb()
-    partition_info = physical_partition_info()
+    partition_info = partition_probe_info()
     verified_content = content_fingerprint()
     common_fields = fingerprints[0].keys() & verified_content.keys()
     if not common_fields:

@@ -12,7 +12,11 @@ from unittest import mock
 import generate_bbi_figures
 import run_bbi_benchmarks
 from benchmarks import bench_bbi_polars_bio
-from benchmarks.bbi_common import fingerprints_match, run_bbi_benchmark
+from benchmarks.bbi_common import (
+    PARTITION_PROBE_KIND,
+    fingerprints_match,
+    run_bbi_benchmark,
+)
 
 
 def sample(*, threads: int = 1, physical_partitions: int = 1) -> dict:
@@ -20,6 +24,7 @@ def sample(*, threads: int = 1, physical_partitions: int = 1) -> dict:
     return {
         "threads": threads,
         "physical_partition_count": physical_partitions,
+        "physical_partition_probe": PARTITION_PROBE_KIND,
         "estimated_data_bytes": [100] * physical_partitions,
         "iterations": 1,
         "time_seconds": 0.5,
@@ -109,8 +114,9 @@ class CommonRunnerTests(unittest.TestCase):
                 workload="polars_aggregate_all",
                 threads=2,
                 iterations=2,
-                physical_partition_info=lambda: {
+                partition_probe_info=lambda: {
                     "physical_partition_count": 2,
+                    "physical_partition_probe": PARTITION_PROBE_KIND,
                     "estimated_data_bytes": [100, 100],
                 },
                 content_fingerprint=lambda: {
@@ -119,6 +125,58 @@ class CommonRunnerTests(unittest.TestCase):
                 },
                 environment_info=dict,
             )
+
+    def test_deferred_diagnostics_and_teardown_are_outside_timing(self) -> None:
+        events = []
+
+        class RetainedResult:
+            def __del__(self):
+                events.append("teardown")
+
+        def clock():
+            events.append("clock")
+            return float(len(events))
+
+        def operation():
+            events.append("operation")
+            retained = RetainedResult()
+
+            def diagnostics(result=retained):
+                events.append("diagnostics")
+                return {"output_chunks": 1}
+
+            return {"rows": 3}, diagnostics
+
+        with (
+            mock.patch.dict(
+                "os.environ",
+                {
+                    "POLARS_MAX_THREADS": "1",
+                    "RAYON_NUM_THREADS": "1",
+                    "TOKIO_WORKER_THREADS": "1",
+                },
+            ),
+            mock.patch("benchmarks.bbi_common.time.perf_counter", side_effect=clock),
+            redirect_stdout(io.StringIO()),
+        ):
+            run_bbi_benchmark(
+                operation,
+                format_name="bigwig",
+                workload="polars_collect_all",
+                threads=1,
+                iterations=1,
+                partition_probe_info=lambda: {
+                    "physical_partition_count": 1,
+                    "physical_partition_probe": PARTITION_PROBE_KIND,
+                    "estimated_data_bytes": [100],
+                },
+                content_fingerprint=lambda: {"rows": 3},
+                environment_info=dict,
+            )
+
+        self.assertEqual(
+            events[:5], ["clock", "operation", "clock", "diagnostics", "teardown"]
+        )
 
     def test_float_drift_beyond_tolerance_is_rejected(self) -> None:
         self.assertFalse(
@@ -138,6 +196,23 @@ class CommonRunnerTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    @mock.patch("run_bbi_benchmarks.time.monotonic", side_effect=[0.0, 1.0, 2.0, 3.0])
+    @mock.patch(
+        "run_bbi_benchmarks.psutil.cpu_percent",
+        side_effect=[80.0, 10.0, 12.0, 15.0],
+    )
+    def test_cpu_gate_requires_three_consecutive_quiet_samples(
+        self, cpu_percent, monotonic
+    ) -> None:
+        self.assertEqual(run_bbi_benchmarks.wait_for_quiet_cpu(20.0, 10.0), 15.0)
+        self.assertEqual(cpu_percent.call_count, 4)
+
+    @mock.patch("run_bbi_benchmarks.time.monotonic", side_effect=[0.0, 2.0])
+    @mock.patch("run_bbi_benchmarks.psutil.cpu_percent", return_value=80.0)
+    def test_cpu_gate_times_out(self, cpu_percent, monotonic) -> None:
+        with self.assertRaisesRegex(RuntimeError, "did not remain"):
+            run_bbi_benchmarks.wait_for_quiet_cpu(20.0, 1.0)
+
     def test_single_sample_summary_marks_stdev_unavailable(self) -> None:
         summary = run_bbi_benchmarks.summarize([sample()])
 
@@ -199,6 +274,15 @@ class RunnerTests(unittest.TestCase):
 
         with self.assertRaisesRegex(AssertionError, "requires 2"):
             run_bbi_benchmarks.verify_fingerprints(raw, "requested")
+
+    def test_unknown_partition_probe_is_rejected(self) -> None:
+        changed = sample()
+        changed["physical_partition_probe"] = "unknown"
+
+        with self.assertRaisesRegex(AssertionError, "unknown partition probe"):
+            run_bbi_benchmarks.verify_fingerprints(
+                {"bigwig:polars_count:t1": [changed]}, "requested"
+            )
 
     def test_wrong_tokio_limit_is_rejected(self) -> None:
         changed = sample()
@@ -441,6 +525,16 @@ class FigureValidationTests(unittest.TestCase):
         changed["metadata"]["harness"]["child"]["sha256"] = "different"
 
         with self.assertRaisesRegex(ValueError, "different benchmark harness"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_cpu_admission_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["metadata"]["max_system_cpu_percent"] = 20.0
+
+        with self.assertRaisesRegex(ValueError, "CPU admission protocol"):
             generate_bbi_figures.validate_payloads(
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],

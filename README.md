@@ -126,6 +126,8 @@ export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
   --bigwig-iterations 1 \
   --bigbed-iterations 10 \
   --physical-partitions requested \
+  --max-system-cpu-percent 20 \
+  --cpu-settle-timeout 300 \
   --runs 5 \
   --label block-aware-full-scan \
   --output results/bbi_scaling_full_scan.json
@@ -198,9 +200,12 @@ sets `POLARS_MAX_THREADS`, `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and
 DataFusion `target_partitions` to the same `t`. The default sweep is every
 integer from one through eight. Round starts are spaced over the full
 combination list and alternate direction to reduce cache and thermal bias. Each
-child also inspects the physical plan after timing and records the BBI scan's
-advertised output partition count.
-Candidate sweeps fail unless that count equals `t`. When the provider reports
+child also builds an equivalently configured direct DataFusion scan after
+timing and records that source plan's advertised output partition count. This
+is the same provider construction used by the timed Arrow path and a source-plan
+proxy for the three Polars plugin workloads; it does not introspect the exact
+Polars plugin plan. Candidate sweeps fail unless the probe count equals `t`.
+When the provider reports
 index-derived data-byte estimates, the runner verifies that the layout is stable
 across repetitions and records its coefficient of variation and maximum-to-mean
 ratio for each `t`.
@@ -217,7 +222,8 @@ The four workloads separate source scalability from downstream materialization:
   bytes, coordinates, and payload values to a correctness fingerprint.
 - `polars_collect_all` literally materializes every row and column in a Polars
   DataFrame. It records retained chunk count, estimated DataFrame size, and peak
-  RSS in addition to wall time.
+  RSS after the elapsed timestamp; diagnostics and DataFrame teardown are not
+  part of wall time.
 
 After the timed workload, every child replays its own data path in an untimed
 all-column validation scan. Arrow-stream validation hashes the drained Arrow

@@ -92,6 +92,15 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                 raise ValueError(f"{path} uses different benchmark hardware: {field}")
         if metadata["python"] != reference["python"]:
             raise ValueError(f"{path} uses a different Python runtime")
+        for field in ("max_system_cpu_percent", "cpu_quiet_samples"):
+            if metadata.get(field) != reference.get(field):
+                raise ValueError(
+                    f"{path} uses a different CPU admission protocol: {field}"
+                )
+        if metadata.get("physical_partition_probe") != reference.get(
+            "physical_partition_probe"
+        ):
+            raise ValueError(f"{path} uses a different physical partition probe")
         for dependency in ("polars", "pyarrow"):
             if metadata["versions"].get(dependency) != reference["versions"].get(
                 dependency

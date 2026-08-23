@@ -16,6 +16,7 @@ import polars_bio as pb
 
 from benchmarks.bbi_common import (
     FORMATS,
+    PARTITION_PROBE_KIND,
     WORKLOADS,
     BenchmarkSample,
     file_sha256,
@@ -80,8 +81,8 @@ def scan():
     return pb.scan_bigbed(path, schema="rest", use_zero_based=True)
 
 
-def physical_partition_info() -> dict[str, int | list[int]]:
-    """Read source partition metadata outside the timed scope."""
+def partition_probe_info() -> dict[str, int | str | list[int]]:
+    """Inspect an equivalent direct source plan outside the timed scope."""
     from polars_bio.context import ctx
     from polars_bio.polars_bio import (
         BigBedReadOptions,
@@ -138,6 +139,7 @@ def physical_partition_info() -> dict[str, int | list[int]]:
         ]
     return {
         "physical_partition_count": int(exec_node.partition_count),
+        "physical_partition_probe": PARTITION_PROBE_KIND,
         "estimated_data_bytes": estimated_data_bytes,
     }
 
@@ -257,17 +259,17 @@ def benchmark() -> BenchmarkSample:
     source = scan()
     if WORKLOAD == "polars_count":
         result = source.select(pl.len().alias("rows")).collect(engine="streaming")
-        return {"rows": int(result.item(0, "rows"))}, {}
+        return {"rows": int(result.item(0, "rows"))}, lambda frame=result: {}
 
     if WORKLOAD == "polars_collect_all":
         result = source.collect(engine="streaming")
         return (
             {"rows": result.height, "columns": ",".join(result.columns)},
-            {
+            lambda frame=result: {
                 "output_chunks": max(
-                    result[column].n_chunks() for column in result.columns
+                    frame[column].n_chunks() for column in frame.columns
                 ),
-                "estimated_size_mb": result.estimated_size("mb"),
+                "estimated_size_mb": frame.estimated_size("mb"),
             },
         )
 
@@ -292,7 +294,7 @@ def benchmark() -> BenchmarkSample:
             else int(result.item(0, column))
             for column in result.columns
         },
-        {},
+        lambda frame=result: {},
     )
 
 
@@ -402,7 +404,7 @@ def main() -> None:
         workload=WORKLOAD,
         threads=THREADS,
         iterations=ITERATIONS,
-        physical_partition_info=physical_partition_info,
+        partition_probe_info=partition_probe_info,
         content_fingerprint=content_fingerprint,
         environment_info=environment_info,
     )
