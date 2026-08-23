@@ -133,7 +133,7 @@ export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
   --output results/bbi_scaling_full_scan.json
 
 # 11. Plot one run, or compare baseline and candidate result files
-python generate_bbi_figures.py \
+.venv-bbi/bin/python generate_bbi_figures.py \
   --input results/bbi_scaling_full_scan.json \
   --output-dir results/bbi-figures
 
@@ -215,9 +215,9 @@ The four workloads separate source scalability from downstream materialization:
 - `arrow_stream_all` requests and drains every Arrow column without retaining
   the whole file. It measures the provider plus the Python Arrow stream and
   records the source batch count.
-- `polars_count` executes `pl.len()` end to end. Polars currently requests the
-  first public column (`chrom`), so this is intentionally not described as an
-  empty-projection DataFusion `count(*)` workload.
+- `polars_count` executes `pl.len()` end to end through the Polars plugin path.
+  It is not a direct DataFusion `count(*)` control, and this harness does not
+  introspect the exact projection in the timed Polars plugin plan.
 - `polars_aggregate_all` requests every column and reduces row count, chromosome
   bytes, coordinates, and payload values to a correctness fingerprint.
 - `polars_collect_all` literally materializes every row and column in a Polars

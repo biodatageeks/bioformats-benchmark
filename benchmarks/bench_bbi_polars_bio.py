@@ -11,6 +11,41 @@ import subprocess
 import sys
 from pathlib import Path
 
+THREAD_LIMIT_NAMES = (
+    "POLARS_MAX_THREADS",
+    "RAYON_NUM_THREADS",
+    "TOKIO_WORKER_THREADS",
+)
+
+
+def positive_integer_environment(name: str, default: str | None = None) -> int:
+    """Read a positive integer before any thread pools are initialized."""
+    value = os.environ.get(name, default)
+    if value is None:
+        raise ValueError(f"{name} must be set before starting the child")
+    try:
+        parsed = int(value)
+    except ValueError as error:
+        raise ValueError(f"{name} must be an integer") from error
+    if parsed < 1:
+        raise ValueError(f"{name} must be positive")
+    return parsed
+
+
+THREADS = positive_integer_environment("THREAD_NUM", "1")
+ITERATIONS = positive_integer_environment("BBI_ITERATIONS", "1")
+THREAD_LIMITS = {
+    name: positive_integer_environment(name, str(THREADS))
+    for name in THREAD_LIMIT_NAMES
+}
+for thread_limit_name, thread_limit_value in THREAD_LIMITS.items():
+    if thread_limit_value != THREADS:
+        raise ValueError(
+            f"{thread_limit_name}={thread_limit_value} must match THREAD_NUM={THREADS}"
+        )
+for thread_limit_name, thread_limit_value in THREAD_LIMITS.items():
+    os.environ.setdefault(thread_limit_name, str(thread_limit_value))
+
 import polars as pl
 import polars_bio as pb
 
@@ -61,15 +96,11 @@ GIT_DIFF_COMMAND = (
 
 FORMAT = os.environ.get("BBI_FORMAT", "bigwig").lower()
 WORKLOAD = os.environ.get("BBI_WORKLOAD", "polars_count").lower()
-THREADS = int(os.environ.get("THREAD_NUM", "1"))
-ITERATIONS = int(os.environ.get("BBI_ITERATIONS", "1"))
 
 if FORMAT not in FORMATS:
     raise ValueError(f"unsupported BBI format: {FORMAT!r}")
 if WORKLOAD not in WORKLOADS:
     raise ValueError(f"unsupported BBI workload: {WORKLOAD!r}")
-if THREADS < 1:
-    raise ValueError("THREAD_NUM must be positive")
 
 pb.set_option("datafusion.execution.target_partitions", str(THREADS))
 
@@ -129,19 +160,27 @@ def partition_probe_info() -> dict[str, int | str | list[int]]:
     if exec_node is None:
         raise AssertionError(f"{exec_prefix.removesuffix(':')} not found in plan")
     display = exec_node.display()
-    estimate_match = re.search(r"estimated_data_bytes=\[([^]]*)\]", display)
-    estimated_data_bytes = []
-    if estimate_match:
-        estimated_data_bytes = [
-            int(value.strip())
-            for value in estimate_match.group(1).split(",")
-            if value.strip()
-        ]
+    estimated_data_bytes = parse_estimated_data_bytes(display)
     return {
         "physical_partition_count": int(exec_node.partition_count),
         "physical_partition_probe": PARTITION_PROBE_KIND,
         "estimated_data_bytes": estimated_data_bytes,
     }
+
+
+def parse_estimated_data_bytes(display: str) -> list[int]:
+    """Parse required partition-balance evidence from a BBI source plan."""
+    estimate_match = re.search(r"estimated_data_bytes=\[([^]]*)\]", display)
+    if estimate_match is None:
+        raise AssertionError("BBI source plan omitted estimated_data_bytes")
+    estimates = [
+        int(value.strip())
+        for value in estimate_match.group(1).split(",")
+        if value.strip()
+    ]
+    if not estimates:
+        raise AssertionError("BBI source plan reported no estimated_data_bytes")
+    return estimates
 
 
 def datafusion_arrow_batches():

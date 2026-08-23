@@ -74,13 +74,15 @@ def payload(*, label: str = "candidate") -> dict:
             "files": {"bigwig": {"sha256": "fixture-digest", "size_bytes": 123}},
         },
         "verification": {
-            "bigwig:decode": {"fingerprint": {"rows": 3, "value_sum": 1.25}}
+            "bigwig:polars_aggregate_all": {
+                "fingerprint": {"rows": 3, "value_sum": 1.25}
+            }
         },
         "results": {
             "bigwig": {
-                "decode": {
-                    "t1": {"iterations_per_process": 1},
-                    "t2": {"iterations_per_process": 1},
+                "polars_aggregate_all": {
+                    "t1": {"iterations_per_process": 1, "runs": 5},
+                    "t2": {"iterations_per_process": 1, "runs": 5},
                 }
             }
         },
@@ -196,6 +198,23 @@ class CommonRunnerTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_partition_estimates_are_required_in_plan_display(self) -> None:
+        self.assertEqual(
+            bench_bbi_polars_bio.parse_estimated_data_bytes(
+                "BigWigExec: estimated_data_bytes=[10, 20]"
+            ),
+            [10, 20],
+        )
+        for display in (
+            "BigWigExec: partition_count=2",
+            "BigWigExec: estimated_data_bytes=[]",
+        ):
+            with (
+                self.subTest(display=display),
+                self.assertRaisesRegex(AssertionError, "estimated_data_bytes"),
+            ):
+                bench_bbi_polars_bio.parse_estimated_data_bytes(display)
+
     @mock.patch("run_bbi_benchmarks.time.monotonic", side_effect=[0.0, 1.0, 2.0, 3.0])
     @mock.patch(
         "run_bbi_benchmarks.psutil.cpu_percent",
@@ -297,8 +316,19 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "must include 1"):
             run_bbi_benchmarks.validate_partition_sweep([2, 4, 8])
 
+    def test_duplicate_formats_and_workloads_are_rejected(self) -> None:
+        for values, option in (
+            (["bigwig", "bigwig"], "--formats"),
+            (["polars_count", "polars_count"], "--workloads"),
+        ):
+            with (
+                self.subTest(option=option),
+                self.assertRaisesRegex(ValueError, "must be unique"),
+            ):
+                run_bbi_benchmarks.validate_unique_values(values, option)
+
     def test_round_starts_are_spread_across_the_full_sweep(self) -> None:
-        combinations = [("bigwig", "count", value) for value in range(10)]
+        combinations = [("bigwig", "polars_count", value) for value in range(10)]
 
         orders = [
             run_bbi_benchmarks.round_order(combinations, index, 5) for index in range(5)
@@ -426,6 +456,17 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "harness changed.*child"):
             run_bbi_benchmarks.verify_harness_unchanged(expected)
 
+    def test_fixture_change_during_sweep_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = Path(directory) / "fixture.bigWig"
+            fixture.write_bytes(b"before")
+            paths = {"bigwig": fixture}
+            expected = run_bbi_benchmarks.fixture_provenance(paths, ["bigwig"])
+            fixture.write_bytes(b"after")
+
+            with self.assertRaisesRegex(AssertionError, "fixtures changed.*bigwig"):
+                run_bbi_benchmarks.verify_fixtures_unchanged(expected, paths)
+
     @mock.patch("run_bbi_benchmarks.subprocess.run")
     def test_child_runs_from_repository_directory(self, subprocess_run) -> None:
         subprocess_run.return_value = mock.Mock(
@@ -542,9 +583,21 @@ class FigureValidationTests(unittest.TestCase):
 
     def test_iteration_protocol_mismatch_is_rejected(self) -> None:
         changed = copy.deepcopy(payload(label="candidate"))
-        changed["results"]["bigwig"]["decode"]["t1"]["iterations_per_process"] = 10
+        changed["results"]["bigwig"]["polars_aggregate_all"]["t1"][
+            "iterations_per_process"
+        ] = 10
 
         with self.assertRaisesRegex(ValueError, "different iteration protocol"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_fresh_process_run_count_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["results"]["bigwig"]["polars_aggregate_all"]["t1"]["runs"] = 1
+
+        with self.assertRaisesRegex(ValueError, "fresh-process sampling protocol"):
             generate_bbi_figures.validate_payloads(
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],
@@ -578,7 +631,9 @@ class FigureValidationTests(unittest.TestCase):
 
     def test_content_mismatch_is_rejected(self) -> None:
         changed = copy.deepcopy(payload(label="candidate"))
-        changed["verification"]["bigwig:decode"]["fingerprint"]["rows"] = 2
+        changed["verification"]["bigwig:polars_aggregate_all"]["fingerprint"][
+            "rows"
+        ] = 2
 
         with self.assertRaisesRegex(ValueError, "different bigwig content"):
             generate_bbi_figures.validate_payloads(
@@ -594,8 +649,10 @@ class FigureValidationTests(unittest.TestCase):
             item["metadata"]["files"] = {
                 "bigbed": {"sha256": "bigbed-digest", "size_bytes": 456}
             }
-            item["verification"] = {"bigbed:decode": {"fingerprint": {"rows": 5}}}
-        third["verification"]["bigbed:decode"]["fingerprint"]["rows"] = 6
+            item["verification"] = {
+                "bigbed:polars_aggregate_all": {"fingerprint": {"rows": 5}}
+            }
+        third["verification"]["bigbed:polars_aggregate_all"]["fingerprint"]["rows"] = 6
 
         with self.assertRaisesRegex(ValueError, "different bigbed content"):
             generate_bbi_figures.validate_payloads(

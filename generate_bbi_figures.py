@@ -15,8 +15,6 @@ import matplotlib.pyplot as plt
 from benchmarks.bbi_common import fingerprints_match
 
 COLORS = {
-    "count": "#f58518",
-    "decode": "#54a24b",
     "arrow_stream_all": "#4c78a8",
     "polars_count": "#f58518",
     "polars_aggregate_all": "#54a24b",
@@ -24,8 +22,6 @@ COLORS = {
 }
 IDEAL = "#9ca3af"
 WORKLOAD_LABELS = {
-    "count": "Polars count",
-    "decode": "Polars decode",
     "arrow_stream_all": "Arrow stream, all columns",
     "polars_count": "Polars count",
     "polars_aggregate_all": "Polars aggregate, all columns",
@@ -185,6 +181,17 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                             raise ValueError(
                                 f"{right_path} uses a different iteration protocol for "
                                 f"{format_name}/{workload}/{partition}"
+                            )
+                        expected_runs = left_summaries[partition].get("runs")
+                        actual_runs = right_summaries[partition].get("runs")
+                        if (
+                            expected_runs is None
+                            or actual_runs is None
+                            or actual_runs != expected_runs
+                        ):
+                            raise ValueError(
+                                f"{right_path} uses a different fresh-process sampling "
+                                f"protocol for {format_name}/{workload}/{partition}"
                             )
 
 

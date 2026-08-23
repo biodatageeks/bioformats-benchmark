@@ -133,6 +133,51 @@ def verify_harness_unchanged(expected: dict[str, dict[str, str]]) -> None:
         )
 
 
+def fixture_provenance(
+    paths: dict[str, Path], formats: list[str]
+) -> dict[str, dict[str, int | str]]:
+    """Snapshot selected input files before any benchmark children launch."""
+    snapshots = {}
+    for format_name in formats:
+        path = paths[format_name]
+        before = path.stat()
+        digest = file_sha256(path)
+        after = path.stat()
+        identity_before = (
+            before.st_dev,
+            before.st_ino,
+            before.st_size,
+            before.st_mtime_ns,
+        )
+        identity_after = (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns)
+        if identity_after != identity_before:
+            raise AssertionError(
+                f"{format_name} fixture changed while its provenance was captured"
+            )
+        snapshots[format_name] = {
+            "path": str(path),
+            "size_bytes": after.st_size,
+            "sha256": digest,
+        }
+    return snapshots
+
+
+def verify_fixtures_unchanged(
+    expected: dict[str, dict[str, int | str]], paths: dict[str, Path]
+) -> None:
+    """Reject timings collected while an input fixture was replaced."""
+    observed = fixture_provenance(paths, list(expected))
+    if observed != expected:
+        changed = sorted(
+            format_name
+            for format_name in expected
+            if observed.get(format_name) != expected.get(format_name)
+        )
+        raise AssertionError(
+            "benchmark fixtures changed during the sweep: " + ", ".join(changed)
+        )
+
+
 def wait_for_quiet_cpu(maximum: float | None, settle_timeout: float) -> float:
     """Return ambient CPU after a stable quiet window, or fail on timeout."""
     if maximum is None:
@@ -205,6 +250,11 @@ def validate_partition_sweep(partitions: list[int]) -> None:
         raise ValueError("--partitions values must be unique")
     if 1 not in partitions:
         raise ValueError("--partitions must include 1 as the scaling baseline")
+
+
+def validate_unique_values(values: list[str], option: str) -> None:
+    if len(set(values)) != len(values):
+        raise ValueError(f"{option} values must be unique")
 
 
 def verify_declared_build_refs(
@@ -420,6 +470,8 @@ def main() -> None:
         parser.error("--max-system-cpu-percent must be in (0, 100]")
     try:
         validate_partition_sweep(args.partitions)
+        validate_unique_values(args.formats, "--formats")
+        validate_unique_values(args.workloads, "--workloads")
     except ValueError as error:
         parser.error(str(error))
     if args.bigwig_iterations < 1 or args.bigbed_iterations < 1:
@@ -441,6 +493,7 @@ def main() -> None:
     for format_name in args.formats:
         if not paths[format_name].is_file():
             parser.error(f"{format_name} file does not exist: {paths[format_name]}")
+    fixture_snapshot = fixture_provenance(paths, args.formats)
 
     combinations = [
         (format_name, workload, partitions)
@@ -568,6 +621,7 @@ def main() -> None:
                 }
 
     verify_harness_unchanged(provenance)
+    verify_fixtures_unchanged(fixture_snapshot, paths)
     payload = {
         "schema_version": SCHEMA_VERSION,
         "metadata": {
@@ -582,14 +636,7 @@ def main() -> None:
                 CPU_QUIET_SAMPLES if args.max_system_cpu_percent is not None else 1
             ),
             "cpu_settle_timeout_seconds": args.cpu_settle_timeout,
-            "files": {
-                format_name: {
-                    "path": str(paths[format_name]),
-                    "size_bytes": paths[format_name].stat().st_size,
-                    "sha256": file_sha256(paths[format_name]),
-                }
-                for format_name in args.formats
-            },
+            "files": fixture_snapshot,
             "python": child_environment["python"],
             "python_executable": child_environment["python_executable"],
             "platform": child_environment["platform"],

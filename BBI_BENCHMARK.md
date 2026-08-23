@@ -40,11 +40,13 @@ DataFrame when all four columns are retained.
 | 7 | 0.4283 s (6.49x) | 1.2526 s (2.44x) | 1.6575 s (2.35x) | 1.9164 s (2.12x) |
 | 8 | 0.3830 s (7.26x) | 1.2524 s (2.44x) | 1.7272 s (2.25x) | 1.9048 s (2.13x) |
 
-`polars_count` is not an empty-projection `count(*)` shortcut. Polars requests
-the first public column (`chrom`) for `pl.len()`, so the provider still reads
-and decodes data. Its best median is at `t=3`. The all-column aggregation and
-collection curves show that further source speedup is hidden by Polars-side
-streaming aggregation, chunk bookkeeping, and materialization.
+`polars_count` executes `pl.len()` end to end through the Polars plugin path; it
+is not a direct DataFusion `count(*)` control. The harness does not introspect
+the exact projection in that timed plugin plan, so the whole-file scalability
+conclusion relies on the explicitly all-column aggregation and collection
+curves. Their best medians are at `t=3` and `t=2`, respectively, after which
+further source speedup is hidden by Polars-side streaming aggregation, chunk
+bookkeeping, and materialization.
 
 ### BigBed
 
@@ -73,7 +75,7 @@ three-observation maxima range from 0.0% to 20.0%, with a 10.7% median. No raw
 sample was discarded. The tables below show sample standard deviation divided
 by the median for each five-process cell, making the retained variance explicit.
 
-#### BigWig coefficient of variation
+#### BigWig relative timing dispersion (sample stdev / median)
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
@@ -86,7 +88,7 @@ by the median for each five-process cell, making the retained variance explicit.
 | 7 | 1.0% | 2.8% | 8.3% | 8.3% |
 | 8 | 0.7% | 2.4% | 6.1% | 8.1% |
 
-#### BigBed coefficient of variation
+#### BigBed relative timing dispersion (sample stdev / median)
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
