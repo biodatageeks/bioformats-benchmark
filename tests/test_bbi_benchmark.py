@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import copy
 import io
+import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -14,6 +16,7 @@ import run_bbi_benchmarks
 from benchmarks import bench_bbi_polars_bio
 from benchmarks.bbi_common import (
     PARTITION_PROBE_KIND,
+    WORKLOADS,
     fingerprints_match,
     run_bbi_benchmark,
 )
@@ -88,6 +91,38 @@ def payload(*, label: str = "candidate") -> dict:
         },
         "scaling": {},
     }
+
+
+def plottable_payload(*, label: str) -> dict:
+    item = payload(label=label)
+    item["results"]["bigwig"] = {}
+    item["scaling"] = {"bigwig": {}}
+    for index, workload in enumerate(WORKLOADS, start=1):
+        item["results"]["bigwig"][workload] = {
+            "t1": {
+                "iterations_per_process": 1,
+                "runs": 5,
+                "time_seconds_median": float(index),
+            },
+            "t2": {
+                "iterations_per_process": 1,
+                "runs": 5,
+                "time_seconds_median": float(index) / 1.8,
+            },
+        }
+        item["scaling"]["bigwig"][workload] = {
+            "t1": {
+                "rows_per_second": 1.0,
+                "speedup_vs_t1": 1.0,
+                "parallel_efficiency": 1.0,
+            },
+            "t2": {
+                "rows_per_second": 1.8,
+                "speedup_vs_t1": 1.8,
+                "parallel_efficiency": 0.9,
+            },
+        }
+    return item
 
 
 class CommonRunnerTests(unittest.TestCase):
@@ -198,6 +233,38 @@ class CommonRunnerTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
+    def test_pure_helpers_import_without_runtime_or_valid_thread_environment(
+        self,
+    ) -> None:
+        environment = os.environ.copy()
+        environment.update(
+            {
+                "THREAD_NUM": "invalid",
+                "POLARS_MAX_THREADS": "invalid",
+                "RAYON_NUM_THREADS": "invalid",
+                "TOKIO_WORKER_THREADS": "invalid",
+                "BBI_PHYSICAL_PARTITION_EXPECTATION": "invalid",
+                "PYTHONDONTWRITEBYTECODE": "1",
+            }
+        )
+        import_only = (
+            "from benchmarks.bench_bbi_polars_bio import "
+            "git_tracked_diff, parse_estimated_data_bytes; "
+            "assert callable(git_tracked_diff); "
+            "assert parse_estimated_data_bytes('plan', required=False) == []"
+        )
+
+        completed = subprocess.run(
+            [sys.executable, "-c", import_only],
+            cwd=Path(__file__).parents[1],
+            env=environment,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+
     def test_partition_estimates_are_required_in_plan_display(self) -> None:
         self.assertEqual(
             bench_bbi_polars_bio.parse_estimated_data_bytes(
@@ -214,6 +281,13 @@ class RunnerTests(unittest.TestCase):
                 self.assertRaisesRegex(AssertionError, "estimated_data_bytes"),
             ):
                 bench_bbi_polars_bio.parse_estimated_data_bytes(display)
+
+        self.assertEqual(
+            bench_bbi_polars_bio.parse_estimated_data_bytes(
+                "legacy serial plan", required=False
+            ),
+            [],
+        )
 
     @mock.patch("run_bbi_benchmarks.time.monotonic", side_effect=[0.0, 1.0, 2.0, 3.0])
     @mock.patch(
@@ -267,6 +341,34 @@ class RunnerTests(unittest.TestCase):
             verified["bigwig:polars_count"]["physical_partitions_by_requested"],
             {"t1": 1, "t2": 2},
         )
+
+    def test_serial_baseline_accepts_missing_candidate_partition_estimates(
+        self,
+    ) -> None:
+        one = sample()
+        two = sample(threads=2, physical_partitions=1)
+        one.pop("estimated_data_bytes")
+        two.pop("estimated_data_bytes")
+        raw = {
+            "bigwig:polars_count:t1": [one],
+            "bigwig:polars_count:t2": [two],
+        }
+
+        verified = run_bbi_benchmarks.verify_fingerprints(raw, "serial")
+
+        self.assertEqual(
+            verified["bigwig:polars_count"]["physical_partitions_by_requested"],
+            {"t1": 1, "t2": 1},
+        )
+
+    def test_requested_candidate_rejects_missing_partition_estimates(self) -> None:
+        changed = sample()
+        changed.pop("estimated_data_bytes")
+
+        with self.assertRaisesRegex(AssertionError, "data-byte estimates"):
+            run_bbi_benchmarks.verify_fingerprints(
+                {"bigwig:polars_count:t1": [changed]}, "requested"
+            )
 
     def test_content_mismatch_across_threads_is_rejected(self) -> None:
         changed = sample(threads=2, physical_partitions=2)
@@ -494,9 +596,25 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(
             subprocess_run.call_args.kwargs["cwd"], run_bbi_benchmarks.SCRIPT_DIR
         )
+        self.assertIn("configure_runtime()", subprocess_run.call_args.args[0][2])
 
 
 class FigureValidationTests(unittest.TestCase):
+    def test_baseline_candidate_plot_wraps_full_workload_legend(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "comparison.png"
+
+            generate_bbi_figures.plot_format(
+                [
+                    plottable_payload(label="v1.10.0-baseline"),
+                    plottable_payload(label="block-aware-candidate"),
+                ],
+                "bigwig",
+                output,
+            )
+
+            self.assertGreater(output.stat().st_size, 0)
+
     def test_matching_payloads_are_accepted(self) -> None:
         generate_bbi_figures.validate_payloads(
             [payload(label="baseline"), payload(label="candidate")],

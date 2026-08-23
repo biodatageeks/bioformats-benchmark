@@ -172,6 +172,8 @@ BBI_VENV=.venv-bbi-baseline ./setup_bbi_benchmark.sh
 .venv-bbi-baseline/bin/python run_bbi_benchmarks.py \
   --python .venv-bbi-baseline/bin/python \
   --physical-partitions serial \
+  --max-system-cpu-percent 20 \
+  --cpu-settle-timeout 300 \
   --label v1.10.0-baseline \
   --output results/bbi_scaling_baseline.json
 
@@ -184,6 +186,8 @@ BBI_VENV=.venv-bbi-candidate ./setup_bbi_benchmark.sh
 .venv-bbi-candidate/bin/python run_bbi_benchmarks.py \
   --python .venv-bbi-candidate/bin/python \
   --physical-partitions requested \
+  --max-system-cpu-percent 20 \
+  --cpu-settle-timeout 300 \
   --label block-aware-candidate \
   --output results/bbi_scaling_candidate.json
 ```
@@ -208,7 +212,9 @@ proxy for the three Polars plugin workloads; it does not introspect the exact
 Polars plugin plan. Candidate sweeps fail unless the probe count equals `t`.
 The provider probe must report index-derived data-byte estimates. The runner
 rejects missing or unstable layouts and records their coefficient of variation
-and maximum-to-mean ratio for each `t`.
+and maximum-to-mean ratio for each `t`. The clean legacy baseline predates that
+diagnostic, so `--physical-partitions serial` permits an absent estimate while
+still requiring one advertised source partition.
 
 The four workloads separate source scalability from downstream materialization:
 

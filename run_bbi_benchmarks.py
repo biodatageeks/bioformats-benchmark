@@ -36,7 +36,8 @@ HARNESS_PATHS = {
     "common": SCRIPT_DIR / "benchmarks" / "bbi_common.py",
 }
 CHILD_ENVIRONMENT_SCRIPT = (
-    "import json; from benchmarks.bench_bbi_polars_bio import environment_info; "
+    "import json; from benchmarks.bench_bbi_polars_bio import "
+    "configure_runtime, environment_info; configure_runtime(); "
     "print('BBI_ENVIRONMENT:' + json.dumps(environment_info(), sort_keys=True))"
 )
 
@@ -409,6 +410,14 @@ def verify_fingerprints(
                         f"inconsistent data-byte estimates: {estimated_layouts}"
                     )
                 estimated_layout = next(iter(estimated_layouts))
+                if (
+                    physical_partition_expectation == "requested"
+                    and not estimated_layout
+                ):
+                    raise AssertionError(
+                        f"{format_name}/{workload} t={requested} omitted required "
+                        "data-byte estimates"
+                    )
                 if estimated_layout and len(estimated_layout) != observed[0]:
                     raise AssertionError(
                         f"{format_name}/{workload} t={requested} advertised "
@@ -516,6 +525,7 @@ def main() -> None:
             "VECLIB_MAXIMUM_THREADS": "1",
             "NUMEXPR_NUM_THREADS": "1",
             "TQDM_DISABLE": "1",
+            "BBI_PHYSICAL_PARTITION_EXPECTATION": args.physical_partitions,
         }
     )
     if patch_value := os.environ.get("POLARS_BIO_PATCH"):

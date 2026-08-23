@@ -270,6 +270,7 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
         color=IDEAL,
         label="ideal linear",
     )
+    axes[1, 1].axhline(1.0, linestyle="--", color=IDEAL)
     for axis, (_, title, ylabel) in zip(axes.flat, metrics):
         axis.set_title(title, loc="left", fontsize=11)
         axis.set_xlabel("DataFusion target partitions")
@@ -283,7 +284,7 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
         handles,
         labels,
         loc="outside lower center",
-        ncol=len(labels),
+        ncol=min(len(labels), 3),
         frameon=True,
         framealpha=0.9,
         facecolor="white",
@@ -292,7 +293,7 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
     )
     figure.suptitle(f"polars-bio {format_name} scalability", fontsize=14)
     output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(output, dpi=180)
+    figure.savefig(output, dpi=180, bbox_inches="tight", pad_inches=0.15)
     plt.close(figure)
 
 

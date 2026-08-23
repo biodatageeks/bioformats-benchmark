@@ -11,6 +11,16 @@ import subprocess
 import sys
 from pathlib import Path
 
+from benchmarks.bbi_common import (
+    FORMATS,
+    PARTITION_PROBE_KIND,
+    WORKLOADS,
+    BenchmarkSample,
+    file_sha256,
+    input_path,
+    run_bbi_benchmark,
+)
+
 THREAD_LIMIT_NAMES = (
     "POLARS_MAX_THREADS",
     "RAYON_NUM_THREADS",
@@ -32,32 +42,14 @@ def positive_integer_environment(name: str, default: str | None = None) -> int:
     return parsed
 
 
-THREADS = positive_integer_environment("THREAD_NUM", "1")
-ITERATIONS = positive_integer_environment("BBI_ITERATIONS", "1")
-THREAD_LIMITS = {
-    name: positive_integer_environment(name, str(THREADS))
-    for name in THREAD_LIMIT_NAMES
-}
-for thread_limit_name, thread_limit_value in THREAD_LIMITS.items():
-    if thread_limit_value != THREADS:
-        raise ValueError(
-            f"{thread_limit_name}={thread_limit_value} must match THREAD_NUM={THREADS}"
-        )
-for thread_limit_name, thread_limit_value in THREAD_LIMITS.items():
-    os.environ.setdefault(thread_limit_name, str(thread_limit_value))
-
-import polars as pl
-import polars_bio as pb
-
-from benchmarks.bbi_common import (
-    FORMATS,
-    PARTITION_PROBE_KIND,
-    WORKLOADS,
-    BenchmarkSample,
-    file_sha256,
-    input_path,
-    run_bbi_benchmark,
-)
+THREADS = 0
+ITERATIONS = 0
+THREAD_LIMITS: dict[str, int] = {}
+FORMAT = ""
+WORKLOAD = ""
+PHYSICAL_PARTITION_EXPECTATION = ""
+pl = None
+pb = None
 
 GIT_DIFF_COMMAND = (
     "git",
@@ -94,15 +86,46 @@ GIT_DIFF_COMMAND = (
     "HEAD",
 )
 
-FORMAT = os.environ.get("BBI_FORMAT", "bigwig").lower()
-WORKLOAD = os.environ.get("BBI_WORKLOAD", "polars_count").lower()
 
-if FORMAT not in FORMATS:
-    raise ValueError(f"unsupported BBI format: {FORMAT!r}")
-if WORKLOAD not in WORKLOADS:
-    raise ValueError(f"unsupported BBI workload: {WORKLOAD!r}")
+def configure_runtime() -> None:
+    """Validate thread controls before importing native runtime modules."""
+    global FORMAT, ITERATIONS, PHYSICAL_PARTITION_EXPECTATION, THREADS
+    global THREAD_LIMITS, WORKLOAD, pb, pl
 
-pb.set_option("datafusion.execution.target_partitions", str(THREADS))
+    THREADS = positive_integer_environment("THREAD_NUM", "1")
+    ITERATIONS = positive_integer_environment("BBI_ITERATIONS", "1")
+    THREAD_LIMITS = {
+        name: positive_integer_environment(name, str(THREADS))
+        for name in THREAD_LIMIT_NAMES
+    }
+    for thread_limit_name, thread_limit_value in THREAD_LIMITS.items():
+        if thread_limit_value != THREADS:
+            raise ValueError(
+                f"{thread_limit_name}={thread_limit_value} must match "
+                f"THREAD_NUM={THREADS}"
+            )
+        os.environ.setdefault(thread_limit_name, str(thread_limit_value))
+
+    FORMAT = os.environ.get("BBI_FORMAT", "bigwig").lower()
+    WORKLOAD = os.environ.get("BBI_WORKLOAD", "polars_count").lower()
+    PHYSICAL_PARTITION_EXPECTATION = os.environ.get(
+        "BBI_PHYSICAL_PARTITION_EXPECTATION", "requested"
+    ).lower()
+    if FORMAT not in FORMATS:
+        raise ValueError(f"unsupported BBI format: {FORMAT!r}")
+    if WORKLOAD not in WORKLOADS:
+        raise ValueError(f"unsupported BBI workload: {WORKLOAD!r}")
+    if PHYSICAL_PARTITION_EXPECTATION not in ("requested", "serial"):
+        raise ValueError(
+            "BBI_PHYSICAL_PARTITION_EXPECTATION must be 'requested' or 'serial'"
+        )
+
+    import polars as polars_module
+    import polars_bio as polars_bio_module
+
+    pl = polars_module
+    pb = polars_bio_module
+    pb.set_option("datafusion.execution.target_partitions", str(THREADS))
 
 
 def scan():
@@ -160,7 +183,9 @@ def partition_probe_info() -> dict[str, int | str | list[int]]:
     if exec_node is None:
         raise AssertionError(f"{exec_prefix.removesuffix(':')} not found in plan")
     display = exec_node.display()
-    estimated_data_bytes = parse_estimated_data_bytes(display)
+    estimated_data_bytes = parse_estimated_data_bytes(
+        display, required=PHYSICAL_PARTITION_EXPECTATION == "requested"
+    )
     return {
         "physical_partition_count": int(exec_node.partition_count),
         "physical_partition_probe": PARTITION_PROBE_KIND,
@@ -168,11 +193,13 @@ def partition_probe_info() -> dict[str, int | str | list[int]]:
     }
 
 
-def parse_estimated_data_bytes(display: str) -> list[int]:
+def parse_estimated_data_bytes(display: str, *, required: bool = True) -> list[int]:
     """Parse required partition-balance evidence from a BBI source plan."""
     estimate_match = re.search(r"estimated_data_bytes=\[([^]]*)\]", display)
     if estimate_match is None:
-        raise AssertionError("BBI source plan omitted estimated_data_bytes")
+        if required:
+            raise AssertionError("BBI source plan omitted estimated_data_bytes")
+        return []
     estimates = [
         int(value.strip())
         for value in estimate_match.group(1).split(",")
@@ -437,6 +464,7 @@ def environment_info() -> dict[str, object]:
 
 
 def main() -> None:
+    configure_runtime()
     run_bbi_benchmark(
         benchmark,
         format_name=FORMAT,
