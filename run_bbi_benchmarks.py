@@ -118,6 +118,18 @@ def harness_provenance() -> dict[str, dict[str, str]]:
     }
 
 
+def verify_harness_unchanged(expected: dict[str, dict[str, str]]) -> None:
+    """Reject a sweep that loaded benchmark code from more than one snapshot."""
+    observed = harness_provenance()
+    if observed != expected:
+        changed = sorted(
+            name for name in HARNESS_PATHS if observed.get(name) != expected.get(name)
+        )
+        raise AssertionError(
+            "benchmark harness changed during the sweep: " + ", ".join(changed)
+        )
+
+
 def summarize(runs: list[dict]) -> dict:
     times = [run["time_seconds"] for run in runs]
     memories = [run["peak_rss_mb"] for run in runs]
@@ -435,7 +447,9 @@ def main() -> None:
             "TOKIO_WORKER_THREADS": "1",
         }
     )
+    provenance = harness_provenance()
     child_environment = preflight_environment(python, preflight_env, args.timeout)
+    verify_harness_unchanged(provenance)
     verify_declared_build_refs(
         child_environment,
         declared_refs,
@@ -478,6 +492,7 @@ def main() -> None:
                     f"--max-system-cpu-percent={args.max_system_cpu_percent:.1f}%"
                 )
             result = run_one(python, env, args.timeout)
+            verify_harness_unchanged(provenance)
             sample_environment = result.pop("environment")
             if sample_environment != child_environment:
                 raise AssertionError(
@@ -520,7 +535,7 @@ def main() -> None:
                     "parallel_efficiency": speedup / thread_count,
                 }
 
-    provenance = harness_provenance()
+    verify_harness_unchanged(provenance)
     payload = {
         "schema_version": SCHEMA_VERSION,
         "metadata": {

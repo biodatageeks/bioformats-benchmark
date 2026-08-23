@@ -39,9 +39,15 @@ git_diff() {
         -c core.abbrev=7 \
         -c diff.noprefix=false \
         -c diff.mnemonicPrefix=false \
+        -c diff.orderFile=/dev/null \
+        -c diff.suppressBlankEmpty=false \
         -C "$1" \
         --no-pager diff \
-        --binary --no-color --no-ext-diff --no-textconv --unified=3 HEAD
+        --binary --no-color --no-ext-diff --no-textconv \
+        --unified=3 --inter-hunk-context=0 --indent-heuristic --no-renames \
+        --ignore-submodules=none --src-prefix=a/ --dst-prefix=b/ --abbrev=7 \
+        --output-indicator-new=+ --output-indicator-old=- \
+        --output-indicator-context=' ' -O/dev/null HEAD
 }
 
 # Replace the release wheel with an unreleased checkout for candidate runs.

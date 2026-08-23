@@ -1,1 +1,1 @@
-benchmarks/*.patch -whitespace
+benchmarks/*.patch -text -whitespace

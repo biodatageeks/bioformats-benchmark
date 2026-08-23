@@ -297,21 +297,50 @@ class RunnerTests(unittest.TestCase):
             subprocess.run(
                 ["git", "-C", root, "config", "user.name", "Test"], check=True
             )
-            tracked = root / "tracked.txt"
-            tracked.write_text("one\ntwo\nthree\n", encoding="utf-8")
-            subprocess.run(["git", "-C", root, "add", "tracked.txt"], check=True)
+            first = root / "first.txt"
+            second = root / "second.txt"
+            lines = [f"line {index}" for index in range(24)]
+            lines[2] = ""
+            original = "\n".join(lines) + "\n"
+            first.write_text(original, encoding="utf-8")
+            second.write_text(original, encoding="utf-8")
+            subprocess.run(
+                ["git", "-C", root, "add", "first.txt", "second.txt"], check=True
+            )
             subprocess.run(["git", "-C", root, "commit", "-qm", "fixture"], check=True)
-            tracked.write_text("one\nchanged\nthree\n", encoding="utf-8")
+            for path, prefix in ((first, "first"), (second, "second")):
+                changed = lines.copy()
+                changed[1] = f"{prefix} early change"
+                changed[20] = f"{prefix} late change"
+                path.write_text("\n".join(changed) + "\n", encoding="utf-8")
             expected = bench_bbi_polars_bio.git_tracked_diff(root)
+            order_file = root / "diff-order"
+            order_file.write_text("second.txt\nfirst.txt\n", encoding="utf-8")
             for key, value in (
                 ("diff.algorithm", "histogram"),
                 ("core.abbrev", "12"),
                 ("diff.noprefix", "true"),
                 ("diff.mnemonicPrefix", "true"),
+                ("diff.orderFile", str(order_file)),
+                ("diff.interHunkContext", "1000"),
+                ("diff.suppressBlankEmpty", "true"),
             ):
                 subprocess.run(["git", "-C", root, "config", key, value], check=True)
 
             self.assertEqual(bench_bbi_polars_bio.git_tracked_diff(root), expected)
+
+    @mock.patch("run_bbi_benchmarks.harness_provenance")
+    def test_harness_change_during_sweep_is_rejected(self, provenance) -> None:
+        expected = {
+            name: {"path": str(path), "sha256": "before"}
+            for name, path in run_bbi_benchmarks.HARNESS_PATHS.items()
+        }
+        changed = copy.deepcopy(expected)
+        changed["child"]["sha256"] = "after"
+        provenance.return_value = changed
+
+        with self.assertRaisesRegex(AssertionError, "harness changed.*child"):
+            run_bbi_benchmarks.verify_harness_unchanged(expected)
 
     @mock.patch("run_bbi_benchmarks.subprocess.run")
     def test_child_runs_from_repository_directory(self, subprocess_run) -> None:
