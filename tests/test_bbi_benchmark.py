@@ -54,12 +54,24 @@ def payload(*, label: str = "candidate") -> dict:
                 "polars": "1.0.0",
                 "pyarrow": "2.0.0",
             },
+            "polars_bio_build": {
+                "declared_profile": "release",
+                "declared_rustflags": "-C target-cpu=native",
+            },
+            "physical_partition_expectation": "requested",
             "files": {"bigwig": {"sha256": "fixture-digest", "size_bytes": 123}},
         },
         "verification": {
             "bigwig:decode": {"fingerprint": {"rows": 3, "value_sum": 1.25}}
         },
-        "results": {},
+        "results": {
+            "bigwig": {
+                "decode": {
+                    "t1": {"iterations_per_process": 1},
+                    "t2": {"iterations_per_process": 1},
+                }
+            }
+        },
         "scaling": {},
     }
 
@@ -98,14 +110,22 @@ class CommonRunnerTests(unittest.TestCase):
                     "rows": 3,
                     "value_sum": 104752471.34130338,
                 },
-                environment_info=lambda: {},
+                environment_info=dict,
             )
 
     def test_float_drift_beyond_tolerance_is_rejected(self) -> None:
         self.assertFalse(
             fingerprints_match(
                 {"rows": 3, "value_sum": 1.0},
-                {"rows": 3, "value_sum": 1.00002},
+                {"rows": 3, "value_sum": 1.001},
+            )
+        )
+
+    def test_float_tolerance_scales_with_large_aggregate(self) -> None:
+        self.assertTrue(
+            fingerprints_match(
+                {"rows": 3, "value_sum": 104752471.34130},
+                {"rows": 3, "value_sum": 104752471.34135},
             )
         )
 
@@ -186,6 +206,16 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "must include 1"):
             run_bbi_benchmarks.validate_partition_sweep([2, 4, 8])
 
+    def test_round_starts_are_spread_across_the_full_sweep(self) -> None:
+        combinations = [("bigwig", "count", value) for value in range(10)]
+
+        orders = [
+            run_bbi_benchmarks.round_order(combinations, index, 5) for index in range(5)
+        ]
+
+        self.assertEqual([order[0][2] for order in orders], [0, 1, 4, 5, 8])
+        self.assertTrue(all(sorted(order) == sorted(combinations) for order in orders))
+
     def test_declared_build_refs_must_match_source_and_lock(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -239,6 +269,21 @@ class RunnerTests(unittest.TestCase):
             subprocess_run.call_args.kwargs["cwd"], run_bbi_benchmarks.SCRIPT_DIR
         )
 
+    @mock.patch("run_bbi_benchmarks.subprocess.run")
+    def test_preflight_reads_environment_before_the_sweep(self, subprocess_run) -> None:
+        subprocess_run.return_value = mock.Mock(
+            stdout='BBI_ENVIRONMENT:{"python": "3.11.13"}\n',
+            stderr="",
+            returncode=0,
+        )
+
+        environment = run_bbi_benchmarks.preflight_environment("python", {}, 10)
+
+        self.assertEqual(environment, {"python": "3.11.13"})
+        self.assertEqual(
+            subprocess_run.call_args.kwargs["cwd"], run_bbi_benchmarks.SCRIPT_DIR
+        )
+
 
 class FigureValidationTests(unittest.TestCase):
     def test_matching_payloads_are_accepted(self) -> None:
@@ -246,6 +291,14 @@ class FigureValidationTests(unittest.TestCase):
             [payload(label="baseline"), payload(label="candidate")],
             [Path("baseline.json"), Path("candidate.json")],
         )
+
+    def test_single_schema_one_payload_remains_plottable(self) -> None:
+        legacy = payload()
+        legacy["schema_version"] = 1
+        legacy["metadata"].pop("polars_bio_build")
+        legacy["metadata"].pop("physical_partition_expectation")
+
+        generate_bbi_figures.validate_payloads([legacy], [Path("legacy.json")])
 
     def test_fixture_mismatch_is_rejected(self) -> None:
         changed = copy.deepcopy(payload(label="candidate"))
@@ -271,11 +324,47 @@ class FigureValidationTests(unittest.TestCase):
         changed = copy.deepcopy(payload(label="candidate"))
         changed["metadata"]["python"] = "3.13.0"
 
-        with self.assertRaisesRegex(ValueError, "different benchmark hardware"):
+        with self.assertRaisesRegex(ValueError, "different Python runtime"):
             generate_bbi_figures.validate_payloads(
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],
             )
+
+    def test_build_setting_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["metadata"]["polars_bio_build"]["declared_profile"] = "debug"
+
+        with self.assertRaisesRegex(ValueError, "different polars-bio build setting"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_iteration_protocol_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["results"]["bigwig"]["decode"]["t1"]["iterations_per_process"] = 10
+
+        with self.assertRaisesRegex(ValueError, "different iteration protocol"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_partition_argument_order_does_not_block_comparison(self) -> None:
+        changed = payload(label="candidate")
+        changed["metadata"]["partitions"] = [2, 1]
+
+        generate_bbi_figures.validate_payloads(
+            [payload(label="baseline"), changed],
+            [Path("baseline.json"), Path("candidate.json")],
+        )
+
+    def test_unenforced_partition_expectation_is_rejected(self) -> None:
+        changed = payload(label="candidate")
+        changed["metadata"]["physical_partition_expectation"] = "consistent"
+
+        with self.assertRaisesRegex(ValueError, "partition expectation"):
+            generate_bbi_figures.validate_payloads([changed], [Path("candidate.json")])
 
     def test_dependency_version_mismatch_is_rejected(self) -> None:
         changed = copy.deepcopy(payload(label="candidate"))

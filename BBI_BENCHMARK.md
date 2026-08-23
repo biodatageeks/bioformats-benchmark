@@ -8,13 +8,13 @@ result in Polars.
 ## Result
 
 The BBI provider scales close to linearly when every column is streamed and
-consumed as Arrow batches: BigWig reaches **7.21x** speedup at `t=8` and BigBed
-reaches **6.64x**. The source partitions are balanced by compressed block size,
+consumed as Arrow batches: BigWig reaches **7.55x** speedup at `t=8` and BigBed
+reaches **6.81x**. The source partitions are balanced by compressed block size,
 and all 320 fresh-process samples produced matching content fingerprints.
 
 Literal all-column Polars collection has a different curve. BigWig improves
-from 4.1116 s at `t=1` to a best 1.6507 s at `t=3`, then rises to 1.9203 s at
-`t=8`. BigBed is small enough to reach 4.37x at `t=6` before fixed overhead
+from 4.3867 s at `t=1` to a best 1.7843 s at `t=2`, then rises to 2.1417 s at
+`t=8`. BigBed is small enough to reach 4.53x at `t=6` before fixed overhead
 dominates.
 This gap is downstream of the BBI reader: BigWig's Arrow batch count stays
 essentially constant (12,125 at `t=1`, 12,127 at `t=8`), while the retained
@@ -31,14 +31,14 @@ DataFrame when all four columns are retained.
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
-| 1 | 2.7628 s (1.00x) | 3.0088 s (1.00x) | 3.8665 s (1.00x) | 4.1116 s (1.00x) |
-| 2 | 1.4472 s (1.91x) | 1.3464 s (2.23x) | 1.5365 s (2.52x) | 1.7072 s (2.41x) |
-| 3 | 0.9460 s (2.92x) | 1.0374 s (2.90x) | 1.4739 s (2.62x) | 1.6507 s (2.49x) |
-| 4 | 0.7548 s (3.66x) | 1.2030 s (2.50x) | 1.5784 s (2.45x) | 1.8029 s (2.28x) |
-| 5 | 0.5794 s (4.77x) | 1.2301 s (2.45x) | 1.5898 s (2.43x) | 1.8135 s (2.27x) |
-| 6 | 0.4895 s (5.64x) | 1.2435 s (2.42x) | 1.6086 s (2.40x) | 1.8414 s (2.23x) |
-| 7 | 0.4264 s (6.48x) | 1.2475 s (2.41x) | 1.6457 s (2.35x) | 1.8854 s (2.18x) |
-| 8 | 0.3830 s (7.21x) | 1.2473 s (2.41x) | 1.6844 s (2.30x) | 1.9203 s (2.14x) |
+| 1 | 2.8764 s (1.00x) | 3.1476 s (1.00x) | 4.0114 s (1.00x) | 4.3867 s (1.00x) |
+| 2 | 1.4602 s (1.97x) | 1.3522 s (2.33x) | 1.5578 s (2.58x) | 1.7843 s (2.46x) |
+| 3 | 0.9738 s (2.95x) | 1.1292 s (2.79x) | 1.5869 s (2.53x) | 1.9668 s (2.23x) |
+| 4 | 0.7517 s (3.83x) | 1.2617 s (2.49x) | 1.6648 s (2.41x) | 1.9466 s (2.25x) |
+| 5 | 0.5969 s (4.82x) | 1.2586 s (2.50x) | 1.7225 s (2.33x) | 1.9416 s (2.26x) |
+| 6 | 0.5040 s (5.71x) | 1.2810 s (2.46x) | 1.7099 s (2.35x) | 2.1441 s (2.05x) |
+| 7 | 0.4344 s (6.62x) | 1.2978 s (2.43x) | 1.8091 s (2.22x) | 1.9767 s (2.22x) |
+| 8 | 0.3810 s (7.55x) | 1.3036 s (2.41x) | 1.8699 s (2.15x) | 2.1417 s (2.05x) |
 
 `polars_count` is not an empty-projection `count(*)` shortcut. Polars requests
 the first public column (`chrom`) for `pl.len()`, so the provider still reads
@@ -53,14 +53,14 @@ reports the per-scan time because a single scan is too short for stable timing.
 
 | t | Arrow stream all | Polars count | Polars aggregate all | Polars collect all |
 |--:|--:|--:|--:|--:|
-| 1 | 0.0702 s (1.00x) | 0.0695 s (1.00x) | 0.0805 s (1.00x) | 0.0802 s (1.00x) |
-| 2 | 0.0365 s (1.92x) | 0.0349 s (1.99x) | 0.0389 s (2.07x) | 0.0399 s (2.01x) |
-| 3 | 0.0250 s (2.81x) | 0.0253 s (2.74x) | 0.0282 s (2.86x) | 0.0291 s (2.75x) |
-| 4 | 0.0195 s (3.61x) | 0.0198 s (3.50x) | 0.0222 s (3.63x) | 0.0232 s (3.45x) |
-| 5 | 0.0158 s (4.45x) | 0.0165 s (4.22x) | 0.0183 s (4.39x) | 0.0197 s (4.07x) |
-| 6 | 0.0137 s (5.13x) | 0.0150 s (4.63x) | 0.0176 s (4.57x) | 0.0183 s (4.37x) |
-| 7 | 0.0118 s (5.97x) | 0.0137 s (5.08x) | 0.0174 s (4.63x) | 0.0184 s (4.36x) |
-| 8 | 0.0106 s (6.64x) | 0.0131 s (5.29x) | 0.0187 s (4.30x) | 0.0194 s (4.13x) |
+| 1 | 0.0735 s (1.00x) | 0.0713 s (1.00x) | 0.0847 s (1.00x) | 0.0854 s (1.00x) |
+| 2 | 0.0376 s (1.95x) | 0.0360 s (1.98x) | 0.0398 s (2.13x) | 0.0412 s (2.08x) |
+| 3 | 0.0258 s (2.85x) | 0.0257 s (2.78x) | 0.0285 s (2.97x) | 0.0296 s (2.89x) |
+| 4 | 0.0201 s (3.66x) | 0.0200 s (3.56x) | 0.0226 s (3.75x) | 0.0237 s (3.61x) |
+| 5 | 0.0162 s (4.54x) | 0.0171 s (4.17x) | 0.0192 s (4.42x) | 0.0203 s (4.21x) |
+| 6 | 0.0139 s (5.28x) | 0.0152 s (4.69x) | 0.0185 s (4.58x) | 0.0189 s (4.53x) |
+| 7 | 0.0121 s (6.06x) | 0.0139 s (5.12x) | 0.0186 s (4.55x) | 0.0197 s (4.34x) |
+| 8 | 0.0108 s (6.81x) | 0.0143 s (5.00x) | 0.0200 s (4.24x) | 0.0208 s (4.11x) |
 
 At `t=8`, the source scan is only 11 ms. Independent file opens, provider
 setup, task scheduling, Polars conversion, and final materialization therefore
@@ -105,27 +105,30 @@ count and aggregate paths validate through their Polars scan. Two independently
 seeded, order-independent row-hash sums verify complete row content across
 workloads and every `t`; row count, coordinate sums, chromosome byte counts, the
 BigBed trailing-field byte count, and the BigWig signal sum are also checked.
-The timed result is cross-checked on every field it exposes. Candidate mode
-refuses to write a result file if any digest differs or if the physical
-partition count does not match the requested value.
+Fields shared by the timed and replay fingerprints are cross-checked directly:
+all aggregate fields for the aggregate workload, and row count for count, Arrow
+streaming, and collection. Candidate mode refuses to write a result file if any
+digest differs or if the physical partition count does not match the requested
+value.
 
 Median peak RSS at `t=1` and `t=8` was:
 
 | format / workload | t=1 | t=8 |
 |:--|--:|--:|
-| BigWig Arrow stream all | 178.8 MiB | 211.8 MiB |
-| BigWig Polars count | 201.2 MiB | 230.8 MiB |
-| BigWig Polars aggregate all | 201.2 MiB | 245.3 MiB |
-| BigWig Polars collect all | 4,060.9 MiB | 4,123.7 MiB |
-| BigBed Arrow stream all | 176.0 MiB | 219.8 MiB |
-| BigBed Polars count | 188.1 MiB | 228.6 MiB |
-| BigBed Polars aggregate all | 189.6 MiB | 254.5 MiB |
-| BigBed Polars collect all | 244.6 MiB | 299.7 MiB |
+| BigWig Arrow stream all | 185.2 MiB | 214.4 MiB |
+| BigWig Polars count | 203.2 MiB | 233.5 MiB |
+| BigWig Polars aggregate all | 205.5 MiB | 251.1 MiB |
+| BigWig Polars collect all | 4,063.1 MiB | 4,134.3 MiB |
+| BigBed Arrow stream all | 178.7 MiB | 222.3 MiB |
+| BigBed Polars count | 192.4 MiB | 232.7 MiB |
+| BigBed Polars aggregate all | 194.1 MiB | 257.2 MiB |
+| BigBed Polars collect all | 246.1 MiB | 303.1 MiB |
 
 ## Method
 
 - Machine: Apple arm64, macOS 15.7.9, 16 physical/logical CPUs, 64 GiB RAM.
-- Python 3.11.13, Polars 1.40.1, and PyArrow 24.0.0.
+- The documented `.venv-bbi/bin/python` environment: Python 3.11.13, Polars
+  1.40.1, and PyArrow 24.0.0.
 - polars-bio 0.34.0 at `f32af94` plus the tracked dependency-only
   [`polars_bio_issue_443.patch`](benchmarks/polars_bio_issue_443.patch), SHA-256
   `ccb894252bae81ad636d6276a14bcdadcdb0156d8b3c97f957d3e63235851fda`.
@@ -133,9 +136,9 @@ Median peak RSS at `t=1` and `t=8` was:
 - Every timing runs in a fresh process with `POLARS_MAX_THREADS`,
   `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and DataFusion
   `target_partitions` set to the same `t`.
-- Combination order rotates and reverses between rounds to reduce cache and
-  thermal bias. Ambient system CPU is recorded before each child; this run did
-  not configure the optional abort threshold.
+- Round starts are evenly spaced over the full combination list and alternate
+  direction to reduce cache and thermal bias. Ambient system CPU is recorded
+  before each child; this run did not configure the optional abort threshold.
 - Timed scope includes lazy scan construction, BBI header/index access,
   decoding, and the workload-specific Arrow drain, Polars aggregation, or full
   DataFrame materialization. Imports, thread-pool configuration, physical-plan
@@ -154,7 +157,7 @@ the declared `f32af94` source plus the exact tracked patch and exports release
 build settings inside the build. Supply those same variables to
 `run_bbi_benchmarks.py`, as shown in the README. The complete five-round data,
 raw samples, correctness verification, physical partition diagnostics, source
-patch provenance, and build metadata are tracked in
-`results/bbi_scaling_full_scan.json`. Plot it with `generate_bbi_figures.py`,
-which rejects fixture, content, runtime, hardware, partition-set, or schema
-incompatibilities.
+patch provenance, build metadata, and hashes of all three harness modules are
+tracked in `results/bbi_scaling_full_scan.json`. Plot it with `generate_bbi_figures.py`,
+which rejects fixture, content, runtime, build-setting, iteration-protocol,
+hardware, partition-set, or schema incompatibilities.

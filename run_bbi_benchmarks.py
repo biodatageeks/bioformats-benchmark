@@ -20,27 +20,33 @@ from benchmarks.bbi_common import (
     BIGWIG_PATH,
     FORMATS,
     WORKLOADS,
+    file_sha256,
     fingerprints_match,
 )
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_VERSION = 2
 EMPTY_SHA256 = hashlib.sha256(b"").hexdigest()
+HARNESS_PATHS = {
+    "runner": Path(__file__).resolve(),
+    "child": SCRIPT_DIR / "benchmarks" / "bench_bbi_polars_bio.py",
+    "common": SCRIPT_DIR / "benchmarks" / "bbi_common.py",
+}
+CHILD_ENVIRONMENT_SCRIPT = (
+    "import json; from benchmarks.bench_bbi_polars_bio import environment_info; "
+    "print('BBI_ENVIRONMENT:' + json.dumps(environment_info(), sort_keys=True))"
+)
 
 
-def file_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def parse_prefixed_json(output: str, prefix: str) -> dict:
+    for line in output.splitlines():
+        if line.startswith(prefix):
+            return json.loads(line.removeprefix(prefix))
+    raise RuntimeError(f"child did not emit {prefix}\n{output}")
 
 
 def parse_result(output: str) -> dict:
-    for line in output.splitlines():
-        if line.startswith("BBI_RESULT:"):
-            return json.loads(line.removeprefix("BBI_RESULT:"))
-    raise RuntimeError(f"child did not emit BBI_RESULT:\n{output}")
+    return parse_prefixed_json(output, "BBI_RESULT:")
 
 
 def run_one(python: str, env: dict[str, str], timeout: int) -> dict:
@@ -64,6 +70,52 @@ def run_one(python: str, env: dict[str, str], timeout: int) -> dict:
             stderr=completed.stderr,
         )
     return parse_result(completed.stdout)
+
+
+def preflight_environment(python: str, env: dict[str, str], timeout: int) -> dict:
+    """Inspect the child build before starting the timed sweep."""
+    completed = subprocess.run(
+        [
+            python,
+            "-c",
+            CHILD_ENVIRONMENT_SCRIPT,
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+        cwd=SCRIPT_DIR,
+        timeout=timeout,
+    )
+    if completed.returncode != 0:
+        raise subprocess.CalledProcessError(
+            completed.returncode,
+            completed.args,
+            output=completed.stdout,
+            stderr=completed.stderr,
+        )
+    return parse_prefixed_json(completed.stdout, "BBI_ENVIRONMENT:")
+
+
+def round_order(
+    combinations: list[tuple[str, str, int]], round_index: int, run_count: int
+) -> list[tuple[str, str, int]]:
+    """Spread each round's start evenly over the full combination list."""
+    shift = round_index * len(combinations) // run_count
+    order = combinations[shift:] + combinations[:shift]
+    if round_index % 2:
+        order.reverse()
+    return order
+
+
+def harness_provenance() -> dict[str, dict[str, str]]:
+    return {
+        name: {
+            "path": str(path.relative_to(SCRIPT_DIR)),
+            "sha256": file_sha256(path),
+        }
+        for name, path in HARNESS_PATHS.items()
+    }
 
 
 def summarize(runs: list[dict]) -> dict:
@@ -241,7 +293,6 @@ def verify_fingerprints(
                 expected_physical = {
                     "requested": requested,
                     "serial": 1,
-                    "consistent": observed[0],
                 }[physical_partition_expectation]
                 if observed[0] != expected_physical:
                     raise AssertionError(
@@ -291,7 +342,7 @@ def main() -> None:
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument(
         "--physical-partitions",
-        choices=("requested", "serial", "consistent"),
+        choices=("requested", "serial"),
         default="requested",
         help="required relationship between requested and observed source partitions",
     )
@@ -367,11 +418,25 @@ def main() -> None:
             parser.error(f"POLARS_BIO_PATCH does not exist: {patch_path}")
         base_env["POLARS_BIO_PATCH"] = str(patch_path)
 
+    declared_refs = {
+        "polars_bio_ref": os.environ.get("POLARS_BIO_REF"),
+        "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
+        "bigtools_ref": os.environ.get("BIGTOOLS_REF"),
+    }
+    preflight_env = base_env.copy()
+    preflight_env.update(
+        {
+            "THREAD_NUM": "1",
+            "POLARS_MAX_THREADS": "1",
+            "RAYON_NUM_THREADS": "1",
+            "TOKIO_WORKER_THREADS": "1",
+        }
+    )
+    child_environment = preflight_environment(python, preflight_env, args.timeout)
+    verify_declared_build_refs(child_environment, declared_refs)
+
     for round_index in range(args.runs):
-        shift = round_index % len(combinations)
-        order = combinations[shift:] + combinations[:shift]
-        if round_index % 2:
-            order.reverse()
+        order = round_order(combinations, round_index, args.runs)
         for order_index, (format_name, workload, partitions) in enumerate(
             order, start=1
         ):
@@ -406,23 +471,17 @@ def main() -> None:
                     f"--max-system-cpu-percent={args.max_system_cpu_percent:.1f}%"
                 )
             result = run_one(python, env, args.timeout)
+            sample_environment = result.pop("environment")
+            if sample_environment != child_environment:
+                raise AssertionError(
+                    "child interpreter environment changed during the sweep"
+                )
             result["round"] = round_index + 1
             result["order_in_round"] = order_index
             result["ambient_cpu_percent_before"] = ambient_cpu_percent
             raw[f"{format_name}:{workload}:t{partitions}"].append(result)
 
     verification = verify_fingerprints(raw, args.physical_partitions)
-    all_runs = [run for runs in raw.values() for run in runs]
-    environments = {json.dumps(run["environment"], sort_keys=True) for run in all_runs}
-    if len(environments) != 1:
-        raise AssertionError("child interpreter environment changed during the sweep")
-    child_environment = json.loads(next(iter(environments)))
-    declared_refs = {
-        "polars_bio_ref": os.environ.get("POLARS_BIO_REF"),
-        "datafusion_bio_formats_ref": os.environ.get("DATAFUSION_BIO_FORMATS_REF"),
-        "bigtools_ref": os.environ.get("BIGTOOLS_REF"),
-    }
-    verify_declared_build_refs(child_environment, declared_refs)
     results = {
         format_name: {
             workload: {
@@ -454,6 +513,7 @@ def main() -> None:
                     "parallel_efficiency": speedup / thread_count,
                 }
 
+    provenance = harness_provenance()
     payload = {
         "schema_version": SCHEMA_VERSION,
         "metadata": {
@@ -481,10 +541,8 @@ def main() -> None:
             "versions": child_environment["versions"],
             "polars_bio_build": child_environment["polars_bio_build"],
             **declared_refs,
-            "generator": {
-                "path": str(Path(__file__).resolve()),
-                "sha256": file_sha256(Path(__file__).resolve()),
-            },
+            "generator": provenance["runner"],
+            "harness": provenance,
             "timing_scope": "lazy scan construction, BBI index/header access, decoding, "
             "and the workload-specific Arrow drain, Polars aggregation, or full DataFrame "
             "materialization; imports, thread-pool configuration, physical-plan inspection, "

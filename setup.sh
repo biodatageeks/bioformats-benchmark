@@ -229,29 +229,37 @@ BIGBED_URL="https://www.encodeproject.org/files/ENCFF001JBR/@@download/ENCFF001J
 BIGWIG_SHA256="dffcf1a854895d0d91b2b1250db72dc3572ee97c2ef936423735a74c9744b04e"
 BIGBED_SHA256="b36b6b0886e25876ad06e3845a1b68f8f11b7932c23285c9c5f6301a918bc733"
 
-mkdir -p "$(dirname "$BIGWIG_FILE")" "$(dirname "$BIGBED_FILE")"
-if [ ! -f "$BIGWIG_FILE" ]; then
-    echo "=== Downloading BigWig scalability fixture ==="
-    curl -L --fail --output "$BIGWIG_FILE" "$BIGWIG_URL"
-fi
-if [ ! -f "$BIGBED_FILE" ]; then
-    echo "=== Downloading BigBed scalability fixture ==="
-    curl -L --fail --output "$BIGBED_FILE" "$BIGBED_URL"
-fi
+download_bbi_fixture() {
+    local label="$1"
+    local url="$2"
+    local path="$3"
+    local expected_sha256="$4"
+    local actual_sha256=""
+    local partial_path="${path}.part"
 
-for bbi_spec in \
-    "$BIGWIG_FILE:$BIGWIG_SHA256" \
-    "$BIGBED_FILE:$BIGBED_SHA256"; do
-    bbi_path="${bbi_spec%:*}"
-    expected_bbi_sha256="${bbi_spec##*:}"
-    actual_bbi_sha256="$("$SCRIPT_DIR/.venv/bin/python" -c \
-        'import hashlib, sys; print(hashlib.file_digest(open(sys.argv[1], "rb"), "sha256").hexdigest())' \
-        "$bbi_path")"
-    if [ "$actual_bbi_sha256" != "$expected_bbi_sha256" ]; then
-        echo "BBI fixture checksum mismatch for $bbi_path: $actual_bbi_sha256" >&2
+    if [ -f "$path" ]; then
+        actual_sha256="$(shasum -a 256 "$path" | awk '{print $1}')"
+        if [ "$actual_sha256" = "$expected_sha256" ]; then
+            echo "=== $label fixture already verified: $path ==="
+            return
+        fi
+        echo "=== Re-downloading $label after checksum mismatch: $path ==="
+    else
+        echo "=== Downloading $label scalability fixture ==="
+    fi
+
+    curl -L --fail --retry 3 --output "$partial_path" "$url"
+    actual_sha256="$(shasum -a 256 "$partial_path" | awk '{print $1}')"
+    if [ "$actual_sha256" != "$expected_sha256" ]; then
+        echo "$label download checksum mismatch: $actual_sha256" >&2
         exit 1
     fi
-done
+    mv "$partial_path" "$path"
+}
+
+mkdir -p "$(dirname "$BIGWIG_FILE")" "$(dirname "$BIGBED_FILE")"
+download_bbi_fixture "BigWig" "$BIGWIG_URL" "$BIGWIG_FILE" "$BIGWIG_SHA256"
+download_bbi_fixture "BigBed" "$BIGBED_URL" "$BIGBED_FILE" "$BIGBED_SHA256"
 
 # === FASTQ: EBI SRA ===
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"

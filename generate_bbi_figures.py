@@ -65,7 +65,6 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
         "logical_cpu_count",
         "physical_cpu_count",
         "memory_total_bytes",
-        "python",
     )
     for payload, path in zip(payloads, paths):
         schema_version = payload.get("schema_version")
@@ -75,13 +74,18 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
             )
         metadata = payload.get("metadata", {})
         missing = [field for field in required_environment if field not in metadata]
+        requires_build_metadata = schema_version == 2 or len(payloads) > 1
+        if requires_build_metadata and "polars_bio_build" not in metadata:
+            missing.append("polars_bio_build")
         if missing:
             raise ValueError(f"{path} is missing environment metadata: {missing}")
-        if metadata["partitions"] != reference["partitions"]:
+        if sorted(metadata["partitions"]) != sorted(reference["partitions"]):
             raise ValueError(f"{path} uses a different partition sweep")
         for field in comparable_environment:
             if metadata[field] != reference[field]:
                 raise ValueError(f"{path} uses different benchmark hardware: {field}")
+        if metadata["python"] != reference["python"]:
+            raise ValueError(f"{path} uses a different Python runtime")
         for dependency in ("polars", "pyarrow"):
             if metadata["versions"].get(dependency) != reference["versions"].get(
                 dependency
@@ -89,6 +93,20 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                 raise ValueError(
                     f"{path} uses a different {dependency} runtime version"
                 )
+        if requires_build_metadata:
+            for field in ("declared_profile", "declared_rustflags"):
+                if metadata["polars_bio_build"].get(field) != reference[
+                    "polars_bio_build"
+                ].get(field):
+                    raise ValueError(
+                        f"{path} uses a different polars-bio build setting: {field}"
+                    )
+        expectation = metadata.get("physical_partition_expectation")
+        if schema_version == 2 and expectation not in ("requested", "serial"):
+            raise ValueError(
+                f"{path} has unsupported physical partition expectation: "
+                f"{expectation!r}"
+            )
 
     for left_index, left_payload in enumerate(payloads):
         left_metadata = left_payload["metadata"]
@@ -125,6 +143,28 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
                     raise ValueError(
                         f"{right_path} contains different {format_name} content"
                     )
+
+                left_workloads = left_payload["results"].get(format_name, {})
+                right_workloads = right_payload["results"].get(format_name, {})
+                for workload in left_workloads.keys() & right_workloads.keys():
+                    left_summaries = left_workloads[workload]
+                    right_summaries = right_workloads[workload]
+                    for partition in left_summaries.keys() & right_summaries.keys():
+                        expected_iterations = left_summaries[partition].get(
+                            "iterations_per_process"
+                        )
+                        actual_iterations = right_summaries[partition].get(
+                            "iterations_per_process"
+                        )
+                        if (
+                            expected_iterations is None
+                            or actual_iterations is None
+                            or actual_iterations != expected_iterations
+                        ):
+                            raise ValueError(
+                                f"{right_path} uses a different iteration protocol for "
+                                f"{format_name}/{workload}/{partition}"
+                            )
 
 
 def strongest_format_fingerprint(payload: dict, format_name: str) -> dict:
@@ -209,7 +249,13 @@ def plot_format(payloads: list[dict], format_name: str, output: Path) -> None:
         axis.set_xticks(all_partitions)
         axis.grid(alpha=0.22)
         axis.spines[["top", "right"]].set_visible(False)
-        axis.legend(frameon=False, fontsize=8)
+        axis.legend(
+            frameon=True,
+            framealpha=0.9,
+            facecolor="white",
+            edgecolor="none",
+            fontsize=8,
+        )
 
     figure.suptitle(f"polars-bio {format_name} scalability", fontsize=14)
     output.parent.mkdir(parents=True, exist_ok=True)

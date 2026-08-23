@@ -121,13 +121,18 @@ export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
 .venv-bbi/bin/python run_bbi_benchmarks.py \
   --python .venv-bbi/bin/python \
   --partitions 1 2 3 4 5 6 7 8 \
+  --formats bigwig bigbed \
+  --workloads arrow_stream_all polars_count polars_aggregate_all polars_collect_all \
+  --bigwig-iterations 1 \
+  --bigbed-iterations 10 \
+  --physical-partitions requested \
   --runs 5 \
-  --label candidate \
-  --output results/bbi_scaling_candidate.json
+  --label block-aware-full-scan \
+  --output results/bbi_scaling_full_scan.json
 
 # 11. Plot one run, or compare baseline and candidate result files
 python generate_bbi_figures.py \
-  --input results/bbi_scaling_candidate.json \
+  --input results/bbi_scaling_full_scan.json \
   --output-dir results/bbi-figures
 
 # 12. Validate the BBI benchmark harness
@@ -146,23 +151,55 @@ DATAFUSION_BIO_FORMATS_REF=<formats-pr-commit> \
 python run_bcf_benchmarks.py
 ```
 
-For an issue-238 before/after comparison, set `POLARS_BIO_SOURCE` when running
-`setup_bbi_benchmark.sh` and build polars-bio once against the
-released `datafusion-bio-formats` revision and once against the candidate
-revision. Set `POLARS_BIO_PATCH=` for the clean release build and point it at a
-tracked patch for the candidate. Give the runs distinct `--label` and `--output`
-values, then pass both JSON files to `generate_bbi_figures.py`. Use
-`--physical-partitions serial` for the pre-partitioning baseline; candidate runs
-use the strict default `--physical-partitions requested`.
+For an issue-238 before/after comparison, use two separate polars-bio worktrees
+at `f32af941`: one clean baseline and one candidate checkout to which setup can
+apply the tracked patch. Explicitly clear the candidate-only dependency refs for
+the baseline so its preflight checks the release lockfile instead of aborting
+after a long sweep:
+
+```bash
+# Baseline: clean f32af941 worktree and release dependencies.
+export POLARS_BIO_SOURCE=/path/to/clean-polars-bio-f32af941
+export POLARS_BIO_REF=f32af9416139a8bc9f1565b61b13bad3af738a39
+export POLARS_BIO_PATCH=
+export DATAFUSION_BIO_FORMATS_REF=
+export BIGTOOLS_REF=
+export POLARS_BIO_BUILD_PROFILE=release
+export POLARS_BIO_RUSTFLAGS='-C target-cpu=native'
+BBI_VENV=.venv-bbi-baseline ./setup_bbi_benchmark.sh
+.venv-bbi-baseline/bin/python run_bbi_benchmarks.py \
+  --python .venv-bbi-baseline/bin/python \
+  --physical-partitions serial \
+  --label v1.10.0-baseline \
+  --output results/bbi_scaling_baseline.json
+
+# Candidate: a separate clean f32af941 worktree; setup applies the exact patch.
+export POLARS_BIO_SOURCE=/path/to/candidate-polars-bio-f32af941
+export POLARS_BIO_PATCH=benchmarks/polars_bio_issue_443.patch
+export DATAFUSION_BIO_FORMATS_REF=d0a23b59271e697c78f421c70a2e48a43cb89a73
+export BIGTOOLS_REF=0d7a5728eb39ee97fddef59cd3da469186bec90d
+BBI_VENV=.venv-bbi-candidate ./setup_bbi_benchmark.sh
+.venv-bbi-candidate/bin/python run_bbi_benchmarks.py \
+  --python .venv-bbi-candidate/bin/python \
+  --physical-partitions requested \
+  --label block-aware-candidate \
+  --output results/bbi_scaling_candidate.json
+```
+
+Both runs otherwise use the same partition, workload, iteration, and run-count
+arguments. Pass the two JSON files to `generate_bbi_figures.py`; it rejects
+different build modes, Rust flags, iteration protocols, runtimes, fixtures, or
+content.
 
 ### BigWig/BigBed scalability correctness
 
 `run_bbi_benchmarks.py` launches every measurement in a fresh child process and
 sets `POLARS_MAX_THREADS`, `RAYON_NUM_THREADS`, `TOKIO_WORKER_THREADS`, and
 DataFusion `target_partitions` to the same `t`. The default sweep is every
-integer from one through eight. Combination order rotates and reverses between
-rounds to reduce cache and thermal bias. Each child also inspects the physical
-plan after timing and records the BBI scan's advertised output partition count.
+integer from one through eight. Round starts are spaced over the full
+combination list and alternate direction to reduce cache and thermal bias. Each
+child also inspects the physical plan after timing and records the BBI scan's
+advertised output partition count.
 Candidate sweeps fail unless that count equals `t`. When the provider reports
 index-derived data-byte estimates, the runner verifies that the layout is stable
 across repetitions and records its coefficient of variation and maximum-to-mean
@@ -188,20 +225,23 @@ batches, collect validation hashes the materialized DataFrame, and the count and
 aggregate workloads validate through their Polars scan. Two independently
 seeded, order-independent row-hash sums plus row count, coordinate sums,
 chromosome bytes, and payload aggregates must match across all workloads and
-every `t` before results are written. The timed result is also cross-checked on
-every field it exposes. BigBed performs ten timed scans per child by default
-because the fixture is too short for a stable single timing; the JSON records
-both the iteration count and per-scan time. Each raw sample also records ambient
-CPU use measured immediately before launch. The configured
+every `t` before results are written. Fields shared by the timed and replay
+fingerprints are cross-checked directly: all aggregate fields for the aggregate
+workload, and row count for count, Arrow streaming, and collection. BigBed
+performs ten timed scans per child by default because the fixture is too short
+for a stable single timing; the JSON records both the iteration count and
+per-scan time. Each raw sample also records ambient CPU use measured immediately
+before launch. The configured
 `--max-system-cpu-percent` value (or `null` when the optional abort gate is
 disabled) is recorded in result metadata.
 
 The candidate setup applies the tracked
 `benchmarks/polars_bio_issue_443.patch` to a clean `f32af941` checkout, or
 verifies an already-applied exact copy, and refuses any other tracked or
-untracked source changes. The runner then verifies that the live Git diff
-SHA-256 equals the declared patch SHA-256 before writing results, in addition
-to checking the exact DataFusion and BigTools revisions in `Cargo.lock`.
+untracked source changes. Before the timed sweep, the runner verifies that the
+live Git diff SHA-256 equals the declared patch SHA-256 and checks the exact
+DataFusion and BigTools revisions in `Cargo.lock`. Result provenance records
+SHA-256 hashes for the orchestrator, child workload, and shared timing harness.
 
 ### BCF fairness and correctness
 

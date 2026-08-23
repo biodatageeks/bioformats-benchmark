@@ -15,9 +15,10 @@ import polars as pl
 import polars_bio as pb
 
 from benchmarks.bbi_common import (
-    BenchmarkSample,
     FORMATS,
     WORKLOADS,
+    BenchmarkSample,
+    file_sha256,
     input_path,
     run_bbi_benchmark,
 )
@@ -273,14 +274,6 @@ def content_fingerprint() -> dict[str, int | float | str]:
     )
 
 
-def file_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def environment_info() -> dict[str, object]:
     versions = {
         distribution: importlib.metadata.version(distribution)
@@ -362,13 +355,18 @@ def environment_info() -> dict[str, object]:
     }
 
 
-run_bbi_benchmark(
-    benchmark,
-    format_name=FORMAT,
-    workload=WORKLOAD,
-    threads=THREADS,
-    iterations=ITERATIONS,
-    physical_partition_info=physical_partition_info,
-    content_fingerprint=content_fingerprint,
-    environment_info=environment_info,
-)
+def main() -> None:
+    run_bbi_benchmark(
+        benchmark,
+        format_name=FORMAT,
+        workload=WORKLOAD,
+        threads=THREADS,
+        iterations=ITERATIONS,
+        physical_partition_info=physical_partition_info,
+        content_fingerprint=content_fingerprint,
+        environment_info=environment_info,
+    )
+
+
+if __name__ == "__main__":
+    main()

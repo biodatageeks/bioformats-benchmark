@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
@@ -9,6 +10,7 @@ import resource
 import sys
 import time
 from collections.abc import Callable
+from pathlib import Path
 
 Scalar = int | float | str
 BenchmarkSample = tuple[dict[str, Scalar], dict[str, int | float]]
@@ -29,6 +31,16 @@ WORKLOADS = (
     "polars_aggregate_all",
     "polars_collect_all",
 )
+FLOAT_FINGERPRINT_FIELDS = frozenset({"value_sum"})
+
+
+def file_sha256(path: Path) -> str:
+    """Hash a file without loading it into memory."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def fingerprints_match(left: dict[str, Scalar], right: dict[str, Scalar]) -> bool:
@@ -36,9 +48,9 @@ def fingerprints_match(left: dict[str, Scalar], right: dict[str, Scalar]) -> boo
     if left.keys() != right.keys():
         return False
     for key, value in left.items():
-        if key == "value_sum":
+        if key in FLOAT_FINGERPRINT_FIELDS:
             if not math.isclose(
-                float(value), float(right[key]), rel_tol=0.0, abs_tol=1e-5
+                float(value), float(right[key]), rel_tol=1e-12, abs_tol=1e-8
             ):
                 return False
         elif value != right[key]:
