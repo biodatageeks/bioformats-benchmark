@@ -72,11 +72,17 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
             raise ValueError(
                 f"{path} has unsupported schema_version={schema_version!r}"
             )
+        if len(payloads) > 1 and schema_version != 2:
+            raise ValueError(
+                f"{path} cannot be compared without schema-v2 harness provenance"
+            )
         metadata = payload.get("metadata", {})
         missing = [field for field in required_environment if field not in metadata]
         requires_build_metadata = schema_version == 2 or len(payloads) > 1
         if requires_build_metadata and "polars_bio_build" not in metadata:
             missing.append("polars_bio_build")
+        if len(payloads) > 1 and "harness" not in metadata:
+            missing.append("harness")
         if missing:
             raise ValueError(f"{path} is missing environment metadata: {missing}")
         if sorted(metadata["partitions"]) != sorted(reference["partitions"]):
@@ -114,6 +120,12 @@ def validate_payloads(payloads: list[dict], paths: list[Path]) -> None:
             right_payload = payloads[right_index]
             right_metadata = right_payload["metadata"]
             right_path = paths[right_index]
+            if (
+                left_payload["schema_version"] == 2
+                and right_payload["schema_version"] == 2
+                and left_metadata["harness"] != right_metadata["harness"]
+            ):
+                raise ValueError(f"{right_path} uses a different benchmark harness")
             common_formats = set(left_metadata["files"]) & set(right_metadata["files"])
             for format_name in common_formats:
                 expected = left_metadata["files"][format_name]

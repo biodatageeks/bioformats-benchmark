@@ -23,6 +23,26 @@ from benchmarks.bbi_common import (
     run_bbi_benchmark,
 )
 
+GIT_DIFF_COMMAND = (
+    "git",
+    "-c",
+    "diff.algorithm=myers",
+    "-c",
+    "core.abbrev=7",
+    "-c",
+    "diff.noprefix=false",
+    "-c",
+    "diff.mnemonicPrefix=false",
+    "--no-pager",
+    "diff",
+    "--binary",
+    "--no-color",
+    "--no-ext-diff",
+    "--no-textconv",
+    "--unified=3",
+    "HEAD",
+)
+
 FORMAT = os.environ.get("BBI_FORMAT", "bigwig").lower()
 WORKLOAD = os.environ.get("BBI_WORKLOAD", "polars_count").lower()
 THREADS = int(os.environ.get("THREAD_NUM", "1"))
@@ -274,6 +294,16 @@ def content_fingerprint() -> dict[str, int | float | str]:
     )
 
 
+def git_tracked_diff(source_root: Path) -> bytes:
+    """Return a deterministic diff independent of user Git configuration."""
+    return subprocess.run(
+        GIT_DIFF_COMMAND,
+        cwd=source_root,
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
 def environment_info() -> dict[str, object]:
     versions = {
         distribution: importlib.metadata.version(distribution)
@@ -298,12 +328,7 @@ def environment_info() -> dict[str, object]:
             capture_output=True,
             text=True,
         ).stdout.strip()
-        git_diff = subprocess.run(
-            ["git", "diff", "--binary", "HEAD"],
-            cwd=source_root,
-            check=True,
-            capture_output=True,
-        ).stdout
+        git_diff = git_tracked_diff(source_root)
         untracked_paths = subprocess.run(
             ["git", "ls-files", "--others", "--exclude-standard"],
             cwd=source_root,

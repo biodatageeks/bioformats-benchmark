@@ -12,6 +12,10 @@ BIGTOOLS_REF="${BIGTOOLS_REF-0d7a5728eb39ee97fddef59cd3da469186bec90d}"
 POLARS_BIO_PATCH="${POLARS_BIO_PATCH-$SCRIPT_DIR/benchmarks/polars_bio_issue_443.patch}"
 export POLARS_BIO_BUILD_PROFILE="${POLARS_BIO_BUILD_PROFILE:-release}"
 export POLARS_BIO_RUSTFLAGS="${POLARS_BIO_RUSTFLAGS:--C target-cpu=native}"
+if [ -n "$POLARS_BIO_PATCH" ]; then
+    patch_directory="$(cd "$(dirname "$POLARS_BIO_PATCH")" && pwd)"
+    POLARS_BIO_PATCH="$patch_directory/$(basename "$POLARS_BIO_PATCH")"
+fi
 export POLARS_BIO_REF DATAFUSION_BIO_FORMATS_REF BIGTOOLS_REF POLARS_BIO_PATCH
 if [ "$POLARS_BIO_BUILD_PROFILE" != "release" ]; then
     echo "POLARS_BIO_BUILD_PROFILE must be release" >&2
@@ -29,6 +33,17 @@ uv pip install --python "$BBI_VENV_DIR/bin/python" \
     polars-bio==0.34.0 polars==1.40.1 pyarrow==24.0.0 \
     psutil==7.2.2 matplotlib==3.10.9 maturin==1.13.3 pytest==8.4.2
 
+git_diff() {
+    git \
+        -c diff.algorithm=myers \
+        -c core.abbrev=7 \
+        -c diff.noprefix=false \
+        -c diff.mnemonicPrefix=false \
+        -C "$1" \
+        --no-pager diff \
+        --binary --no-color --no-ext-diff --no-textconv --unified=3 HEAD
+}
+
 # Replace the release wheel with an unreleased checkout for candidate runs.
 if [ -n "${POLARS_BIO_SOURCE:-}" ]; then
     echo "=== Building polars-bio from: $POLARS_BIO_SOURCE ==="
@@ -41,14 +56,14 @@ if [ -n "${POLARS_BIO_SOURCE:-}" ]; then
         echo "polars-bio source contains untracked files" >&2
         exit 1
     fi
-    current_diff_sha256="$(git -C "$POLARS_BIO_SOURCE" diff --binary HEAD | shasum -a 256 | awk '{print $1}')"
+    current_diff_sha256="$(git_diff "$POLARS_BIO_SOURCE" | shasum -a 256 | awk '{print $1}')"
     empty_sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     if [ -n "$POLARS_BIO_PATCH" ]; then
         expected_patch_sha256="$(shasum -a 256 "$POLARS_BIO_PATCH" | awk '{print $1}')"
         if [ "$current_diff_sha256" = "$empty_sha256" ]; then
             git -C "$POLARS_BIO_SOURCE" apply --check "$POLARS_BIO_PATCH"
             git -C "$POLARS_BIO_SOURCE" apply "$POLARS_BIO_PATCH"
-            current_diff_sha256="$(git -C "$POLARS_BIO_SOURCE" diff --binary HEAD | shasum -a 256 | awk '{print $1}')"
+            current_diff_sha256="$(git_diff "$POLARS_BIO_SOURCE" | shasum -a 256 | awk '{print $1}')"
         fi
         if [ "$current_diff_sha256" != "$expected_patch_sha256" ]; then
             echo "polars-bio tracked diff does not match $POLARS_BIO_PATCH" >&2

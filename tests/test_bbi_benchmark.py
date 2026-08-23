@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import io
+import subprocess
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -10,6 +11,7 @@ from unittest import mock
 
 import generate_bbi_figures
 import run_bbi_benchmarks
+from benchmarks import bench_bbi_polars_bio
 from benchmarks.bbi_common import fingerprints_match, run_bbi_benchmark
 
 
@@ -57,6 +59,11 @@ def payload(*, label: str = "candidate") -> dict:
             "polars_bio_build": {
                 "declared_profile": "release",
                 "declared_rustflags": "-C target-cpu=native",
+            },
+            "harness": {
+                "runner": {"path": "run.py", "sha256": "runner-digest"},
+                "child": {"path": "child.py", "sha256": "child-digest"},
+                "common": {"path": "common.py", "sha256": "common-digest"},
             },
             "physical_partition_expectation": "requested",
             "files": {"bigwig": {"sha256": "fixture-digest", "size_bytes": 123}},
@@ -256,6 +263,56 @@ class RunnerTests(unittest.TestCase):
                     environment, {"polars_bio_ref": "f32af94"}
                 )
 
+    def test_declared_patch_is_checked_even_without_source_refs(self) -> None:
+        environment = {
+            "polars_bio_build": {
+                "source": {
+                    "root": "/unused",
+                    "tracked_diff_sha256": "wrong",
+                    "declared_patch": {"sha256": "expected"},
+                    "untracked_paths": [],
+                }
+            }
+        }
+
+        with self.assertRaisesRegex(AssertionError, "neither clean nor identical"):
+            run_bbi_benchmarks.verify_declared_build_refs(
+                environment,
+                {
+                    "polars_bio_ref": None,
+                    "datafusion_bio_formats_ref": None,
+                    "bigtools_ref": None,
+                },
+                patch_declared=True,
+            )
+
+    def test_git_diff_is_independent_of_user_configuration(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q", root], check=True)
+            subprocess.run(
+                ["git", "-C", root, "config", "user.email", "test@example.com"],
+                check=True,
+            )
+            subprocess.run(
+                ["git", "-C", root, "config", "user.name", "Test"], check=True
+            )
+            tracked = root / "tracked.txt"
+            tracked.write_text("one\ntwo\nthree\n", encoding="utf-8")
+            subprocess.run(["git", "-C", root, "add", "tracked.txt"], check=True)
+            subprocess.run(["git", "-C", root, "commit", "-qm", "fixture"], check=True)
+            tracked.write_text("one\nchanged\nthree\n", encoding="utf-8")
+            expected = bench_bbi_polars_bio.git_tracked_diff(root)
+            for key, value in (
+                ("diff.algorithm", "histogram"),
+                ("core.abbrev", "12"),
+                ("diff.noprefix", "true"),
+                ("diff.mnemonicPrefix", "true"),
+            ):
+                subprocess.run(["git", "-C", root, "config", key, value], check=True)
+
+            self.assertEqual(bench_bbi_polars_bio.git_tracked_diff(root), expected)
+
     @mock.patch("run_bbi_benchmarks.subprocess.run")
     def test_child_runs_from_repository_directory(self, subprocess_run) -> None:
         subprocess_run.return_value = mock.Mock(
@@ -300,6 +357,16 @@ class FigureValidationTests(unittest.TestCase):
 
         generate_bbi_figures.validate_payloads([legacy], [Path("legacy.json")])
 
+    def test_schema_one_payload_cannot_enter_a_comparison(self) -> None:
+        legacy = payload(label="legacy")
+        legacy["schema_version"] = 1
+
+        with self.assertRaisesRegex(ValueError, "schema-v2 harness provenance"):
+            generate_bbi_figures.validate_payloads(
+                [legacy, payload(label="candidate")],
+                [Path("legacy.json"), Path("candidate.json")],
+            )
+
     def test_fixture_mismatch_is_rejected(self) -> None:
         changed = copy.deepcopy(payload(label="candidate"))
         changed["metadata"]["files"]["bigwig"]["sha256"] = "other"
@@ -335,6 +402,16 @@ class FigureValidationTests(unittest.TestCase):
         changed["metadata"]["polars_bio_build"]["declared_profile"] = "debug"
 
         with self.assertRaisesRegex(ValueError, "different polars-bio build setting"):
+            generate_bbi_figures.validate_payloads(
+                [payload(label="baseline"), changed],
+                [Path("baseline.json"), Path("candidate.json")],
+            )
+
+    def test_harness_mismatch_is_rejected(self) -> None:
+        changed = copy.deepcopy(payload(label="candidate"))
+        changed["metadata"]["harness"]["child"]["sha256"] = "different"
+
+        with self.assertRaisesRegex(ValueError, "different benchmark harness"):
             generate_bbi_figures.validate_payloads(
                 [payload(label="baseline"), changed],
                 [Path("baseline.json"), Path("candidate.json")],

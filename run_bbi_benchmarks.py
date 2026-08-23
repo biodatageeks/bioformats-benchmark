@@ -170,10 +170,13 @@ def validate_partition_sweep(partitions: list[int]) -> None:
 
 
 def verify_declared_build_refs(
-    environment: dict, declared_refs: dict[str, str | None]
+    environment: dict,
+    declared_refs: dict[str, str | None],
+    *,
+    patch_declared: bool = False,
 ) -> None:
     declared = {name: value for name, value in declared_refs.items() if value}
-    if not declared:
+    if not declared and not patch_declared:
         return
     source = environment.get("polars_bio_build", {}).get("source")
     if not source:
@@ -187,9 +190,9 @@ def verify_declared_build_refs(
 
     tracked_diff_sha256 = source.get("tracked_diff_sha256")
     declared_patch = source.get("declared_patch")
-    expected_diff_sha256 = (
-        declared_patch.get("sha256") if declared_patch else EMPTY_SHA256
-    )
+    if patch_declared and not declared_patch:
+        raise AssertionError("declared polars-bio patch is absent from source metadata")
+    expected_diff_sha256 = declared_patch["sha256"] if patch_declared else EMPTY_SHA256
     if tracked_diff_sha256 != expected_diff_sha256:
         raise AssertionError(
             "polars-bio tracked diff is neither clean nor identical to its declared "
@@ -433,7 +436,11 @@ def main() -> None:
         }
     )
     child_environment = preflight_environment(python, preflight_env, args.timeout)
-    verify_declared_build_refs(child_environment, declared_refs)
+    verify_declared_build_refs(
+        child_environment,
+        declared_refs,
+        patch_declared=bool(base_env.get("POLARS_BIO_PATCH")),
+    )
 
     for round_index in range(args.runs):
         order = round_order(combinations, round_index, args.runs)
