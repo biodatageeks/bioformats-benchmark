@@ -1,0 +1,788 @@
+{
+  "generated_at": "2026-08-25T11:41:16.798817+00:00",
+  "dataset": {
+    "path": "/Users/mwiewior/research/data/COOL/test.mcool",
+    "sha256": "a77252c0dffc38cdd31c0d8c05751f92f37c094dc462781e960df3fbd8594d14",
+    "resolution": 10000
+  },
+  "platform": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.2"
+  },
+  "versions": {
+    "polars-bio": "0.34.0",
+    "polars": "1.40.1",
+    "cooler": "0.10.4",
+    "pandas": "3.0.3",
+    "numpy": "2.4.4"
+  },
+  "iterations": 3,
+  "runs": [
+    {
+      "name": "cooler_cool_stream_count_r10000_t1",
+      "time_seconds": 1.285,
+      "peak_rss_mb": 814.0,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "cooler_cool_collect_all_r10000_t1",
+      "time_seconds": 2.074,
+      "peak_rss_mb": 1537.1,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "cooler_cool_region_r10000_t1",
+      "time_seconds": 0.119,
+      "peak_rss_mb": 264.2,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t1",
+      "time_seconds": 2.014,
+      "peak_rss_mb": 233.4,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t2",
+      "time_seconds": 1.34,
+      "peak_rss_mb": 230.3,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t4",
+      "time_seconds": 1.371,
+      "peak_rss_mb": 231.6,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t8",
+      "time_seconds": 1.489,
+      "peak_rss_mb": 245.9,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t1",
+      "time_seconds": 2.105,
+      "peak_rss_mb": 2106.1,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t2",
+      "time_seconds": 1.392,
+      "peak_rss_mb": 2107.8,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t4",
+      "time_seconds": 1.41,
+      "peak_rss_mb": 2113.9,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t8",
+      "time_seconds": 1.526,
+      "peak_rss_mb": 2129.3,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t1",
+      "time_seconds": 0.202,
+      "peak_rss_mb": 281.9,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t2",
+      "time_seconds": 0.144,
+      "peak_rss_mb": 280.5,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t4",
+      "time_seconds": 0.145,
+      "peak_rss_mb": 285.1,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t8",
+      "time_seconds": 0.155,
+      "peak_rss_mb": 296.3,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 0
+    },
+    {
+      "name": "cooler_cool_stream_count_r10000_t1",
+      "time_seconds": 1.272,
+      "peak_rss_mb": 814.0,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "cooler_cool_collect_all_r10000_t1",
+      "time_seconds": 2.031,
+      "peak_rss_mb": 1515.6,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "cooler_cool_region_r10000_t1",
+      "time_seconds": 0.118,
+      "peak_rss_mb": 265.3,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t1",
+      "time_seconds": 1.955,
+      "peak_rss_mb": 227.8,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t2",
+      "time_seconds": 1.339,
+      "peak_rss_mb": 230.7,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t4",
+      "time_seconds": 1.378,
+      "peak_rss_mb": 233.4,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t8",
+      "time_seconds": 1.514,
+      "peak_rss_mb": 245.4,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t1",
+      "time_seconds": 2.109,
+      "peak_rss_mb": 2103.1,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t2",
+      "time_seconds": 1.373,
+      "peak_rss_mb": 2104.2,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t4",
+      "time_seconds": 1.394,
+      "peak_rss_mb": 2111.0,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t8",
+      "time_seconds": 1.524,
+      "peak_rss_mb": 2131.3,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t1",
+      "time_seconds": 0.202,
+      "peak_rss_mb": 281.5,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t2",
+      "time_seconds": 0.147,
+      "peak_rss_mb": 280.8,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t4",
+      "time_seconds": 0.143,
+      "peak_rss_mb": 284.1,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t8",
+      "time_seconds": 0.155,
+      "peak_rss_mb": 294.6,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 1
+    },
+    {
+      "name": "cooler_cool_stream_count_r10000_t1",
+      "time_seconds": 1.271,
+      "peak_rss_mb": 808.3,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "cooler_cool_collect_all_r10000_t1",
+      "time_seconds": 2.056,
+      "peak_rss_mb": 1526.5,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "cooler_cool_region_r10000_t1",
+      "time_seconds": 0.12,
+      "peak_rss_mb": 298.4,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t1",
+      "time_seconds": 1.955,
+      "peak_rss_mb": 227.8,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t2",
+      "time_seconds": 1.341,
+      "peak_rss_mb": 229.0,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t4",
+      "time_seconds": 1.368,
+      "peak_rss_mb": 232.6,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_stream_count_r10000_t8",
+      "time_seconds": 1.507,
+      "peak_rss_mb": 243.3,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t1",
+      "time_seconds": 2.098,
+      "peak_rss_mb": 2101.1,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t2",
+      "time_seconds": 1.369,
+      "peak_rss_mb": 2105.8,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t4",
+      "time_seconds": 1.454,
+      "peak_rss_mb": 2113.7,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_collect_all_r10000_t8",
+      "time_seconds": 1.519,
+      "peak_rss_mb": 2127.6,
+      "row_count": 24521334,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t1",
+      "time_seconds": 0.2,
+      "peak_rss_mb": 276.5,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t2",
+      "time_seconds": 0.146,
+      "peak_rss_mb": 278.8,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t4",
+      "time_seconds": 0.143,
+      "peak_rss_mb": 281.1,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    },
+    {
+      "name": "polars_bio_cool_region_r10000_t8",
+      "time_seconds": 0.152,
+      "peak_rss_mb": 293.2,
+      "row_count": 773355,
+      "column_count": 7,
+      "columns": [
+        "chrom1",
+        "start1",
+        "end1",
+        "chrom2",
+        "start2",
+        "end2",
+        "count"
+      ],
+      "iteration": 2
+    }
+  ]
+}

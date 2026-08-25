@@ -50,7 +50,7 @@ libraries, measuring execution time, peak memory usage, and partition scalabilit
 | BigWig | `GSM7256643_...GRCh38.bigWig` (~546 MiB) | NCBI GEO, downloaded and checksum-verified by `setup.sh` |
 | BigBed | `ENCFF001JBR.bigBed` (~16 MiB) | ENCODE, downloaded and checksum-verified by `setup.sh` |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
-| MCOOL | `test.mcool` (~146 MiB) | open2c HFF Micro-C (Krietenstein et al. 2021), hg38 chr2+chr17, resolutions 1k/10k/100k/1M, downloaded and checksum-verified by `setup.sh` |
+| MCOOL | `test.mcool` (~146 MiB) | open2c HFF Micro-C (Krietenstein et al. 2021), hg38 chr2+chr17, resolutions 1k/10k/100k/1M, downloaded and checksum-verified by `setup.sh`. Results: [COOL_BENCHMARK.md](COOL_BENCHMARK.md) |
 
 The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
 dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
