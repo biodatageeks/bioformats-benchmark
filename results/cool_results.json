@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T11:41:16.798817+00:00",
+  "generated_at": "2026-08-25T12:04:39.106213+00:00",
   "dataset": {
     "path": "/Users/mwiewior/research/data/COOL/test.mcool",
     "sha256": "a77252c0dffc38cdd31c0d8c05751f92f37c094dc462781e960df3fbd8594d14",
@@ -21,8 +21,8 @@
   "runs": [
     {
       "name": "cooler_cool_stream_count_r10000_t1",
-      "time_seconds": 1.285,
-      "peak_rss_mb": 814.0,
+      "time_seconds": 1.255,
+      "peak_rss_mb": 783.5,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -38,8 +38,8 @@
     },
     {
       "name": "cooler_cool_collect_all_r10000_t1",
-      "time_seconds": 2.074,
-      "peak_rss_mb": 1537.1,
+      "time_seconds": 2.003,
+      "peak_rss_mb": 1466.8,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -55,8 +55,8 @@
     },
     {
       "name": "cooler_cool_region_r10000_t1",
-      "time_seconds": 0.119,
-      "peak_rss_mb": 264.2,
+      "time_seconds": 0.113,
+      "peak_rss_mb": 250.9,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -72,8 +72,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t1",
-      "time_seconds": 2.014,
-      "peak_rss_mb": 233.4,
+      "time_seconds": 0.835,
+      "peak_rss_mb": 232.5,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -89,8 +89,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t2",
-      "time_seconds": 1.34,
-      "peak_rss_mb": 230.3,
+      "time_seconds": 0.342,
+      "peak_rss_mb": 260.0,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -106,8 +106,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t4",
-      "time_seconds": 1.371,
-      "peak_rss_mb": 231.6,
+      "time_seconds": 0.239,
+      "peak_rss_mb": 364.6,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -123,8 +123,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t8",
-      "time_seconds": 1.489,
-      "peak_rss_mb": 245.9,
+      "time_seconds": 0.243,
+      "peak_rss_mb": 479.2,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -140,8 +140,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t1",
-      "time_seconds": 2.105,
-      "peak_rss_mb": 2106.1,
+      "time_seconds": 0.932,
+      "peak_rss_mb": 1838.6,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -157,8 +157,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t2",
-      "time_seconds": 1.392,
-      "peak_rss_mb": 2107.8,
+      "time_seconds": 0.371,
+      "peak_rss_mb": 1846.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -174,8 +174,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t4",
-      "time_seconds": 1.41,
-      "peak_rss_mb": 2113.9,
+      "time_seconds": 0.28,
+      "peak_rss_mb": 1855.5,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -191,8 +191,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t8",
-      "time_seconds": 1.526,
-      "peak_rss_mb": 2129.3,
+      "time_seconds": 0.294,
+      "peak_rss_mb": 1881.1,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -208,8 +208,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t1",
-      "time_seconds": 0.202,
-      "peak_rss_mb": 281.9,
+      "time_seconds": 0.112,
+      "peak_rss_mb": 276.2,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -225,8 +225,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t2",
-      "time_seconds": 0.144,
-      "peak_rss_mb": 280.5,
+      "time_seconds": 0.058,
+      "peak_rss_mb": 290.7,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -242,8 +242,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t4",
-      "time_seconds": 0.145,
-      "peak_rss_mb": 285.1,
+      "time_seconds": 0.041,
+      "peak_rss_mb": 308.8,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -259,8 +259,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t8",
-      "time_seconds": 0.155,
-      "peak_rss_mb": 296.3,
+      "time_seconds": 0.042,
+      "peak_rss_mb": 343.8,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -276,8 +276,8 @@
     },
     {
       "name": "cooler_cool_stream_count_r10000_t1",
-      "time_seconds": 1.272,
-      "peak_rss_mb": 814.0,
+      "time_seconds": 1.202,
+      "peak_rss_mb": 732.4,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -293,8 +293,8 @@
     },
     {
       "name": "cooler_cool_collect_all_r10000_t1",
-      "time_seconds": 2.031,
-      "peak_rss_mb": 1515.6,
+      "time_seconds": 1.938,
+      "peak_rss_mb": 1431.1,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -310,8 +310,8 @@
     },
     {
       "name": "cooler_cool_region_r10000_t1",
-      "time_seconds": 0.118,
-      "peak_rss_mb": 265.3,
+      "time_seconds": 0.11,
+      "peak_rss_mb": 255.5,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -327,8 +327,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t1",
-      "time_seconds": 1.955,
-      "peak_rss_mb": 227.8,
+      "time_seconds": 0.826,
+      "peak_rss_mb": 230.2,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -344,8 +344,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t2",
-      "time_seconds": 1.339,
-      "peak_rss_mb": 230.7,
+      "time_seconds": 0.34,
+      "peak_rss_mb": 259.1,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -361,8 +361,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t4",
-      "time_seconds": 1.378,
-      "peak_rss_mb": 233.4,
+      "time_seconds": 0.232,
+      "peak_rss_mb": 335.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -378,8 +378,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t8",
-      "time_seconds": 1.514,
-      "peak_rss_mb": 245.4,
+      "time_seconds": 0.244,
+      "peak_rss_mb": 467.8,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -395,8 +395,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t1",
-      "time_seconds": 2.109,
-      "peak_rss_mb": 2103.1,
+      "time_seconds": 0.921,
+      "peak_rss_mb": 1835.3,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -412,8 +412,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t2",
-      "time_seconds": 1.373,
-      "peak_rss_mb": 2104.2,
+      "time_seconds": 0.371,
+      "peak_rss_mb": 1843.6,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -429,8 +429,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t4",
-      "time_seconds": 1.394,
-      "peak_rss_mb": 2111.0,
+      "time_seconds": 0.282,
+      "peak_rss_mb": 1856.1,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -446,8 +446,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t8",
-      "time_seconds": 1.524,
-      "peak_rss_mb": 2131.3,
+      "time_seconds": 0.295,
+      "peak_rss_mb": 1880.1,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -463,8 +463,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t1",
-      "time_seconds": 0.202,
-      "peak_rss_mb": 281.5,
+      "time_seconds": 0.111,
+      "peak_rss_mb": 275.5,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -480,8 +480,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t2",
-      "time_seconds": 0.147,
-      "peak_rss_mb": 280.8,
+      "time_seconds": 0.058,
+      "peak_rss_mb": 291.3,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -497,8 +497,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t4",
-      "time_seconds": 0.143,
-      "peak_rss_mb": 284.1,
+      "time_seconds": 0.04,
+      "peak_rss_mb": 306.6,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -514,8 +514,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t8",
-      "time_seconds": 0.155,
-      "peak_rss_mb": 294.6,
+      "time_seconds": 0.042,
+      "peak_rss_mb": 345.2,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -531,8 +531,8 @@
     },
     {
       "name": "cooler_cool_stream_count_r10000_t1",
-      "time_seconds": 1.271,
-      "peak_rss_mb": 808.3,
+      "time_seconds": 1.209,
+      "peak_rss_mb": 747.5,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -548,8 +548,8 @@
     },
     {
       "name": "cooler_cool_collect_all_r10000_t1",
-      "time_seconds": 2.056,
-      "peak_rss_mb": 1526.5,
+      "time_seconds": 1.932,
+      "peak_rss_mb": 1448.7,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -565,8 +565,8 @@
     },
     {
       "name": "cooler_cool_region_r10000_t1",
-      "time_seconds": 0.12,
-      "peak_rss_mb": 298.4,
+      "time_seconds": 0.11,
+      "peak_rss_mb": 249.6,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -582,8 +582,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t1",
-      "time_seconds": 1.955,
-      "peak_rss_mb": 227.8,
+      "time_seconds": 0.824,
+      "peak_rss_mb": 230.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -599,8 +599,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t2",
-      "time_seconds": 1.341,
-      "peak_rss_mb": 229.0,
+      "time_seconds": 0.34,
+      "peak_rss_mb": 267.3,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -616,8 +616,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t4",
-      "time_seconds": 1.368,
-      "peak_rss_mb": 232.6,
+      "time_seconds": 0.235,
+      "peak_rss_mb": 365.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -633,8 +633,8 @@
     },
     {
       "name": "polars_bio_cool_stream_count_r10000_t8",
-      "time_seconds": 1.507,
-      "peak_rss_mb": 243.3,
+      "time_seconds": 0.24,
+      "peak_rss_mb": 461.4,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -650,8 +650,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t1",
-      "time_seconds": 2.098,
-      "peak_rss_mb": 2101.1,
+      "time_seconds": 0.929,
+      "peak_rss_mb": 1836.4,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -667,8 +667,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t2",
-      "time_seconds": 1.369,
-      "peak_rss_mb": 2105.8,
+      "time_seconds": 0.37,
+      "peak_rss_mb": 1844.6,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -684,8 +684,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t4",
-      "time_seconds": 1.454,
-      "peak_rss_mb": 2113.7,
+      "time_seconds": 0.282,
+      "peak_rss_mb": 1853.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -701,8 +701,8 @@
     },
     {
       "name": "polars_bio_cool_collect_all_r10000_t8",
-      "time_seconds": 1.519,
-      "peak_rss_mb": 2127.6,
+      "time_seconds": 0.29,
+      "peak_rss_mb": 1880.9,
       "row_count": 24521334,
       "column_count": 7,
       "columns": [
@@ -718,8 +718,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t1",
-      "time_seconds": 0.2,
-      "peak_rss_mb": 276.5,
+      "time_seconds": 0.111,
+      "peak_rss_mb": 276.3,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -735,8 +735,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t2",
-      "time_seconds": 0.146,
-      "peak_rss_mb": 278.8,
+      "time_seconds": 0.057,
+      "peak_rss_mb": 290.1,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -752,8 +752,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t4",
-      "time_seconds": 0.143,
-      "peak_rss_mb": 281.1,
+      "time_seconds": 0.041,
+      "peak_rss_mb": 306.3,
       "row_count": 773355,
       "column_count": 7,
       "columns": [
@@ -769,8 +769,8 @@
     },
     {
       "name": "polars_bio_cool_region_r10000_t8",
-      "time_seconds": 0.152,
-      "peak_rss_mb": 293.2,
+      "time_seconds": 0.042,
+      "peak_rss_mb": 344.0,
       "row_count": 773355,
       "column_count": 7,
       "columns": [

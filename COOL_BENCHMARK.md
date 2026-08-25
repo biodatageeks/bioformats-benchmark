@@ -17,34 +17,31 @@ baseline that native scanning replaces.
 
 | Workload | cooler (chunked pandas) | polars-bio t1 | t2 | t4 | t8 |
 |---|---|---|---|---|---|
-| `stream_count` — count all pixels | 1.27 s / 814 MB | 1.96 s / 233 MB | 1.34 s / 231 MB | 1.37 s | 1.51 s |
-| `collect_all` — full joined table | 2.06 s / 1537 MB | 2.11 s / 2106 MB | **1.37 s** / 2108 MB | 1.41 s | 1.52 s |
-| `region` — 20 Mb box, 773,355 rows | **0.12 s** / 298 MB | 0.20 s / 282 MB | 0.15 s / 281 MB | **0.14 s** | 0.16 s |
+| `stream_count` — count all pixels | 1.21 s / 784 MB | 0.83 s / 232 MB | 0.34 s | **0.24 s** | 0.24 s |
+| `collect_all` — full joined table | 1.94 s / 1467 MB | 0.93 s / 1839 MB | 0.37 s | **0.28 s** | 0.29 s |
+| `region` — 20 Mb box, 773,355 rows | 0.11 s / 256 MB | 0.11 s / 276 MB | 0.06 s | **0.04 s** | 0.04 s |
 
 Numbers are median wall time / peak RSS.
 
 ## Takeaways
 
-- **Streaming count** matches cooler's speed at two partitions while using
-  **3.5× less memory** (231 MB vs 814 MB) — the polars-bio path streams
-  fixed-size batches and never materializes the table.
-- **Full materialization** is 1.5× faster than the chunked-pandas concat at
-  two or more partitions. Peak RSS is higher because the whole joined Polars
-  frame plus one in-flight batch is held; the cooler figure holds the pandas
-  chunks plus the concat.
-- **Region queries** ride the cooler CSR indexes on both sides: polars-bio
-  first-axis predicate pushdown prunes pixel row ranges via
-  `chrom_offset`/`bin1_offset` and lands within ~1.2× of cooler's dedicated
-  `matrix().fetch` (0.14 s vs 0.12 s) — while composing with arbitrary Polars
-  expressions instead of a region string.
-- **Parallel scaling flattens past t2** on this file: libhdf5 serializes raw
-  chunk reads behind a global process lock, so extra partitions only
-  parallelize decode/join work. This is a known and documented limitation.
-- During benchmarking the region workload exposed a polars-bio bug where the
-  Polars optimizer's typed literals (`UInt32`) silently disabled numeric
-  predicate pushdown on the scan path for all formats — fixed and validated
-  (region went from 1.95 s to 0.20 s at t1); the numbers above include the
-  fix.
+- polars-bio is **faster than or equal to the cooler baseline serially on
+  every workload** (1.5x on count, 2.1x on full materialization, parity on
+  the region fetch) and **2.7-6.9x faster at 4 partitions**.
+- The provider reads pixel data through a **direct-chunk fast path**: chunk
+  file addresses are indexed once through libhdf5, then reads are plain file
+  I/O + zlib-rs inflation + byte unshuffling in Rust — the libhdf5 global
+  lock (which previously capped parallel speedups near 1.4x) is not in the
+  data path at all. Every column is validated against a libhdf5 reference
+  read at index time and falls back to ordinary hdf5 reads on any mismatch.
+- Scaling saturates at 4 partitions on this laptop-class machine (memory
+  bandwidth and the final Polars concat), not at 2 as before.
+- Streaming count keeps a flat ~230-480 MB footprint vs cooler's 784 MB
+  chunked pass; region queries now beat cooler's dedicated `matrix().fetch`
+  while composing with arbitrary Polars expressions.
+- Benchmarking earlier revisions exposed two polars-bio issues, both fixed
+  and included here: typed optimizer literals silently disabling numeric
+  predicate pushdown on the scan path, and lock-bound HDF5 decoding.
 
 Reproduce with:
 
