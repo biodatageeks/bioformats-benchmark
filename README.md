@@ -14,8 +14,9 @@ libraries, measuring execution time, peak memory usage, and partition scalabilit
 | **oxbow** | lazy/streaming | BAM, VCF, BCF, FASTQ |
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
-| **polars-bio** | lazy/streaming | BAM, VCF, BCF, BGEN, PGEN, BigWig, BigBed, FASTQ |
+| **polars-bio** | lazy/streaming | BAM, VCF, BCF, BGEN, PGEN, BigWig, BigBed, COOL/MCOOL, FASTQ |
 | **snputils** | eager | VCF, BCF, BGEN |
+| **cooler** | chunked pandas | COOL/MCOOL |
 | **bgen** | eager | BGEN |
 | **pysnptools** | eager | BGEN (unphased only) |
 
@@ -34,6 +35,9 @@ libraries, measuring execution time, peak memory usage, and partition scalabilit
 | BigWig | four BBI scaling workloads | Arrow streaming, Polars count, all-column aggregate, and literal all-column collection |
 | BigBed | four BBI scaling workloads | Arrow streaming, Polars count, all-column aggregate, and literal all-column collection |
 | FASTQ | `all_columns` | All columns (name, sequence, quality, comment) |
+| MCOOL | `stream_count` | Count all Hi-C pixels without materializing the table |
+| MCOOL | `collect_all` | Full joined pixels table (`chrom1..count`) as a Polars DataFrame |
+| MCOOL | `region` | Joined pixels of a 20 Mb genomic box (`matrix().fetch` equivalent) |
 
 ## Data Requirements
 
@@ -46,6 +50,7 @@ libraries, measuring execution time, peak memory usage, and partition scalabilit
 | BigWig | `GSM7256643_...GRCh38.bigWig` (~546 MiB) | NCBI GEO, downloaded and checksum-verified by `setup.sh` |
 | BigBed | `ENCFF001JBR.bigBed` (~16 MiB) | ENCODE, downloaded and checksum-verified by `setup.sh` |
 | FASTQ | `ERR194158.fastq.gz` | EBI SRA (downloaded by `setup.sh`) |
+| MCOOL | `test.mcool` (~146 MiB) | open2c HFF Micro-C (Krietenstein et al. 2021), hg38 chr2+chr17, resolutions 1k/10k/100k/1M, downloaded and checksum-verified by `setup.sh` |
 
 The BCF fixture contains 993,881 biallelic variants and 2,548 samples. The
 dosage workload therefore materializes 2,532,408,788 `Int8` values. `setup.sh`
