@@ -261,6 +261,18 @@ mkdir -p "$(dirname "$BIGWIG_FILE")" "$(dirname "$BIGBED_FILE")"
 download_bbi_fixture "BigWig" "$BIGWIG_URL" "$BIGWIG_FILE" "$BIGWIG_SHA256"
 download_bbi_fixture "BigBed" "$BIGBED_URL" "$BIGBED_FILE" "$BIGBED_SHA256"
 
+# === Cooler (.mcool): open2c HFF Micro-C (Krietenstein et al. 2021) ===
+# The canonical cooltools test dataset: hg38 chr2 + chr17, resolutions
+# 1000/10000/100000/1000000, 76.5M pixels at 1 kb. Reference registry:
+# https://raw.githubusercontent.com/open2c/cooltools/master/datasets/external_test_files.tsv
+COOL_DIR="${COOL_DIR:-/Users/mwiewior/research/data/COOL}"
+MCOOL_FILE="${MCOOL_PATH:-${COOL_DIR}/test.mcool}"
+MCOOL_URL="https://osf.io/3h9js/download"
+MCOOL_SHA256="a77252c0dffc38cdd31c0d8c05751f92f37c094dc462781e960df3fbd8594d14"
+
+mkdir -p "$(dirname "$MCOOL_FILE")"
+download_bbi_fixture "Cooler mcool" "$MCOOL_URL" "$MCOOL_FILE" "$MCOOL_SHA256"
+
 # === FASTQ: EBI SRA ===
 FASTQ_DIR="/Users/mwiewior/research/data/FASTQ"
 FASTQ_FILE="${FASTQ_DIR}/ERR194158.fastq.gz"
