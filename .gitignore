@@ -4,6 +4,9 @@
 .venv-*/
 results/*
 !results/bbi_scaling_full_scan.json
+!results/new_formats.json
+!results/new_formats_smoke.json
 __pycache__/
 *.pyc
+data/new_formats/
 .ipynb_checkpoints/

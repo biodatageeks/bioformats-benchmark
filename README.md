@@ -14,11 +14,42 @@ libraries, measuring execution time, peak memory usage, and partition scalabilit
 | **oxbow** | lazy/streaming | BAM, VCF, BCF, FASTQ |
 | **biobear** | eager | BAM, VCF, FASTQ |
 | **polars-bio** | eager | BAM, VCF, FASTQ |
-| **polars-bio** | lazy/streaming | BAM, VCF, BCF, BGEN, PGEN, BigWig, BigBed, COOL/MCOOL, FASTQ |
+| **polars-bio** | lazy/streaming | BAM, VCF, BCF, BGEN, PGEN, BigWig, BigBed, COOL/MCOOL, FASTQ, A2M, A3M, Stockholm, PDB, mmCIF, Foldcomp |
 | **snputils** | eager | VCF, BCF, BGEN |
 | **cooler** | chunked pandas | COOL/MCOOL |
 | **bgen** | eager | BGEN |
 | **pysnptools** | eager | BGEN (unphased only) |
+| **Biopython** | parse to Polars / independent oracle | A2M, A3M, mmCIF |
+| **pyhmmer / Easel** | parse to Polars | Stockholm |
+| **Gemmi** | parse to Polars | PDB, mmCIF |
+| **Foldcomp** | official decode to Polars | Foldcomp |
+
+## Formats added after polars-bio 0.35.1
+
+[NEW_FORMATS_BENCHMARK.md](NEW_FORMATS_BENCHMARK.md) compares A2M, A3M,
+Stockholm, PDB, mmCIF and Foldcomp on larger inputs, with full-table oracle
+checks for every timed result. It records the precise unreleased `master`
+revision because the package version still reads `0.35.1`.
+
+```bash
+# Build the desired polars-bio checkout in an isolated environment and prepare
+# checksum-pinned sources: ~64 MiB per text workload; 768 Foldcomp entries.
+POLARS_BIO_SOURCE=/path/to/polars-bio bash setup_new_formats.sh
+.venv-newformats/bin/python run_new_formats.py --iterations 3 --threads 1 4 8
+
+# Small integration run using the same readers, schemas and correctness gate.
+.venv-newformats/bin/python prepare_new_formats.py --small --data-dir data/new_formats/smoke
+.venv-newformats/bin/python run_new_formats.py \
+    --manifest data/new_formats/smoke/manifest.json \
+    --iterations 1 --threads 1 4 --output results/new_formats_smoke.json
+.venv-newformats/bin/pytest -q tests/test_new_formats.py
+```
+
+The runner checks every row and every column of the documented shared output
+schema, including nulls and annotations, and exits unsuccessfully on any
+disagreement. It has no skip-verification switch. The large data is downloaded
+or generated locally; only source hashes, scripts and measured JSON results
+are checked into this repository.
 
 ## Test Variants
 

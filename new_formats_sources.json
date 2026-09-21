@@ -1,0 +1,13 @@
+{
+  "io/msa/query.a3m": "7c083f3dd38bbc5b810acf60c6af53e9ffa8007b896b473c322a14832c99749f",
+  "io/msa/query_dotted.a2m": "ce0d0f19d04f5c27c73c59f46902519e4ad622f7e4dddbd87050d40b404cc5dc",
+  "io/msa/PF00001.sto": "6c27275522399b7266681c1f6d5734d997d6ec7208cd47678bd9a35dfbb4e73e",
+  "io/msa/RF00001.sto": "18f91da6b0d9a668caf3d50849db437584140923e5477f7b21ed59453100f77c",
+  "io/msa/PF00001_hmmalign.sto": "489d3f524252b99f9e82d0c1f76677ff1a150fd1cba2b4b2a8cd8c91708fa3b5",
+  "structure/1ubq.pdb": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+  "structure/1ubq.cif": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6",
+  "structure/example_db": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634",
+  "structure/example_db.index": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7",
+  "structure/example_db.lookup": "affe92e18bde3723f290e8c12b8c4884f7afbcce1ab1669fae6d2db2099ee47b",
+  "structure/example_db.dbtype": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+}

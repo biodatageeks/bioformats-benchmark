@@ -1,0 +1,764 @@
+{
+  "status": "passed",
+  "generated_at": "2026-09-21T16:17:56.321932+00:00",
+  "build": {
+    "profile": "release",
+    "source_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "tracked_diff": "",
+    "rustc": "rustc 1.95.0-nightly (57d2fb136 2026-02-01)",
+    "rustflags": "",
+    "command": "maturin develop --release --locked --uv",
+    "extension_sha256": "9212b8f6030ed7507297a8d91041619868d2353c31e134cca3de1f7528a9c032",
+    "cargo_lock_sha256": "b985c84f91a3f21442630ffa2f17a754ed80a65536855ef7488c266d29fd6018",
+    "extension_path": "/Users/mwiewior/research/git/polars-bio/polars_bio/polars_bio.abi3.so",
+    "python_module": "/Users/mwiewior/research/git/polars-bio/polars_bio/__init__.py"
+  },
+  "dataset_manifest": {
+    "schema_version": 1,
+    "fixture_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "small": true,
+    "sources": [
+      {
+        "path": "sources/query.a3m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query.a3m",
+        "sha256": "7c083f3dd38bbc5b810acf60c6af53e9ffa8007b896b473c322a14832c99749f"
+      },
+      {
+        "path": "sources/query_dotted.a2m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query_dotted.a2m",
+        "sha256": "ce0d0f19d04f5c27c73c59f46902519e4ad622f7e4dddbd87050d40b404cc5dc"
+      },
+      {
+        "path": "sources/PF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001.sto",
+        "sha256": "6c27275522399b7266681c1f6d5734d997d6ec7208cd47678bd9a35dfbb4e73e"
+      },
+      {
+        "path": "sources/RF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/RF00001.sto",
+        "sha256": "18f91da6b0d9a668caf3d50849db437584140923e5477f7b21ed59453100f77c"
+      },
+      {
+        "path": "sources/PF00001_hmmalign.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001_hmmalign.sto",
+        "sha256": "489d3f524252b99f9e82d0c1f76677ff1a150fd1cba2b4b2a8cd8c91708fa3b5"
+      },
+      {
+        "path": "sources/1ubq.pdb",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.pdb",
+        "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+      },
+      {
+        "path": "sources/1ubq.cif",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.cif",
+        "sha256": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6"
+      },
+      {
+        "path": "sources/example_db",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db",
+        "sha256": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634"
+      },
+      {
+        "path": "sources/example_db.index",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.index",
+        "sha256": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7"
+      },
+      {
+        "path": "sources/example_db.lookup",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.lookup",
+        "sha256": "affe92e18bde3723f290e8c12b8c4884f7afbcce1ab1669fae6d2db2099ee47b"
+      },
+      {
+        "path": "sources/example_db.dbtype",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.dbtype",
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+      }
+    ],
+    "cases": [
+      {
+        "format": "a2m",
+        "paths": [
+          "scaled.a2m"
+        ],
+        "copies": 1,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a2m",
+            "bytes": 56242,
+            "sha256": "50708f9d4582273338a6eb9bc7b3363db7cf48a8fe31586a46dc16f640760c13"
+          }
+        ],
+        "logical_bytes": 56242
+      },
+      {
+        "format": "a3m",
+        "paths": [
+          "scaled.a3m"
+        ],
+        "copies": 1,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a3m",
+            "bytes": 32481,
+            "sha256": "62e24676b956fdaa1a925acc290253898019cc8c61802cfe4a1ccdad1acba873"
+          }
+        ],
+        "logical_bytes": 32481
+      },
+      {
+        "format": "sto",
+        "paths": [
+          "scaled.sto"
+        ],
+        "copies": 1,
+        "oracle": "easel",
+        "files": [
+          {
+            "path": "scaled.sto",
+            "bytes": 369525,
+            "sha256": "f69c79d8838576a7fe84211e404dd294d1040b30e6954c5b7dbbcc626f797f0c"
+          }
+        ],
+        "logical_bytes": 369525
+      },
+      {
+        "format": "pdb",
+        "paths": [
+          "sources/1ubq.pdb"
+        ],
+        "copies": 1,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/1ubq.pdb",
+            "bytes": 78570,
+            "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+          }
+        ],
+        "logical_bytes": 78570
+      },
+      {
+        "format": "mmcif",
+        "paths": [
+          "sources/1ubq.cif"
+        ],
+        "copies": 1,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/1ubq.cif",
+            "bytes": 103220,
+            "sha256": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6"
+          }
+        ],
+        "logical_bytes": 103220
+      },
+      {
+        "format": "foldcomp",
+        "paths": [
+          "scaled.foldcomp"
+        ],
+        "copies": 1,
+        "oracle": "foldcomp",
+        "files": [
+          {
+            "path": "scaled.foldcomp",
+            "bytes": 52403,
+            "sha256": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634"
+          },
+          {
+            "path": "scaled.foldcomp.index",
+            "bytes": 318,
+            "sha256": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7"
+          },
+          {
+            "path": "scaled.foldcomp.lookup",
+            "bytes": 446,
+            "sha256": "b4ba9e444678e9bd3aed382746c182981b67a6b745af2348fad84229ba7162e9"
+          },
+          {
+            "path": "scaled.foldcomp.dbtype",
+            "bytes": 4,
+            "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+          }
+        ],
+        "logical_bytes": 52403
+      }
+    ]
+  },
+  "machine": {
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "python": "3.12.2",
+    "cpu_logical": 16,
+    "memory_bytes": 68719476736
+  },
+  "versions": {
+    "polars-bio": "0.35.1",
+    "polars": "1.44.2",
+    "pyarrow": "24.0.0",
+    "datafusion": "53.0.0",
+    "numpy": "2.5.3",
+    "gemmi": "0.7.5",
+    "biopython": "1.88",
+    "foldcomp": "1.0.0",
+    "pyhmmer": "0.12.3"
+  },
+  "method": {
+    "iterations": 1,
+    "timing": "fresh subprocess; imports excluded; read + materialize canonical Polars DataFrame; comparison/IPC excluded",
+    "rss": "process high-water RSS captured before IPC/verification, includes imports",
+    "cache": "warm filesystem cache; untimed oracle read before runs; no OS cache flush",
+    "order": "reader order rotated by iteration; sequential processes",
+    "tolerances": {
+      "text_absolute": 1e-09,
+      "foldcomp_absolute": 0.0001,
+      "relative": 0
+    },
+    "quality": "all rows, all columns in the documented canonical schema; exact types, keys, nulls, strings and annotations"
+  },
+  "verification": [
+    {
+      "format": "mmcif",
+      "reader": "biopython-vs-gemmi",
+      "rows": 660,
+      "columns": 27,
+      "cells_checked": 17820,
+      "mismatches": 0,
+      "max_absolute_errors": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "occupancy": 0.0,
+        "b_factor": 0.0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.00036758300848305225,
+      "peak_rss_bytes": 75284480,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.01641758414916694,
+      "peak_rss_bytes": 203341824,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.016732500167563558,
+      "peak_rss_bytes": 203636736,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.0003672500606626272,
+      "peak_rss_bytes": 75284480,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.01583787496201694,
+      "peak_rss_bytes": 202162176,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.01661779102869332,
+      "peak_rss_bytes": 203374592,
+      "rows": 59,
+      "iteration": 1,
+      "quality": {
+        "rows": 59,
+        "columns": 3,
+        "cells_checked": 177,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "seconds": 0.002982292091473937,
+      "peak_rss_bytes": 74989568,
+      "rows": 838,
+      "iteration": 1,
+      "quality": {
+        "rows": 838,
+        "columns": 5,
+        "cells_checked": 4190,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.01771637494675815,
+      "peak_rss_bytes": 209338368,
+      "rows": 838,
+      "iteration": 1,
+      "quality": {
+        "rows": 838,
+        "columns": 5,
+        "cells_checked": 4190,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.0174254581797868,
+      "peak_rss_bytes": 213319680,
+      "rows": 838,
+      "iteration": 1,
+      "quality": {
+        "rows": 838,
+        "columns": 5,
+        "cells_checked": 4190,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 0.005322749959304929,
+      "peak_rss_bytes": 73760768,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 15,
+        "cells_checked": 9900,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.014630709076300263,
+      "peak_rss_bytes": 204144640,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 15,
+        "cells_checked": 9900,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.015993874985724688,
+      "peak_rss_bytes": 208306176,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 15,
+        "cells_checked": 9900,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 0.002406415995210409,
+      "peak_rss_bytes": 77889536,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 27,
+        "cells_checked": 17820,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.01616241713054478,
+      "peak_rss_bytes": 208207872,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 27,
+        "cells_checked": 17820,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.017734750173985958,
+      "peak_rss_bytes": 208912384,
+      "rows": 660,
+      "iteration": 1,
+      "quality": {
+        "rows": 660,
+        "columns": 27,
+        "cells_checked": 17820,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "seconds": 0.15205945796333253,
+      "peak_rss_bytes": 92422144,
+      "rows": 27131,
+      "iteration": 1,
+      "quality": {
+        "rows": 27131,
+        "columns": 17,
+        "cells_checked": 461227,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.02664649998769164,
+      "peak_rss_bytes": 216498176,
+      "rows": 27131,
+      "iteration": 1,
+      "quality": {
+        "rows": 27131,
+        "columns": 17,
+        "cells_checked": 461227,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.018958084052428603,
+      "peak_rss_bytes": 224002048,
+      "rows": 27131,
+      "iteration": 1,
+      "quality": {
+        "rows": 27131,
+        "columns": 17,
+        "cells_checked": 461227,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.00036758300848305225,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 71.796875
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.01641758414916694,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 193.921875
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.016732500167563558,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 194.203125
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.0003672500606626272,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 71.796875
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.01583787496201694,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 192.796875
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 59,
+      "seconds_median": 0.01661779102869332,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 193.953125
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "runs": 1,
+      "rows": 27131,
+      "seconds_median": 0.15205945796333253,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 88.140625
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 27131,
+      "seconds_median": 0.02664649998769164,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 206.46875
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 27131,
+      "seconds_median": 0.018958084052428603,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 213.625
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.002406415995210409,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 74.28125
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.01616241713054478,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 198.5625
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.017734750173985958,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 199.234375
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.005322749959304929,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 70.34375
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.014630709076300263,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 194.6875
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 660,
+      "seconds_median": 0.015993874985724688,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 198.65625
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "runs": 1,
+      "rows": 838,
+      "seconds_median": 0.002982292091473937,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 71.515625
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 1,
+      "rows": 838,
+      "seconds_median": 0.01771637494675815,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 199.640625
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 1,
+      "rows": 838,
+      "seconds_median": 0.0174254581797868,
+      "seconds_stdev": null,
+      "peak_rss_mib_median": 203.4375
+    }
+  ]
+}

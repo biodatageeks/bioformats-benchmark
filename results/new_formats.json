@@ -1,0 +1,1868 @@
+{
+  "status": "passed",
+  "generated_at": "2026-09-21T16:13:26.520655+00:00",
+  "build": {
+    "profile": "release",
+    "source_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "tracked_diff": "",
+    "rustc": "rustc 1.95.0-nightly (57d2fb136 2026-02-01)",
+    "rustflags": "",
+    "command": "maturin develop --release --locked --uv",
+    "extension_sha256": "9212b8f6030ed7507297a8d91041619868d2353c31e134cca3de1f7528a9c032",
+    "cargo_lock_sha256": "b985c84f91a3f21442630ffa2f17a754ed80a65536855ef7488c266d29fd6018",
+    "extension_path": "/Users/mwiewior/research/git/polars-bio/polars_bio/polars_bio.abi3.so",
+    "python_module": "/Users/mwiewior/research/git/polars-bio/polars_bio/__init__.py"
+  },
+  "dataset_manifest": {
+    "schema_version": 1,
+    "fixture_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "small": false,
+    "sources": [
+      {
+        "path": "sources/query.a3m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query.a3m",
+        "sha256": "7c083f3dd38bbc5b810acf60c6af53e9ffa8007b896b473c322a14832c99749f"
+      },
+      {
+        "path": "sources/query_dotted.a2m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query_dotted.a2m",
+        "sha256": "ce0d0f19d04f5c27c73c59f46902519e4ad622f7e4dddbd87050d40b404cc5dc"
+      },
+      {
+        "path": "sources/PF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001.sto",
+        "sha256": "6c27275522399b7266681c1f6d5734d997d6ec7208cd47678bd9a35dfbb4e73e"
+      },
+      {
+        "path": "sources/RF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/RF00001.sto",
+        "sha256": "18f91da6b0d9a668caf3d50849db437584140923e5477f7b21ed59453100f77c"
+      },
+      {
+        "path": "sources/PF00001_hmmalign.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001_hmmalign.sto",
+        "sha256": "489d3f524252b99f9e82d0c1f76677ff1a150fd1cba2b4b2a8cd8c91708fa3b5"
+      },
+      {
+        "path": "sources/1ubq.pdb",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.pdb",
+        "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+      },
+      {
+        "path": "sources/1ubq.cif",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.cif",
+        "sha256": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6"
+      },
+      {
+        "path": "sources/example_db",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db",
+        "sha256": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634"
+      },
+      {
+        "path": "sources/example_db.index",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.index",
+        "sha256": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7"
+      },
+      {
+        "path": "sources/example_db.lookup",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.lookup",
+        "sha256": "affe92e18bde3723f290e8c12b8c4884f7afbcce1ab1669fae6d2db2099ee47b"
+      },
+      {
+        "path": "sources/example_db.dbtype",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.dbtype",
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+      },
+      {
+        "path": "sources/1jj2.pdb",
+        "url": "https://files.rcsb.org/download/1JJ2.pdb.gz",
+        "sha256": "f3eeb133fedd51dfb3d98b50c338c76bb1e7c5474416744eccd8862a7b7308bb"
+      },
+      {
+        "path": "sources/4v9d.cif",
+        "url": "https://files.rcsb.org/download/4V9D.cif.gz",
+        "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+      }
+    ],
+    "cases": [
+      {
+        "format": "a2m",
+        "paths": [
+          "scaled.a2m"
+        ],
+        "copies": 1201,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a2m",
+            "bytes": 67693729,
+            "sha256": "788338af19e310098d6f0a0041d5e21cd0f4c9cd696a6344ddd4acec6e6922ba"
+          }
+        ],
+        "logical_bytes": 67693729
+      },
+      {
+        "format": "a3m",
+        "paths": [
+          "scaled.a3m"
+        ],
+        "copies": 2089,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a3m",
+            "bytes": 68157072,
+            "sha256": "b5c7c1152a6582bd8e1faae1a17ebfcd1988b541f4c29ff34c0bc3f01e2146e3"
+          }
+        ],
+        "logical_bytes": 68157072
+      },
+      {
+        "format": "sto",
+        "paths": [
+          "scaled.sto"
+        ],
+        "copies": 182,
+        "oracle": "easel",
+        "files": [
+          {
+            "path": "scaled.sto",
+            "bytes": 67254058,
+            "sha256": "914667b2df8e9e833a7c9793e12338f42cc2dc5707b5b68ff5795b03f15a8bd1"
+          }
+        ],
+        "logical_bytes": 67254058
+      },
+      {
+        "format": "pdb",
+        "paths": [
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb"
+        ],
+        "copies": 8,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/1jj2.pdb",
+            "bytes": 8638083,
+            "sha256": "f3eeb133fedd51dfb3d98b50c338c76bb1e7c5474416744eccd8862a7b7308bb"
+          }
+        ],
+        "logical_bytes": 69104664
+      },
+      {
+        "format": "mmcif",
+        "paths": [
+          "sources/4v9d.cif",
+          "sources/4v9d.cif"
+        ],
+        "copies": 2,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/4v9d.cif",
+            "bytes": 35769608,
+            "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+          }
+        ],
+        "logical_bytes": 71539216
+      },
+      {
+        "format": "foldcomp",
+        "paths": [
+          "scaled.foldcomp"
+        ],
+        "copies": 32,
+        "oracle": "foldcomp",
+        "files": [
+          {
+            "path": "scaled.foldcomp",
+            "bytes": 1676896,
+            "sha256": "8057dc686be98c72acd2768c4bbdb85a370c7bb027d051402dd6f9dc67d60e67"
+          },
+          {
+            "path": "scaled.foldcomp.index",
+            "bytes": 12434,
+            "sha256": "b0d707b06abfc17f43a6187ed6876e5b86e6aecef313485745f0a25896428b15"
+          },
+          {
+            "path": "scaled.foldcomp.lookup",
+            "bytes": 15778,
+            "sha256": "3aaae26a702d4d420eb1a441379cc6587510bf9dfeb7e22daddad16f6ac08d32"
+          },
+          {
+            "path": "scaled.foldcomp.dbtype",
+            "bytes": 4,
+            "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+          }
+        ],
+        "logical_bytes": 1676896
+      }
+    ]
+  },
+  "machine": {
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "python": "3.12.2",
+    "cpu_logical": 16,
+    "memory_bytes": 68719476736
+  },
+  "versions": {
+    "polars-bio": "0.35.1",
+    "polars": "1.44.2",
+    "pyarrow": "24.0.0",
+    "datafusion": "53.0.0",
+    "numpy": "2.5.3",
+    "gemmi": "0.7.5",
+    "biopython": "1.88",
+    "foldcomp": "1.0.0",
+    "pyhmmer": "0.12.3"
+  },
+  "method": {
+    "iterations": 3,
+    "timing": "fresh subprocess; imports excluded; read + materialize canonical Polars DataFrame; comparison/IPC excluded",
+    "rss": "process high-water RSS captured before IPC/verification, includes imports",
+    "cache": "warm filesystem cache; untimed oracle read before runs; no OS cache flush",
+    "order": "reader order rotated by iteration; sequential processes",
+    "tolerances": {
+      "text_absolute": 1e-09,
+      "foldcomp_absolute": 0.0001,
+      "relative": 0
+    },
+    "quality": "all rows, all columns in the documented canonical schema; exact types, keys, nulls, strings and annotations"
+  },
+  "verification": [
+    {
+      "format": "mmcif",
+      "reader": "biopython-vs-gemmi",
+      "rows": 584708,
+      "columns": 27,
+      "cells_checked": 15787116,
+      "mismatches": 0,
+      "max_absolute_errors": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "occupancy": 0.0,
+        "b_factor": 0.0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.1936874999664724,
+      "peak_rss_bytes": 315768832,
+      "rows": 70859,
+      "iteration": 1,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04260129202157259,
+      "peak_rss_bytes": 293715968,
+      "rows": 70859,
+      "iteration": 1,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.04175320896320045,
+      "peak_rss_bytes": 297385984,
+      "rows": 70859,
+      "iteration": 1,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.04168270784430206,
+      "peak_rss_bytes": 294977536,
+      "rows": 70859,
+      "iteration": 1,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04348091688007116,
+      "peak_rss_bytes": 296108032,
+      "rows": 70859,
+      "iteration": 2,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.042184083024039865,
+      "peak_rss_bytes": 294600704,
+      "rows": 70859,
+      "iteration": 2,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.04311616602353752,
+      "peak_rss_bytes": 299057152,
+      "rows": 70859,
+      "iteration": 2,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.19659495796076953,
+      "peak_rss_bytes": 313098240,
+      "rows": 70859,
+      "iteration": 2,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.041985665913671255,
+      "peak_rss_bytes": 294371328,
+      "rows": 70859,
+      "iteration": 3,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.04319758294150233,
+      "peak_rss_bytes": 297992192,
+      "rows": 70859,
+      "iteration": 3,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.19626175006851554,
+      "peak_rss_bytes": 311820288,
+      "rows": 70859,
+      "iteration": 3,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04528487497009337,
+      "peak_rss_bytes": 296189952,
+      "rows": 70859,
+      "iteration": 3,
+      "quality": {
+        "rows": 70859,
+        "columns": 3,
+        "cells_checked": 212577,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.2664177499245852,
+      "peak_rss_bytes": 337854464,
+      "rows": 123251,
+      "iteration": 1,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04898120788857341,
+      "peak_rss_bytes": 296894464,
+      "rows": 123251,
+      "iteration": 1,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.04990949993953109,
+      "peak_rss_bytes": 300679168,
+      "rows": 123251,
+      "iteration": 1,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.05039729201234877,
+      "peak_rss_bytes": 299745280,
+      "rows": 123251,
+      "iteration": 1,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04912516614422202,
+      "peak_rss_bytes": 296878080,
+      "rows": 123251,
+      "iteration": 2,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.0503328328486532,
+      "peak_rss_bytes": 299941888,
+      "rows": 123251,
+      "iteration": 2,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.04995324998162687,
+      "peak_rss_bytes": 301858816,
+      "rows": 123251,
+      "iteration": 2,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.264475290896371,
+      "peak_rss_bytes": 338100224,
+      "rows": 123251,
+      "iteration": 2,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.049085458973422647,
+      "peak_rss_bytes": 299122688,
+      "rows": 123251,
+      "iteration": 3,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.050512917106971145,
+      "peak_rss_bytes": 298680320,
+      "rows": 123251,
+      "iteration": 3,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "seconds": 0.26866408297792077,
+      "peak_rss_bytes": 337854464,
+      "rows": 123251,
+      "iteration": 3,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.04801125009544194,
+      "peak_rss_bytes": 297631744,
+      "rows": 123251,
+      "iteration": 3,
+      "quality": {
+        "rows": 123251,
+        "columns": 3,
+        "cells_checked": 369753,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "seconds": 0.44655987503938377,
+      "peak_rss_bytes": 507183104,
+      "rows": 152516,
+      "iteration": 1,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.08950204192660749,
+      "peak_rss_bytes": 301400064,
+      "rows": 152516,
+      "iteration": 1,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.057328041875734925,
+      "peak_rss_bytes": 330022912,
+      "rows": 152516,
+      "iteration": 1,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.0526076250243932,
+      "peak_rss_bytes": 355221504,
+      "rows": 152516,
+      "iteration": 1,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.09242566698230803,
+      "peak_rss_bytes": 301219840,
+      "rows": 152516,
+      "iteration": 2,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.05713200010359287,
+      "peak_rss_bytes": 333987840,
+      "rows": 152516,
+      "iteration": 2,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.055034499848261476,
+      "peak_rss_bytes": 361988096,
+      "rows": 152516,
+      "iteration": 2,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "seconds": 0.4432401249650866,
+      "peak_rss_bytes": 502366208,
+      "rows": 152516,
+      "iteration": 2,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.05717837484553456,
+      "peak_rss_bytes": 327925760,
+      "rows": 152516,
+      "iteration": 3,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.05515995807945728,
+      "peak_rss_bytes": 363593728,
+      "rows": 152516,
+      "iteration": 3,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "seconds": 0.4475803340319544,
+      "peak_rss_bytes": 506003456,
+      "rows": 152516,
+      "iteration": 3,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.0943994999397546,
+      "peak_rss_bytes": 301793280,
+      "rows": 152516,
+      "iteration": 3,
+      "quality": {
+        "rows": 152516,
+        "columns": 5,
+        "cells_checked": 762580,
+        "mismatches": 0,
+        "max_absolute_errors": {}
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.720813749823719,
+      "peak_rss_bytes": 498466816,
+      "rows": 788344,
+      "iteration": 1,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.5076032499782741,
+      "peak_rss_bytes": 572882944,
+      "rows": 788344,
+      "iteration": 1,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.1692625831346959,
+      "peak_rss_bytes": 1079918592,
+      "rows": 788344,
+      "iteration": 1,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.12316154199652374,
+      "peak_rss_bytes": 1301004288,
+      "rows": 788344,
+      "iteration": 1,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.5070396659430116,
+      "peak_rss_bytes": 574504960,
+      "rows": 788344,
+      "iteration": 2,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.17311583389528096,
+      "peak_rss_bytes": 994934784,
+      "rows": 788344,
+      "iteration": 2,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.12690145801752806,
+      "peak_rss_bytes": 1299546112,
+      "rows": 788344,
+      "iteration": 2,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.714110458968207,
+      "peak_rss_bytes": 528744448,
+      "rows": 788344,
+      "iteration": 2,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.17177358316257596,
+      "peak_rss_bytes": 995819520,
+      "rows": 788344,
+      "iteration": 3,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.13290858292020857,
+      "peak_rss_bytes": 1334001664,
+      "rows": 788344,
+      "iteration": 3,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.748807667056099,
+      "peak_rss_bytes": 522321920,
+      "rows": 788344,
+      "iteration": 3,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.5071801249869168,
+      "peak_rss_bytes": 573587456,
+      "rows": 788344,
+      "iteration": 3,
+      "quality": {
+        "rows": 788344,
+        "columns": 15,
+        "cells_checked": 11825160,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 1.0765061671845615,
+      "peak_rss_bytes": 1049509888,
+      "rows": 584708,
+      "iteration": 1,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 1.2926656659692526,
+      "peak_rss_bytes": 1521729536,
+      "rows": 584708,
+      "iteration": 1,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.6982424159068614,
+      "peak_rss_bytes": 2204073984,
+      "rows": 584708,
+      "iteration": 1,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.7098746669944376,
+      "peak_rss_bytes": 2210185216,
+      "rows": 584708,
+      "iteration": 1,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 1.2956804579589516,
+      "peak_rss_bytes": 1573994496,
+      "rows": 584708,
+      "iteration": 2,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.6936115419957787,
+      "peak_rss_bytes": 2209136640,
+      "rows": 584708,
+      "iteration": 2,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.6960360000375658,
+      "peak_rss_bytes": 2203336704,
+      "rows": 584708,
+      "iteration": 2,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 1.0852594170719385,
+      "peak_rss_bytes": 1008123904,
+      "rows": 584708,
+      "iteration": 2,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.6837412919849157,
+      "peak_rss_bytes": 2089598976,
+      "rows": 584708,
+      "iteration": 3,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.7140193339437246,
+      "peak_rss_bytes": 2207940608,
+      "rows": 584708,
+      "iteration": 3,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 1.127889416879043,
+      "peak_rss_bytes": 1082638336,
+      "rows": 584708,
+      "iteration": 3,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 1.2961428330745548,
+      "peak_rss_bytes": 1561788416,
+      "rows": 584708,
+      "iteration": 3,
+      "quality": {
+        "rows": 584708,
+        "columns": 27,
+        "cells_checked": 15787116,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "seconds": 4.775551040889695,
+      "peak_rss_bytes": 396328960,
+      "rows": 868192,
+      "iteration": 1,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.40376654197461903,
+      "peak_rss_bytes": 478969856,
+      "rows": 868192,
+      "iteration": 1,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.09898941707797348,
+      "peak_rss_bytes": 495419392,
+      "rows": 868192,
+      "iteration": 1,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.09124829201027751,
+      "peak_rss_bytes": 507691008,
+      "rows": 868192,
+      "iteration": 1,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.39207483315840364,
+      "peak_rss_bytes": 479723520,
+      "rows": 868192,
+      "iteration": 2,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.09847458289004862,
+      "peak_rss_bytes": 489586688,
+      "rows": 868192,
+      "iteration": 2,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.09140420914627612,
+      "peak_rss_bytes": 509165568,
+      "rows": 868192,
+      "iteration": 2,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "seconds": 4.751675084000453,
+      "peak_rss_bytes": 395706368,
+      "rows": 868192,
+      "iteration": 2,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 0.09791049989871681,
+      "peak_rss_bytes": 492748800,
+      "rows": 868192,
+      "iteration": 3,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.08905591606162488,
+      "peak_rss_bytes": 508346368,
+      "rows": 868192,
+      "iteration": 3,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "seconds": 4.734223042149097,
+      "peak_rss_bytes": 396050432,
+      "rows": 868192,
+      "iteration": 3,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 0.41564708412624896,
+      "peak_rss_bytes": 482656256,
+      "rows": 868192,
+      "iteration": 3,
+      "quality": {
+        "rows": 868192,
+        "columns": 17,
+        "cells_checked": 14759264,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "format": "a2m",
+      "reader": "biopython",
+      "threads": 1,
+      "runs": 3,
+      "rows": 70859,
+      "seconds_median": 0.19626175006851554,
+      "seconds_stdev": 0.0015911789693982632,
+      "peak_rss_mib_median": 298.59375
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 70859,
+      "seconds_median": 0.04348091688007116,
+      "seconds_stdev": 0.001368065673608586,
+      "peak_rss_mib_median": 282.390625
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 70859,
+      "seconds_median": 0.041985665913671255,
+      "seconds_stdev": 0.00021566101479461653,
+      "peak_rss_mib_median": 280.953125
+    },
+    {
+      "format": "a2m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 70859,
+      "seconds_median": 0.04311616602353752,
+      "seconds_stdev": 0.000852083488306307,
+      "peak_rss_mib_median": 284.1875
+    },
+    {
+      "format": "a3m",
+      "reader": "biopython",
+      "threads": 1,
+      "runs": 3,
+      "rows": 123251,
+      "seconds_median": 0.2664177499245852,
+      "seconds_stdev": 0.0020962322694639828,
+      "peak_rss_mib_median": 322.203125
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 123251,
+      "seconds_median": 0.04898120788857341,
+      "seconds_stdev": 0.0006058535388958426,
+      "peak_rss_mib_median": 283.140625
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 123251,
+      "seconds_median": 0.04990949993953109,
+      "seconds_stdev": 0.000634323241780614,
+      "peak_rss_mib_median": 286.046875
+    },
+    {
+      "format": "a3m",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 123251,
+      "seconds_median": 0.05039729201234877,
+      "seconds_stdev": 0.0002954572103100521,
+      "peak_rss_mib_median": 285.859375
+    },
+    {
+      "format": "foldcomp",
+      "reader": "foldcomp",
+      "threads": 1,
+      "runs": 3,
+      "rows": 868192,
+      "seconds_median": 4.751675084000453,
+      "seconds_stdev": 0.020747042207108938,
+      "peak_rss_mib_median": 377.703125
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 868192,
+      "seconds_median": 0.40376654197461903,
+      "seconds_stdev": 0.011786251542587722,
+      "peak_rss_mib_median": 457.5
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 868192,
+      "seconds_median": 0.09847458289004862,
+      "seconds_stdev": 0.0005396458934432973,
+      "peak_rss_mib_median": 469.921875
+    },
+    {
+      "format": "foldcomp",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 868192,
+      "seconds_median": 0.09124829201027751,
+      "seconds_stdev": 0.0013130944917096473,
+      "peak_rss_mib_median": 484.796875
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "runs": 3,
+      "rows": 584708,
+      "seconds_median": 1.0852594170719385,
+      "seconds_stdev": 0.027489921232790104,
+      "peak_rss_mib_median": 1000.890625
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 584708,
+      "seconds_median": 1.2956804579589516,
+      "seconds_stdev": 0.0018882731337952743,
+      "peak_rss_mib_median": 1489.4375
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 584708,
+      "seconds_median": 0.6936115419957787,
+      "seconds_stdev": 0.007406634677288919,
+      "peak_rss_mib_median": 2101.96875
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 584708,
+      "seconds_median": 0.7098746669944376,
+      "seconds_stdev": 0.00941707018879481,
+      "peak_rss_mib_median": 2105.65625
+    },
+    {
+      "format": "pdb",
+      "reader": "gemmi",
+      "threads": 1,
+      "runs": 3,
+      "rows": 788344,
+      "seconds_median": 4.720813749823719,
+      "seconds_stdev": 0.01840511595273321,
+      "peak_rss_mib_median": 498.125
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 788344,
+      "seconds_median": 0.5071801249869168,
+      "seconds_stdev": 0.0002933685015268361,
+      "peak_rss_mib_median": 547.015625
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 788344,
+      "seconds_median": 0.17177358316257596,
+      "seconds_stdev": 0.0019559439150706004,
+      "peak_rss_mib_median": 949.6875
+    },
+    {
+      "format": "pdb",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 788344,
+      "seconds_median": 0.12690145801752806,
+      "seconds_stdev": 0.00491727106243148,
+      "peak_rss_mib_median": 1240.734375
+    },
+    {
+      "format": "sto",
+      "reader": "easel",
+      "threads": 1,
+      "runs": 3,
+      "rows": 152516,
+      "seconds_median": 0.44655987503938377,
+      "seconds_stdev": 0.0022693424839013094,
+      "peak_rss_mib_median": 482.5625
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 152516,
+      "seconds_median": 0.09242566698230803,
+      "seconds_stdev": 0.0024640310807279866,
+      "peak_rss_mib_median": 287.4375
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 152516,
+      "seconds_median": 0.05717837484553456,
+      "seconds_stdev": 0.00010245585475685858,
+      "peak_rss_mib_median": 314.734375
+    },
+    {
+      "format": "sto",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 152516,
+      "seconds_median": 0.055034499848261476,
+      "seconds_stdev": 0.0014387416494094879,
+      "peak_rss_mib_median": 345.21875
+    }
+  ]
+}
