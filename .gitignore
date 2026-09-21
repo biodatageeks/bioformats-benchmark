@@ -6,6 +6,10 @@ results/*
 !results/bbi_scaling_full_scan.json
 !results/new_formats.json
 !results/new_formats_smoke.json
+!results/new_formats_profiles.json
+!results/mmcif_eight_sources.json
+!results/mmcif_native_profile.json
+!results/mmcif_stack_sample.txt
 __pycache__/
 *.pyc
 data/new_formats/

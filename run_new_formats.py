@@ -252,8 +252,8 @@ def main():
                 reference_path = temp / "reference.arrow"
                 run_child(manifest, fmt, oracle, 1, reference_path, args.timeout)
                 expected = pl.read_ipc(reference_path, memory_map=False)
-                # Gemmi is also the current provider's CIF tokenizer. Mandatory
-                # MMCIF2Dict agreement supplies a genuinely independent parser.
+                # Require a second independent CIF parser in addition to Gemmi.
+                # The measured v1.13.0 provider has its own Rust CIF tokenizer.
                 if fmt == "mmcif":
                     independent_path = temp / "independent.arrow"
                     run_child(

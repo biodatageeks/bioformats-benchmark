@@ -1,0 +1,33 @@
+diff --git a/datafusion/bio-format-structure/src/mmcif.rs b/datafusion/bio-format-structure/src/mmcif.rs
+index fe3fb71..5085890 100644
+--- a/datafusion/bio-format-structure/src/mmcif.rs
++++ b/datafusion/bio-format-structure/src/mmcif.rs
+@@ -49,5 +49,9 @@ impl Blocks {
+         options: &StructureOptions,
+     ) -> Result<Option<NormalizedEntry>> {
++        let started = std::time::Instant::now();
+         let b = self.0.block(index)?;
++        if std::env::var_os("BIO_PROFILE_STAGES").is_some() {
++            eprintln!("PROFILE category_view {}", started.elapsed().as_secs_f64());
++        }
+         let result = decode(&b, index, options);
+         result.map_err(|e| error(format!("mmCIF block {:?}: {e}", b.name)))
+@@ -150,4 +154,5 @@ fn decode(
+     options: &StructureOptions,
+ ) -> Result<Option<NormalizedEntry>> {
++    let started = std::time::Instant::now();
+     let atom_columns: Vec<_> = b
+         .columns
+@@ -253,5 +258,12 @@ fn decode(
+             .push(result.map_err(|e| error(format!("atom row {}: {e}", row + 1)))?);
+     }
++    if std::env::var_os("BIO_PROFILE_STAGES").is_some() {
++        eprintln!("PROFILE decode_atoms {}", started.elapsed().as_secs_f64());
++    }
++    let started = std::time::Instant::now();
+     entry.normalize(options)?;
++    if std::env::var_os("BIO_PROFILE_STAGES").is_some() {
++        eprintln!("PROFILE normalize {}", started.elapsed().as_secs_f64());
++    }
+     Ok(Some(entry))
+ }

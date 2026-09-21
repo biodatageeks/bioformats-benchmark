@@ -1,0 +1,69 @@
+{
+  "runs": [
+    {
+      "arrow_seconds": 0.08061675,
+      "atom_struct_size": 512,
+      "atom_vec_capacity_bytes": 268435456,
+      "category_and_decode_seconds": 0.403312334,
+      "document_drop_seconds": 0.0008945,
+      "entry_drop_seconds": 0.013416291,
+      "iteration": 1,
+      "raw_document_seconds": 0.102577625,
+      "rows": 292354,
+      "total_seconds": 0.6008175,
+      "category_view_seconds": 0.061602417,
+      "decode_atoms_seconds": 0.276938291,
+      "normalize_seconds": 0.064338375
+    },
+    {
+      "arrow_seconds": 0.075925416,
+      "atom_struct_size": 512,
+      "atom_vec_capacity_bytes": 268435456,
+      "category_and_decode_seconds": 0.410363541,
+      "document_drop_seconds": 0.000805334,
+      "entry_drop_seconds": 0.014143792,
+      "iteration": 2,
+      "raw_document_seconds": 0.101318459,
+      "rows": 292354,
+      "total_seconds": 0.602556542,
+      "category_view_seconds": 0.063354166,
+      "decode_atoms_seconds": 0.2773695,
+      "normalize_seconds": 0.069224583
+    },
+    {
+      "arrow_seconds": 0.08438375,
+      "atom_struct_size": 512,
+      "atom_vec_capacity_bytes": 268435456,
+      "category_and_decode_seconds": 0.406980958,
+      "document_drop_seconds": 0.001294208,
+      "entry_drop_seconds": 0.013256125,
+      "iteration": 3,
+      "raw_document_seconds": 0.103118167,
+      "rows": 292354,
+      "total_seconds": 0.609033208,
+      "category_view_seconds": 0.0661065,
+      "decode_atoms_seconds": 0.274562791,
+      "normalize_seconds": 0.065909583
+    }
+  ],
+  "source_revision": "00487b9edf53cbf36918d7d22a03a79fd0acf863",
+  "source_tag": "v1.13.0",
+  "instrumentation_patch_sha256": "10d480e7ed0ff3ab9223c041438e74a3d56c4af8d6d00aa81bfcca7e6bd5c39a",
+  "input": {
+    "path": "sources/4v9d.cif",
+    "bytes": 35769608,
+    "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+  },
+  "machine": {
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "python": "3.12.2",
+    "cpu_logical": 16,
+    "memory_bytes": 68719476736
+  },
+  "rustc": "rustc 1.95.0-nightly (57d2fb136 2026-02-01)",
+  "profile": "release",
+  "allocator": "mimalloc 0.1.52, default-features=false, features=[v2]",
+  "cargo_lock_sha256": "8ed387f249d5adf7d1a7c15a7cf60d1cf6373a4140916bed2dd8300e04abcfc7",
+  "binary_sha256": "d6a5c65ca79ca1bd8ed259ae0b70a2e871f02ed857202cbabcb2f021a2c59a34",
+  "method": "Three fresh processes, one file decode per process, input loaded before timing, no sampling profiler attached. Native stage diagnostic, excludes I/O and Python/Polars. category_and_decode_seconds includes category_view_seconds, decode_atoms_seconds and normalize_seconds; do not add those twice. total_seconds includes document and normalized-entry destruction but excludes final Arrow batch destruction. Separate macOS stack sample is qualitative only."
+}

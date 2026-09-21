@@ -31,6 +31,10 @@ Stockholm, PDB, mmCIF and Foldcomp on larger inputs, with full-table oracle
 checks for every timed result. It records the precise unreleased `master`
 revision because the package version still reads `0.35.1`.
 
+[NEW_FORMATS_PROFILING.md](NEW_FORMATS_PROFILING.md) explains the mmCIF
+single-partition slowdown and format-specific scaling limits using physical
+plans, native stage timings and an oracle-checked eight-source control.
+
 ```bash
 # Build the desired polars-bio checkout in an isolated environment and prepare
 # checksum-pinned sources: ~64 MiB per text workload; 768 Foldcomp entries.

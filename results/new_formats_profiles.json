@@ -1,0 +1,774 @@
+{
+  "generated_at": "2026-09-21T16:39:15.345720+00:00",
+  "build": {
+    "profile": "release",
+    "source_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "tracked_diff": "",
+    "rustc": "rustc 1.95.0-nightly (57d2fb136 2026-02-01)",
+    "rustflags": "",
+    "command": "maturin develop --release --locked --uv",
+    "extension_sha256": "9212b8f6030ed7507297a8d91041619868d2353c31e134cca3de1f7528a9c032",
+    "cargo_lock_sha256": "b985c84f91a3f21442630ffa2f17a754ed80a65536855ef7488c266d29fd6018",
+    "extension_path": "/Users/mwiewior/research/git/polars-bio/polars_bio/polars_bio.abi3.so",
+    "python_module": "/Users/mwiewior/research/git/polars-bio/polars_bio/__init__.py"
+  },
+  "machine": {
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "python": "3.12.2",
+    "cpu_logical": 16,
+    "memory_bytes": 68719476736
+  },
+  "versions": {
+    "polars-bio": "0.35.1",
+    "polars": "1.44.2",
+    "pyarrow": "24.0.0",
+    "datafusion": "53.0.0",
+    "numpy": "2.5.3",
+    "gemmi": "0.7.5",
+    "biopython": "1.88",
+    "foldcomp": "1.0.0",
+    "pyhmmer": "0.12.3"
+  },
+  "dataset_manifest": {
+    "schema_version": 1,
+    "fixture_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "small": false,
+    "sources": [
+      {
+        "path": "sources/query.a3m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query.a3m",
+        "sha256": "7c083f3dd38bbc5b810acf60c6af53e9ffa8007b896b473c322a14832c99749f"
+      },
+      {
+        "path": "sources/query_dotted.a2m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query_dotted.a2m",
+        "sha256": "ce0d0f19d04f5c27c73c59f46902519e4ad622f7e4dddbd87050d40b404cc5dc"
+      },
+      {
+        "path": "sources/PF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001.sto",
+        "sha256": "6c27275522399b7266681c1f6d5734d997d6ec7208cd47678bd9a35dfbb4e73e"
+      },
+      {
+        "path": "sources/RF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/RF00001.sto",
+        "sha256": "18f91da6b0d9a668caf3d50849db437584140923e5477f7b21ed59453100f77c"
+      },
+      {
+        "path": "sources/PF00001_hmmalign.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001_hmmalign.sto",
+        "sha256": "489d3f524252b99f9e82d0c1f76677ff1a150fd1cba2b4b2a8cd8c91708fa3b5"
+      },
+      {
+        "path": "sources/1ubq.pdb",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.pdb",
+        "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+      },
+      {
+        "path": "sources/1ubq.cif",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.cif",
+        "sha256": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6"
+      },
+      {
+        "path": "sources/example_db",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db",
+        "sha256": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634"
+      },
+      {
+        "path": "sources/example_db.index",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.index",
+        "sha256": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7"
+      },
+      {
+        "path": "sources/example_db.lookup",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.lookup",
+        "sha256": "affe92e18bde3723f290e8c12b8c4884f7afbcce1ab1669fae6d2db2099ee47b"
+      },
+      {
+        "path": "sources/example_db.dbtype",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.dbtype",
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+      },
+      {
+        "path": "sources/1jj2.pdb",
+        "url": "https://files.rcsb.org/download/1JJ2.pdb.gz",
+        "sha256": "f3eeb133fedd51dfb3d98b50c338c76bb1e7c5474416744eccd8862a7b7308bb"
+      },
+      {
+        "path": "sources/4v9d.cif",
+        "url": "https://files.rcsb.org/download/4V9D.cif.gz",
+        "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+      }
+    ],
+    "cases": [
+      {
+        "format": "a2m",
+        "paths": [
+          "scaled.a2m"
+        ],
+        "copies": 1201,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a2m",
+            "bytes": 67693729,
+            "sha256": "788338af19e310098d6f0a0041d5e21cd0f4c9cd696a6344ddd4acec6e6922ba"
+          }
+        ],
+        "logical_bytes": 67693729
+      },
+      {
+        "format": "a3m",
+        "paths": [
+          "scaled.a3m"
+        ],
+        "copies": 2089,
+        "oracle": "biopython",
+        "files": [
+          {
+            "path": "scaled.a3m",
+            "bytes": 68157072,
+            "sha256": "b5c7c1152a6582bd8e1faae1a17ebfcd1988b541f4c29ff34c0bc3f01e2146e3"
+          }
+        ],
+        "logical_bytes": 68157072
+      },
+      {
+        "format": "sto",
+        "paths": [
+          "scaled.sto"
+        ],
+        "copies": 182,
+        "oracle": "easel",
+        "files": [
+          {
+            "path": "scaled.sto",
+            "bytes": 67254058,
+            "sha256": "914667b2df8e9e833a7c9793e12338f42cc2dc5707b5b68ff5795b03f15a8bd1"
+          }
+        ],
+        "logical_bytes": 67254058
+      },
+      {
+        "format": "pdb",
+        "paths": [
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb",
+          "sources/1jj2.pdb"
+        ],
+        "copies": 8,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/1jj2.pdb",
+            "bytes": 8638083,
+            "sha256": "f3eeb133fedd51dfb3d98b50c338c76bb1e7c5474416744eccd8862a7b7308bb"
+          }
+        ],
+        "logical_bytes": 69104664
+      },
+      {
+        "format": "mmcif",
+        "paths": [
+          "sources/4v9d.cif",
+          "sources/4v9d.cif"
+        ],
+        "copies": 2,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/4v9d.cif",
+            "bytes": 35769608,
+            "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+          }
+        ],
+        "logical_bytes": 71539216
+      },
+      {
+        "format": "foldcomp",
+        "paths": [
+          "scaled.foldcomp"
+        ],
+        "copies": 32,
+        "oracle": "foldcomp",
+        "files": [
+          {
+            "path": "scaled.foldcomp",
+            "bytes": 1676896,
+            "sha256": "8057dc686be98c72acd2768c4bbdb85a370c7bb027d051402dd6f9dc67d60e67"
+          },
+          {
+            "path": "scaled.foldcomp.index",
+            "bytes": 12434,
+            "sha256": "b0d707b06abfc17f43a6187ed6876e5b86e6aecef313485745f0a25896428b15"
+          },
+          {
+            "path": "scaled.foldcomp.lookup",
+            "bytes": 15778,
+            "sha256": "3aaae26a702d4d420eb1a441379cc6587510bf9dfeb7e22daddad16f6ac08d32"
+          },
+          {
+            "path": "scaled.foldcomp.dbtype",
+            "bytes": 4,
+            "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+          }
+        ],
+        "logical_bytes": 1676896
+      }
+    ]
+  },
+  "method": "One fresh process per configuration, sequential. Diagnostic stage measurements only; use new_formats.json for repeated timings and full oracle verification. POLARS_MAX_THREADS equals requested partitions. Arrow collection includes its own physical planning. The later Polars plugin scan reads the input again; do not add the two paths together.",
+  "runs": [
+    {
+      "format": "a2m",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.0015860421117395163,
+      "physical_planning_seconds": 0.0007202909328043461,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A2MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a2m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00019899988546967506,
+      "arrow_collect_seconds": 0.029543875018134713,
+      "first_batch_seconds": 0.00531266606412828,
+      "arrow_rows": 70859,
+      "arrow_batches": 9,
+      "polars_rows": 70859,
+      "arrow_to_polars_seconds": 0.002488125115633011,
+      "polars_plugin_seconds": 0.04900316707789898
+    },
+    {
+      "format": "a2m",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.0015917918644845486,
+      "physical_planning_seconds": 0.000665667001157999,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A2MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a2m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.000206666998565197,
+      "arrow_collect_seconds": 0.024220749968662858,
+      "first_batch_seconds": 0.0036314171738922596,
+      "arrow_rows": 70859,
+      "arrow_batches": 9,
+      "polars_rows": 70859,
+      "arrow_to_polars_seconds": 0.0018392910715192556,
+      "polars_plugin_seconds": 0.05013720807619393
+    },
+    {
+      "format": "a2m",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.001559291034936905,
+      "physical_planning_seconds": 0.000757874920964241,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A2MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a2m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00026533380150794983,
+      "arrow_collect_seconds": 0.024987166980281472,
+      "first_batch_seconds": 0.0037345418240875006,
+      "arrow_rows": 70859,
+      "arrow_batches": 9,
+      "polars_rows": 70859,
+      "arrow_to_polars_seconds": 0.0019076250027865171,
+      "polars_plugin_seconds": 0.04675041697919369
+    },
+    {
+      "format": "a3m",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.001553625101223588,
+      "physical_planning_seconds": 0.0006606248207390308,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A3MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a3m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00019891606643795967,
+      "arrow_collect_seconds": 0.03422870812937617,
+      "first_batch_seconds": 0.0045684161596000195,
+      "arrow_rows": 123251,
+      "arrow_batches": 16,
+      "polars_rows": 123251,
+      "arrow_to_polars_seconds": 0.003216249868273735,
+      "polars_plugin_seconds": 0.05228945892304182
+    },
+    {
+      "format": "a3m",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.00135908299125731,
+      "physical_planning_seconds": 0.00065820780582726,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A3MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a3m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00020320899784564972,
+      "arrow_collect_seconds": 0.030132333980873227,
+      "first_batch_seconds": 0.0026537920348346233,
+      "arrow_rows": 123251,
+      "arrow_batches": 16,
+      "polars_rows": 123251,
+      "arrow_to_polars_seconds": 0.0025151248555630445,
+      "polars_plugin_seconds": 0.05199204105883837
+    },
+    {
+      "format": "a3m",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.0015899580903351307,
+      "physical_planning_seconds": 0.0006772920023649931,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "A3MExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.a3m, projection=[name, description, sequence]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0002162910532206297,
+      "arrow_collect_seconds": 0.03157691587693989,
+      "first_batch_seconds": 0.002787166042253375,
+      "arrow_rows": 123251,
+      "arrow_batches": 16,
+      "polars_rows": 123251,
+      "arrow_to_polars_seconds": 0.0035151250194758177,
+      "polars_plugin_seconds": 0.05617262492887676
+    },
+    {
+      "format": "sto",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.0014739169273525476,
+      "physical_planning_seconds": 0.0006708751898258924,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "StockholmExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.sto, partitions=1, projection=[alignment_id, name, sequence, gs, gr]",
+            "partitions": 1,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00020554219372570515,
+      "arrow_collect_seconds": 0.07874783407896757,
+      "first_batch_seconds": 0.006746792001649737,
+      "arrow_rows": 152516,
+      "arrow_batches": 19,
+      "polars_rows": 152516,
+      "arrow_to_polars_seconds": 0.007128375116735697,
+      "polars_plugin_seconds": 0.10054374998435378
+    },
+    {
+      "format": "sto",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.0015358750242739916,
+      "physical_planning_seconds": 0.024061542004346848,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 4,
+        "children": [
+          {
+            "display": "StockholmExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.sto, partitions=4, projection=[alignment_id, name, sequence, gs, gr]",
+            "partitions": 4,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.02308633318170905,
+      "arrow_collect_seconds": 0.044633083045482635,
+      "first_batch_seconds": 0.028561750194057822,
+      "arrow_rows": 152516,
+      "arrow_batches": 20,
+      "polars_rows": 152516,
+      "arrow_to_polars_seconds": 0.00456216698512435,
+      "polars_plugin_seconds": 0.0607746250461787
+    },
+    {
+      "format": "sto",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.0015570421237498522,
+      "physical_planning_seconds": 0.02387150004506111,
+      "plan": {
+        "display": "CooperativeExec",
+        "partitions": 8,
+        "children": [
+          {
+            "display": "StockholmExec: file=/Users/mwiewior/research/git/bioformats-benchmark-new-formats/data/new_formats/scaled.sto, partitions=8, projection=[alignment_id, name, sequence, gs, gr]",
+            "partitions": 8,
+            "children": []
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.022881416138261557,
+      "arrow_collect_seconds": 0.03567600017413497,
+      "first_batch_seconds": 0.02862658305093646,
+      "arrow_rows": 152516,
+      "arrow_batches": 24,
+      "polars_rows": 152516,
+      "arrow_to_polars_seconds": 0.00496037513948977,
+      "polars_plugin_seconds": 0.05697441706433892
+    },
+    {
+      "format": "pdb",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.0010530839208513498,
+      "physical_planning_seconds": 0.0009469999931752682,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@6 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@4 as auth_seq_id, insertion_code@5 as insertion_code, atom_name@7 as atom_name, residue_name@8 as residue_name, alt_id@9 as alt_id, x@10 as x, y@11 as y, z@12 as z, occupancy@13 as occupancy, b_factor@14 as b_factor]",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 1,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=8, partitions=1",
+                "partitions": 1,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0003419590648263693,
+      "arrow_collect_seconds": 0.47976141702383757,
+      "first_batch_seconds": 0.06974954204633832,
+      "arrow_rows": 788344,
+      "arrow_batches": 104,
+      "polars_rows": 788344,
+      "arrow_to_polars_seconds": 0.03627358400262892,
+      "polars_plugin_seconds": 0.51742620812729
+    },
+    {
+      "format": "pdb",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.001071625156328082,
+      "physical_planning_seconds": 0.0009518750011920929,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@6 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@4 as auth_seq_id, insertion_code@5 as insertion_code, atom_name@7 as atom_name, residue_name@8 as residue_name, alt_id@9 as alt_id, x@10 as x, y@11 as y, z@12 as z, occupancy@13 as occupancy, b_factor@14 as b_factor]",
+        "partitions": 4,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 4,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=8, partitions=4",
+                "partitions": 4,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0003436249680817127,
+      "arrow_collect_seconds": 0.14856650005094707,
+      "first_batch_seconds": 0.07348370901308954,
+      "arrow_rows": 788344,
+      "arrow_batches": 104,
+      "polars_rows": 788344,
+      "arrow_to_polars_seconds": 0.021957249846309423,
+      "polars_plugin_seconds": 0.1746386659797281
+    },
+    {
+      "format": "pdb",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.0011327918618917465,
+      "physical_planning_seconds": 0.0009316671639680862,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@6 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@4 as auth_seq_id, insertion_code@5 as insertion_code, atom_name@7 as atom_name, residue_name@8 as residue_name, alt_id@9 as alt_id, x@10 as x, y@11 as y, z@12 as z, occupancy@13 as occupancy, b_factor@14 as b_factor]",
+        "partitions": 8,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 8,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=8, partitions=8",
+                "partitions": 8,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00036700000055134296,
+      "arrow_collect_seconds": 0.11233758321031928,
+      "first_batch_seconds": 0.0978369580116123,
+      "arrow_rows": 788344,
+      "arrow_batches": 104,
+      "polars_rows": 788344,
+      "arrow_to_polars_seconds": 0.028236833168193698,
+      "polars_plugin_seconds": 0.1672971670050174
+    },
+    {
+      "format": "mmcif",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.0012242919765412807,
+      "physical_planning_seconds": 0.0010122919920831919,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@10 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@7 as auth_seq_id, insertion_code@9 as insertion_code, atom_name@13 as atom_name, residue_name@14 as residue_name, alt_id@19 as alt_id, x@21 as x, y@22 as y, z@23 as z, occupancy@24 as occupancy, b_factor@25 as b_factor, atom_id@11 as atom_id, record_type@12 as record_type, auth_asym_id@4 as auth_asym_id, label_asym_id@5 as label_asym_id, label_entity_id@6 as label_entity_id, label_seq_id@8 as label_seq_id, auth_atom_id@15 as auth_atom_id, label_atom_id@16 as label_atom_id, auth_comp_id@17 as auth_comp_id, label_comp_id@18 as label_comp_id, element@20 as element, formal_charge@26 as formal_charge]",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 1,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=2, partitions=1",
+                "partitions": 1,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.000412333058193326,
+      "arrow_collect_seconds": 1.2443910408765078,
+      "first_batch_seconds": 0.6251571660395712,
+      "arrow_rows": 584708,
+      "arrow_batches": 72,
+      "polars_rows": 584708,
+      "arrow_to_polars_seconds": 0.06574583402834833,
+      "polars_plugin_seconds": 1.3379266660194844
+    },
+    {
+      "format": "mmcif",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.0011632498353719711,
+      "physical_planning_seconds": 0.000985792139545083,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@10 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@7 as auth_seq_id, insertion_code@9 as insertion_code, atom_name@13 as atom_name, residue_name@14 as residue_name, alt_id@19 as alt_id, x@21 as x, y@22 as y, z@23 as z, occupancy@24 as occupancy, b_factor@25 as b_factor, atom_id@11 as atom_id, record_type@12 as record_type, auth_asym_id@4 as auth_asym_id, label_asym_id@5 as label_asym_id, label_entity_id@6 as label_entity_id, label_seq_id@8 as label_seq_id, auth_atom_id@15 as auth_atom_id, label_atom_id@16 as label_atom_id, auth_comp_id@17 as auth_comp_id, label_comp_id@18 as label_comp_id, element@20 as element, formal_charge@26 as formal_charge]",
+        "partitions": 2,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 2,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=2, partitions=2",
+                "partitions": 2,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00039974995888769627,
+      "arrow_collect_seconds": 0.6423790419939905,
+      "first_batch_seconds": 0.6303665419109166,
+      "arrow_rows": 584708,
+      "arrow_batches": 72,
+      "polars_rows": 584708,
+      "arrow_to_polars_seconds": 0.03463520808145404,
+      "polars_plugin_seconds": 0.7493956252001226
+    },
+    {
+      "format": "mmcif",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.0012477082200348377,
+      "physical_planning_seconds": 0.0012985419016331434,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@10 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@7 as auth_seq_id, insertion_code@9 as insertion_code, atom_name@13 as atom_name, residue_name@14 as residue_name, alt_id@19 as alt_id, x@21 as x, y@22 as y, z@23 as z, occupancy@24 as occupancy, b_factor@25 as b_factor, atom_id@11 as atom_id, record_type@12 as record_type, auth_asym_id@4 as auth_asym_id, label_asym_id@5 as label_asym_id, label_entity_id@6 as label_entity_id, label_seq_id@8 as label_seq_id, auth_atom_id@15 as auth_atom_id, label_atom_id@16 as label_atom_id, auth_comp_id@17 as auth_comp_id, label_comp_id@18 as label_comp_id, element@20 as element, formal_charge@26 as formal_charge]",
+        "partitions": 2,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 2,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=2, partitions=2",
+                "partitions": 2,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0005898748058825731,
+      "arrow_collect_seconds": 0.645073999883607,
+      "first_batch_seconds": 0.6403762910049409,
+      "arrow_rows": 584708,
+      "arrow_batches": 72,
+      "polars_rows": 584708,
+      "arrow_to_polars_seconds": 0.03173220902681351,
+      "polars_plugin_seconds": 0.7350776670500636
+    },
+    {
+      "format": "foldcomp",
+      "requested_partitions": 1,
+      "polars_threads": 1,
+      "registration_seconds": 0.0030030410271137953,
+      "physical_planning_seconds": 0.0009483338799327612,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@8 as atom_index, model_id@4 as model_id, chain_id@5 as chain_id, auth_seq_id@6 as auth_seq_id, insertion_code@7 as insertion_code, atom_name@9 as atom_name, residue_name@10 as residue_name, alt_id@11 as alt_id, x@12 as x, y@13 as y, z@14 as z, occupancy@15 as occupancy, b_factor@16 as b_factor, entry_key@3 as entry_key, entry_name@2 as entry_name]",
+        "partitions": 1,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 1,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=768, partitions=1",
+                "partitions": 1,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0003192080184817314,
+      "arrow_collect_seconds": 0.325551750138402,
+      "first_batch_seconds": 0.001266291132196784,
+      "arrow_rows": 868192,
+      "arrow_batches": 768,
+      "polars_rows": 868192,
+      "arrow_to_polars_seconds": 0.08987595792859793,
+      "polars_plugin_seconds": 0.3986475830897689
+    },
+    {
+      "format": "foldcomp",
+      "requested_partitions": 4,
+      "polars_threads": 4,
+      "registration_seconds": 0.0013809171505272388,
+      "physical_planning_seconds": 0.0009566249791532755,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@8 as atom_index, model_id@4 as model_id, chain_id@5 as chain_id, auth_seq_id@6 as auth_seq_id, insertion_code@7 as insertion_code, atom_name@9 as atom_name, residue_name@10 as residue_name, alt_id@11 as alt_id, x@12 as x, y@13 as y, z@14 as z, occupancy@15 as occupancy, b_factor@16 as b_factor, entry_key@3 as entry_key, entry_name@2 as entry_name]",
+        "partitions": 4,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 4,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=768, partitions=4",
+                "partitions": 4,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.00033683283254504204,
+      "arrow_collect_seconds": 0.08323666593059897,
+      "first_batch_seconds": 0.0010274159722030163,
+      "arrow_rows": 868192,
+      "arrow_batches": 768,
+      "polars_rows": 868192,
+      "arrow_to_polars_seconds": 0.07087812502868474,
+      "polars_plugin_seconds": 0.10434670909307897
+    },
+    {
+      "format": "foldcomp",
+      "requested_partitions": 8,
+      "polars_threads": 8,
+      "registration_seconds": 0.0014146249741315842,
+      "physical_planning_seconds": 0.0009224999230355024,
+      "plan": {
+        "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@8 as atom_index, model_id@4 as model_id, chain_id@5 as chain_id, auth_seq_id@6 as auth_seq_id, insertion_code@7 as insertion_code, atom_name@9 as atom_name, residue_name@10 as residue_name, alt_id@11 as alt_id, x@12 as x, y@13 as y, z@14 as z, occupancy@15 as occupancy, b_factor@16 as b_factor, entry_key@3 as entry_key, entry_name@2 as entry_name]",
+        "partitions": 8,
+        "children": [
+          {
+            "display": "CooperativeExec",
+            "partitions": 8,
+            "children": [
+              {
+                "display": "StructureExec: level=Atom, sources=768, partitions=8",
+                "partitions": 8,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "arrow_stream_setup_seconds": 0.0003565000370144844,
+      "arrow_collect_seconds": 0.04407358402386308,
+      "first_batch_seconds": 0.0010855000000447035,
+      "arrow_rows": 868192,
+      "arrow_batches": 768,
+      "polars_rows": 868192,
+      "arrow_to_polars_seconds": 0.08721279189921916,
+      "polars_plugin_seconds": 0.09682312491349876
+    }
+  ],
+  "eight_source_control_plan": {
+    "format": "mmcif",
+    "requested_partitions": 8,
+    "polars_threads": 8,
+    "registration_seconds": 0.0011743330396711826,
+    "physical_planning_seconds": 0.000984832877293229,
+    "plan": {
+      "display": "ProjectionExec: expr=[source_index@0 as source_index, entry_index@1 as entry_index, atom_index@10 as atom_index, model_id@2 as model_id, chain_id@3 as chain_id, auth_seq_id@7 as auth_seq_id, insertion_code@9 as insertion_code, atom_name@13 as atom_name, residue_name@14 as residue_name, alt_id@19 as alt_id, x@21 as x, y@22 as y, z@23 as z, occupancy@24 as occupancy, b_factor@25 as b_factor, atom_id@11 as atom_id, record_type@12 as record_type, auth_asym_id@4 as auth_asym_id, label_asym_id@5 as label_asym_id, label_entity_id@6 as label_entity_id, label_seq_id@8 as label_seq_id, auth_atom_id@15 as auth_atom_id, label_atom_id@16 as label_atom_id, auth_comp_id@17 as auth_comp_id, label_comp_id@18 as label_comp_id, element@20 as element, formal_charge@26 as formal_charge]",
+      "partitions": 8,
+      "children": [
+        {
+          "display": "CooperativeExec",
+          "partitions": 8,
+          "children": [
+            {
+              "display": "StructureExec: level=Atom, sources=8, partitions=8",
+              "partitions": 8,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

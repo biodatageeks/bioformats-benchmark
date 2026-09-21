@@ -34,7 +34,7 @@ Median seconds from three fresh processes per configuration; lower is better. `t
 | mmCIF | Gemmi → Polars | 1.0853 | 1.2957 | 0.6936 | 0.7099 | 1.53× |
 | Foldcomp | official Foldcomp + Gemmi → Polars | 4.7517 | 0.4038 | 0.0985 | 0.0912 | 52.07× |
 
-A2M/A3M gain little from extra partitions on these single-file workloads. Stockholm, PDB and Foldcomp benefit from additional partitions. mmCIF is slower than its Gemmi adapter at t1 (1.2957 vs 1.0853 s), improves at t4 (0.6936 s), and gains nothing further at t8; it has only two source files to distribute.
+A2M/A3M always use one source partition in this implementation. Stockholm, PDB and Foldcomp benefit from additional partitions. mmCIF is slower than its Gemmi adapter at t1 (1.2957 vs 1.0853 s), improves at t4 (0.6936 s), and gains nothing further at t8; it has only two source files to distribute. The [profiling follow-up](NEW_FORMATS_PROFILING.md) measures the causes and demonstrates 5.45× mmCIF scaling with eight sources, with zero oracle mismatches.
 
 ## Peak process memory
 
@@ -63,7 +63,7 @@ Parallel structure reads trade memory for speed: PDB rises from 547 MiB at t1 to
 
 Each comparison checks exact schema/dtypes, nonempty row count, unique identity keys, complete key population, null masks, strings and nested annotation bags. Sorting is by stable identities and never drops rows or duplicates. Every numeric value must be finite. The predeclared absolute tolerances are 1e-9 for text and 1e-4 for the native-versus-official Foldcomp Float32 decode, with zero relative tolerance. **Observed maximum error was 0.0 for every numeric column in every large run**, so no tolerance was needed to obtain the reported agreement.
 
-Gemmi is also used by the current production CIF tokenizer, which is why its agreement alone is insufficient and the independent `MMCIF2Dict` pass is mandatory. Foldcomp checks decoder/adapter compatibility on reconstructed coordinates; it does not assert lossless equality with the original uncompressed structure.
+The measured v1.13.0 provider has its own Rust CIF tokenizer. Gemmi and Biopython `MMCIF2Dict` therefore supply two independent parsing checks. Foldcomp checks decoder/adapter compatibility on reconstructed coordinates; it does not assert lossless equality with the original uncompressed structure.
 
 ### Oracle normalization and cost
 
