@@ -1,0 +1,10 @@
+biopython==1.88
+foldcomp==1.0.0
+gemmi==0.7.5
+pyhmmer==0.12.3
+numpy==2.5.3
+polars==1.44.2
+pyarrow==24.0.0
+psutil==7.2.2
+pytest==9.1.1
+maturin==1.15.0

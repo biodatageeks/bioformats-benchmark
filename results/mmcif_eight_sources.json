@@ -1,0 +1,545 @@
+{
+  "status": "passed",
+  "generated_at": "2026-09-21T16:30:15.478683+00:00",
+  "build": {
+    "profile": "release",
+    "source_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "tracked_diff": "",
+    "rustc": "rustc 1.95.0-nightly (57d2fb136 2026-02-01)",
+    "rustflags": "",
+    "command": "maturin develop --release --locked --uv",
+    "extension_sha256": "9212b8f6030ed7507297a8d91041619868d2353c31e134cca3de1f7528a9c032",
+    "cargo_lock_sha256": "b985c84f91a3f21442630ffa2f17a754ed80a65536855ef7488c266d29fd6018",
+    "extension_path": "/Users/mwiewior/research/git/polars-bio/polars_bio/polars_bio.abi3.so",
+    "python_module": "/Users/mwiewior/research/git/polars-bio/polars_bio/__init__.py"
+  },
+  "dataset_manifest": {
+    "schema_version": 1,
+    "fixture_revision": "29b04c5159135319d387dfcda9b7b84420dea549",
+    "small": false,
+    "sources": [
+      {
+        "path": "sources/query.a3m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query.a3m",
+        "sha256": "7c083f3dd38bbc5b810acf60c6af53e9ffa8007b896b473c322a14832c99749f"
+      },
+      {
+        "path": "sources/query_dotted.a2m",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/query_dotted.a2m",
+        "sha256": "ce0d0f19d04f5c27c73c59f46902519e4ad622f7e4dddbd87050d40b404cc5dc"
+      },
+      {
+        "path": "sources/PF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001.sto",
+        "sha256": "6c27275522399b7266681c1f6d5734d997d6ec7208cd47678bd9a35dfbb4e73e"
+      },
+      {
+        "path": "sources/RF00001.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/RF00001.sto",
+        "sha256": "18f91da6b0d9a668caf3d50849db437584140923e5477f7b21ed59453100f77c"
+      },
+      {
+        "path": "sources/PF00001_hmmalign.sto",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/io/msa/PF00001_hmmalign.sto",
+        "sha256": "489d3f524252b99f9e82d0c1f76677ff1a150fd1cba2b4b2a8cd8c91708fa3b5"
+      },
+      {
+        "path": "sources/1ubq.pdb",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.pdb",
+        "sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+      },
+      {
+        "path": "sources/1ubq.cif",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/1ubq.cif",
+        "sha256": "056f98710cb2b36f633c45e41902a02eb446e82871da21ff2dd44f74a56ca0f6"
+      },
+      {
+        "path": "sources/example_db",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db",
+        "sha256": "fad008ca82e01b1fe9d5a5dbddc4080dfd12565d04ceee21fef7eb52543cd634"
+      },
+      {
+        "path": "sources/example_db.index",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.index",
+        "sha256": "346d7d2cf546cbddca6e8c07320ce46b4fc0bd15035b017438d5110ec7827bf7"
+      },
+      {
+        "path": "sources/example_db.lookup",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.lookup",
+        "sha256": "affe92e18bde3723f290e8c12b8c4884f7afbcce1ab1669fae6d2db2099ee47b"
+      },
+      {
+        "path": "sources/example_db.dbtype",
+        "url": "https://raw.githubusercontent.com/biodatageeks/polars-bio/29b04c5159135319d387dfcda9b7b84420dea549/tests/data/structure/example_db.dbtype",
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650"
+      },
+      {
+        "path": "sources/1jj2.pdb",
+        "url": "https://files.rcsb.org/download/1JJ2.pdb.gz",
+        "sha256": "f3eeb133fedd51dfb3d98b50c338c76bb1e7c5474416744eccd8862a7b7308bb"
+      },
+      {
+        "path": "sources/4v9d.cif",
+        "url": "https://files.rcsb.org/download/4V9D.cif.gz",
+        "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+      }
+    ],
+    "cases": [
+      {
+        "format": "mmcif",
+        "paths": [
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif",
+          "sources/4v9d.cif"
+        ],
+        "copies": 8,
+        "oracle": "gemmi",
+        "files": [
+          {
+            "path": "sources/4v9d.cif",
+            "bytes": 35769608,
+            "sha256": "08e7f999b088c75dfec79b8cc5e5f9abf1b669a9bdc82d92da97d4c78dbce69d"
+          }
+        ],
+        "logical_bytes": 286156864
+      }
+    ],
+    "diagnostic": "Eight equally sized source occurrences, testing the source-count partition cap. Same source checksum and output schema as the original benchmark."
+  },
+  "machine": {
+    "platform": "macOS-15.7.9-arm64-arm-64bit",
+    "python": "3.12.2",
+    "cpu_logical": 16,
+    "memory_bytes": 68719476736
+  },
+  "versions": {
+    "polars-bio": "0.35.1",
+    "polars": "1.44.2",
+    "pyarrow": "24.0.0",
+    "datafusion": "53.0.0",
+    "numpy": "2.5.3",
+    "gemmi": "0.7.5",
+    "biopython": "1.88",
+    "foldcomp": "1.0.0",
+    "pyhmmer": "0.12.3"
+  },
+  "method": {
+    "iterations": 3,
+    "timing": "fresh subprocess; imports excluded; read + materialize canonical Polars DataFrame; comparison/IPC excluded",
+    "rss": "process high-water RSS captured before IPC/verification, includes imports",
+    "cache": "warm filesystem cache; untimed oracle read before runs; no OS cache flush",
+    "order": "reader order rotated by iteration; sequential processes",
+    "tolerances": {
+      "text_absolute": 1e-09,
+      "foldcomp_absolute": 0.0001,
+      "relative": 0
+    },
+    "quality": "all rows, all columns in the documented canonical schema; exact types, keys, nulls, strings and annotations"
+  },
+  "verification": [
+    {
+      "format": "mmcif",
+      "reader": "biopython-vs-gemmi",
+      "rows": 2338832,
+      "columns": 27,
+      "cells_checked": 63148464,
+      "mismatches": 0,
+      "max_absolute_errors": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "occupancy": 0.0,
+        "b_factor": 0.0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.386017375160009,
+      "peak_rss_bytes": 1877852160,
+      "rows": 2338832,
+      "iteration": 1,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 5.133247874910012,
+      "peak_rss_bytes": 2495692800,
+      "rows": 2338832,
+      "iteration": 1,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 2,
+      "seconds": 2.729862374952063,
+      "peak_rss_bytes": 3446931456,
+      "rows": 2338832,
+      "iteration": 1,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 1.5524672497995198,
+      "peak_rss_bytes": 5261131776,
+      "rows": 2338832,
+      "iteration": 1,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.9680517080705613,
+      "peak_rss_bytes": 7467909120,
+      "rows": 2338832,
+      "iteration": 1,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 5.189330624882132,
+      "peak_rss_bytes": 2471788544,
+      "rows": 2338832,
+      "iteration": 2,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 2,
+      "seconds": 2.70212845900096,
+      "peak_rss_bytes": 3481403392,
+      "rows": 2338832,
+      "iteration": 2,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 1.5060997088439763,
+      "peak_rss_bytes": 5310529536,
+      "rows": 2338832,
+      "iteration": 2,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.9413543750997633,
+      "peak_rss_bytes": 7468335104,
+      "rows": 2338832,
+      "iteration": 2,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.46839112485759,
+      "peak_rss_bytes": 1797881856,
+      "rows": 2338832,
+      "iteration": 2,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 2,
+      "seconds": 2.706628292100504,
+      "peak_rss_bytes": 3502850048,
+      "rows": 2338832,
+      "iteration": 3,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "seconds": 1.5565706661436707,
+      "peak_rss_bytes": 5190483968,
+      "rows": 2338832,
+      "iteration": 3,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "seconds": 0.9385252080392092,
+      "peak_rss_bytes": 7672266752,
+      "rows": 2338832,
+      "iteration": 3,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "seconds": 4.360431416891515,
+      "peak_rss_bytes": 1882800128,
+      "rows": 2338832,
+      "iteration": 3,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "seconds": 5.094921041047201,
+      "peak_rss_bytes": 2496593920,
+      "rows": 2338832,
+      "iteration": 3,
+      "quality": {
+        "rows": 2338832,
+        "columns": 27,
+        "cells_checked": 63148464,
+        "mismatches": 0,
+        "max_absolute_errors": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "occupancy": 0.0,
+          "b_factor": 0.0
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "format": "mmcif",
+      "reader": "gemmi",
+      "threads": 1,
+      "runs": 3,
+      "rows": 2338832,
+      "seconds_median": 4.386017375160009,
+      "seconds_stdev": 0.056414203950005445,
+      "peak_rss_mib_median": 1790.859375
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 1,
+      "runs": 3,
+      "rows": 2338832,
+      "seconds_median": 5.133247874910012,
+      "seconds_stdev": 0.047482260824908376,
+      "peak_rss_mib_median": 2380.078125
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 2,
+      "runs": 3,
+      "rows": 2338832,
+      "seconds_median": 2.706628292100504,
+      "seconds_stdev": 0.014884226538294942,
+      "peak_rss_mib_median": 3320.125
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 4,
+      "runs": 3,
+      "rows": 2338832,
+      "seconds_median": 1.5524672497995198,
+      "seconds_stdev": 0.028030056518866277,
+      "peak_rss_mib_median": 5017.40625
+    },
+    {
+      "format": "mmcif",
+      "reader": "polars-bio",
+      "threads": 8,
+      "runs": 3,
+      "rows": 2338832,
+      "seconds_median": 0.9413543750997633,
+      "seconds_stdev": 0.016291950865952257,
+      "peak_rss_mib_median": 7122.359375
+    }
+  ]
+}
